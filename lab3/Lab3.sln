@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{B3D098A1-6964-4806-A633-DBBB280763AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab3", "ConsoleApp1\Lab3.csproj", "{B3D098A1-6964-4806-A633-DBBB280763AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{009B6C3B-DF91-471B-81D4-04AC6F7451BA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Downloads\attacks (1).csv = ..\..\..\..\Downloads\attacks (1).csv
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
