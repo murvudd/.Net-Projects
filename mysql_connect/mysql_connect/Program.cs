@@ -25,19 +25,19 @@ namespace mysql_connect
                     timer.Start();
                     for (int i = 0; i < 1000; i++)
                     {
-                        a.Insert("insert into   lab4.logs"+j+"(temp, czas) Values (" 
+                        a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
                                             + val.Next(0, 10000000) + ", now(6)); ");
                     }
                     timer.Stop();
                     TimeSpan ts = timer.Elapsed;
-                    Console.WriteLine("logs{1} query passed   {0} rows       {2} time", a.Count("select count(*) from logs"+j),j,ts);
-                    
+                    Console.WriteLine("logs{1} query passed   {0} rows       {2} time", a.Count("select count(*) from logs" + j), j, ts);
+
                 }
 
                 catch (Exception e)
                 {
-                    
-                    Console.WriteLine("There was a problem in logs"+ j +":");
+
+                    Console.WriteLine("There was a problem in logs" + j + ":");
                     Console.WriteLine(e.Message);
                     Console.ReadKey();
                 }
