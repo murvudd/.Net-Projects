@@ -23,7 +23,8 @@ namespace mysql_connect.Models
         }
 
         //Initialize values
-        private void Initialize()
+        //private void Initialize()
+        public void Initialize()
         {
             server = "localhost";
             database = "Lab4";
