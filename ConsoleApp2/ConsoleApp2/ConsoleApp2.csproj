@@ -42,6 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Film.cs" />
+    <Compile Include="Models\Książka.cs" />
+    <Compile Include="Models\Miesięcznik.cs" />
+    <Compile Include="Models\Multimedia.cs" />
+    <Compile Include="Models\Muzyka.cs" />
+    <Compile Include="Models\Tygodnik.cs" />
+    <Compile Include="Models\Czasopismo.cs" />
     <Compile Include="Models\Publikacja.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

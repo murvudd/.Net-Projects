@@ -4,3 +4,10 @@ C:\Users\Żaba\Documents\projekty .net\lab1\lab1\lab1\bin\Debug\lab1.pdb
 C:\Users\Żaba\Documents\projekty .net\lab1\lab1\lab1\obj\Debug\lab1.csprojResolveAssemblyReference.cache
 C:\Users\Żaba\Documents\projekty .net\lab1\lab1\lab1\obj\Debug\lab1.exe
 C:\Users\Żaba\Documents\projekty .net\lab1\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\obj\Debug\lab1.csprojResolveAssemblyReference.cache
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\oddaj\Source\Repos\.Net-Projects\lab1\lab1\obj\Debug\lab1.pdb
