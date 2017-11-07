@@ -15,108 +15,607 @@ namespace mysql_connect
             DBConnect a = new DBConnect();
             Console.WriteLine(a.Count("select connection_id();"));
             Console.WriteLine("ile rekordów ?");
+            a.Insert("Set Global Transaction isolation level repeatable read;");
+            a.Insert("Set Global Transaction isolation level READ committed;");
+            a.Insert("Set Global Transaction isolation level READ uncommitted;");
+            a.Insert("Set Global Transaction isolation level SERIALIZABLE;");
+            
             int recordNum = int.Parse(Console.ReadLine());
-            for (int j = 1; j <= 6; j++)
+            Stopwatch timer5 = new Stopwatch();
+            Stopwatch timer1 = new Stopwatch();
+            Stopwatch timer2 = new Stopwatch();
+            Stopwatch timer3 = new Stopwatch();
+            Stopwatch timer4 = new Stopwatch();
+            Stopwatch timer6 = new Stopwatch();
+            for (int k = 0; k < 5; k++)
             {
-                try
+                switch (k)
                 {
-                    Stopwatch timer5 = new Stopwatch();
-                    Stopwatch timer1 = new Stopwatch();
-                    Stopwatch timer2 = new Stopwatch();
-                    Stopwatch timer3 = new Stopwatch();
-                    Stopwatch timer4 = new Stopwatch();
-                    Stopwatch timer6 = new Stopwatch();
-
-                    Random val = new Random();
-                    //a.Insert("Create table logs(temp double, czas datetime(6) not null primary key) engine = myisam; ");
-                    //a.Insert("");
-                    
-                    switch (j)
-                    {
-                        case 1:
-                            timer1.Start();
-                            for (int i = 0; i < recordNum; i++)
+                    case 0:
+                        for (int j = 1; j <= 6; j++)
+                        {
+                            try
                             {
-                                a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
-                                                + val.Next(1000000, 10000000) + ", now(6)); do sleep(0.001); ");
-                            }
-                            timer1.Stop();
-                            Console.WriteLine("logs{1} query passed   {0} rows", a.Count("select count(*) from logs" + j), j);
-                            break;
 
-                        case 2:
-                            timer2.Start();
-                            for (int i = 0; i < recordNum; i++)
+
+                                Random val = new Random();
+                                //a.Insert("Create table logs(temp double, czas datetime(6) not null primary key) engine = myisam; ");
+                                //a.Insert("");
+
+                                switch (j)
+                                {
+                                    case 1:
+
+                                        a.Insert("drop table if exists logs1");
+                                        a.Insert("Create table logs1(temp double,czas datetime(6) not null primary key) engine = myisam; ");
+                                        timer1.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6));  ");
+                                        }
+                                        timer1.Stop();
+                                        TimeSpan ts1 = timer1.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts1);
+                                        timer1.Reset();
+                                        break;
+
+                                    case 2:
+                                        a.Insert("drop table if exists logs2; Create table logs2(temp double,czas int not null primary key auto_increment) engine = myisam; ");
+                                        timer2.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer2.Stop();
+                                        TimeSpan ts2 = timer2.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts2);
+                                        timer2.Reset();
+                                        break;
+
+                                    case 3:
+                                        a.Insert("drop table if exists logs3; Create table logs3(temp double,czas int not null auto_increment unique) engine = myisam; ");
+                                        timer3.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer3.Stop();
+                                        TimeSpan ts3 = timer3.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts3);
+                                        timer3.Reset();
+                                        break;
+
+                                    case 4:
+                                        a.Insert("drop table if exists logs4; Create table logs4(temp double,czas datetime(6) not null primary key) engine = innodb;");
+                                        timer4.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6)+0);  ");
+                                        }
+                                        timer4.Stop();
+                                        TimeSpan ts4 = timer4.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts4);
+                                        timer4.Reset();
+                                        break;
+                                    case 5:
+                                        a.Insert("drop table if exists logs5; Create table logs5(temp double,czas int not null primary key auto_increment) engine = innodb; ");
+                                        timer5.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer5.Stop();
+                                        TimeSpan ts5 = timer5.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts5);
+                                        timer5.Reset();
+                                        break;
+
+                                    case 6:
+                                        a.Insert("drop table if exists logs6; Create table logs6(temp double,czas int not null auto_increment unique) engine = innodb; ");
+                                        timer6.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer6.Stop();
+                                        TimeSpan ts6 = timer6.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts6);
+                                        timer6.Reset();
+                                        break;
+
+
+
+                                }
+
+
+
+
+
+                            }
+
+                            catch (Exception e)
                             {
-                                a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
-                                    + val.Next(1000000, 10000000)+");");
-                            }
-                            timer2.Stop();
-                            Console.WriteLine("logs{1} query passed   {0} rows", a.Count("select count(*) from logs" + j), j);
-                            break;
 
-                        case 3:
-                            timer3.Start();
-                            for (int i = 0; i < recordNum; i++)
+                                Console.WriteLine("There was a problem in logs" + j + ":");
+                                Console.WriteLine(e.Message);
+
+                                Console.ReadKey();
+                            }
+                        }
+                        break;
+
+                    case 1:
+                        a.Insert("Set Global Transaction isolation level repeatable read;");
+                        Console.Write("Repetable read\n");
+                        for (int j = 1; j <= 6; j++)
+                        {
+                            try
                             {
-                                a.Insert("insert into   lab4.logs" + j + "(temp) Values (" 
-                                    + val.Next(1000000, 10000000) + ");");
-                            }
-                            timer3.Stop();
-                            Console.WriteLine("logs{1} query passed   {0} rows", a.Count("select count(*) from logs" + j), j);
-                            break;
 
-                        case 4:
-                            timer4.Start();
-                            for (int i = 0; i < recordNum; i++)
+
+                                Random val = new Random();
+                                //a.Insert("Create table logs(temp double, czas datetime(6) not null primary key) engine = myisam; ");
+                                //a.Insert("");
+
+                                switch (j)
+                                {
+                                    case 1:
+
+                                        a.Insert("drop table if exists logs1");
+                                        a.Insert("Create table logs1(temp double,czas datetime(6) not null primary key) engine = myisam; ");
+                                        timer1.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6));  ");
+                                        }
+                                        timer1.Stop();
+                                        TimeSpan ts1 = timer1.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts1);
+
+                                        timer1.Reset();
+                                        break;
+
+                                    case 2:
+                                        a.Insert("drop table if exists logs2; Create table logs2(temp double,czas int not null primary key auto_increment) engine = myisam; ");
+                                        timer2.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer2.Stop();
+                                        TimeSpan ts2 = timer2.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts2);
+
+                                        timer2.Reset(); break;
+
+                                    case 3:
+                                        a.Insert("drop table if exists logs3; Create table logs3(temp double,czas int not null auto_increment unique) engine = myisam; ");
+                                        timer3.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer3.Stop();
+                                        TimeSpan ts3 = timer3.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts3);
+                                        timer3.Reset(); break;
+
+                                    case 4:
+                                        a.Insert("drop table if exists logs4; Create table logs4(temp double,czas datetime(6) not null primary key) engine = innodb;");
+                                        timer4.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6)+0);  ");
+                                        }
+                                        timer4.Stop();
+                                        TimeSpan ts4 = timer4.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts4);
+                                        timer4.Reset(); break;
+                                    case 5:
+                                        a.Insert("drop table if exists logs5; Create table logs5(temp double,czas int not null primary key auto_increment) engine = innodb; ");
+                                        timer5.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer5.Stop();
+                                        TimeSpan ts5 = timer5.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts5);
+                                        timer5.Reset(); break;
+
+                                    case 6:
+                                        a.Insert("drop table if exists logs6; Create table logs6(temp double,czas int not null auto_increment unique) engine = innodb; ");
+                                        timer6.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer6.Stop();
+                                        TimeSpan ts6 = timer6.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts6);
+                                        timer6.Reset(); break;
+
+
+
+                                }
+
+
+
+
+
+                            }
+
+                            catch (Exception e)
                             {
-                                a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
-                                                + val.Next(1000000, 10000000) + ", now(6)+0); ");
+
+                                Console.WriteLine("There was a problem in logs" + j + ":");
+                                Console.WriteLine(e.Message);
+
+                                Console.ReadKey();
                             }
-                            timer4.Stop();
-                            Console.WriteLine("logs{1} query passed   {0} rows", a.Count("select count(*) from logs" + j), j);
-                            break;
-                        case 5:
-                            timer5.Start();
-                            for (int i = 0; i < recordNum; i++)
+                        }
+                        break;
+
+                    case 2:
+                        a.Insert("Set Global Transaction isolation level READ committed;");
+                        Console.Write("Read committed\n");
+                        for (int j = 1; j <= 6; j++)
+                        {
+                            try
                             {
-                                a.Insert("insert into   lab4.logs" + j + "(temp) Values (" 
-                                    + val.Next(1000000, 10000000) + ");");
-                            }
-                            timer5.Stop();
-                            Console.WriteLine("logs{1} query passed   {0} rows", a.Count("select count(*) from logs" + j), j);
-                            break;
 
-                        case 6:
-                            timer6.Start();
-                            for (int i = 0; i < recordNum; i++)
+
+                                Random val = new Random();
+                                //a.Insert("Create table logs(temp double, czas datetime(6) not null primary key) engine = myisam; ");
+                                //a.Insert("");
+
+                                switch (j)
+                                {
+                                    case 1:
+
+                                        a.Insert("drop table if exists logs1");
+                                        a.Insert("Create table logs1(temp double,czas datetime(6) not null primary key) engine = myisam; ");
+                                        timer1.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6));  ");
+                                        }
+                                        timer1.Stop();
+                                        TimeSpan ts1 = timer1.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts1);
+
+                                        timer1.Reset(); break;
+
+                                    case 2:
+                                        a.Insert("drop table if exists logs2; Create table logs2(temp double,czas int not null primary key auto_increment) engine = myisam; ");
+                                        timer2.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer2.Stop();
+                                        TimeSpan ts2 = timer2.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts2);
+                                        timer2.Reset(); break;
+
+                                    case 3:
+                                        a.Insert("drop table if exists logs3; Create table logs3(temp double,czas int not null auto_increment unique) engine = myisam; ");
+                                        timer3.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer3.Stop();
+                                        TimeSpan ts3 = timer3.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts3);
+                                        timer3.Reset(); break;
+
+                                    case 4:
+                                        a.Insert("drop table if exists logs4; Create table logs4(temp double,czas datetime(6) not null primary key) engine = innodb;");
+                                        timer4.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6)+0);  ");
+                                        }
+                                        timer4.Stop();
+                                        TimeSpan ts4 = timer4.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts4);
+                                        timer4.Reset(); break;
+                                    case 5:
+                                        a.Insert("drop table if exists logs5; Create table logs5(temp double,czas int not null primary key auto_increment) engine = innodb; ");
+                                        timer5.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer5.Stop();
+                                        TimeSpan ts5 = timer5.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts5);
+                                        timer5.Reset(); break;
+
+                                    case 6:
+                                        a.Insert("drop table if exists logs6; Create table logs6(temp double,czas int not null auto_increment unique) engine = innodb; ");
+                                        timer6.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer6.Stop();
+                                        TimeSpan ts6 = timer6.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts6);
+                                        timer6.Reset(); break;
+
+
+
+                                }
+
+
+
+
+
+                            }
+
+                            catch (Exception e)
                             {
-                                a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
-                                    + val.Next(1000000, 10000000) + ");");
+
+                                Console.WriteLine("There was a problem in logs" + j + ":");
+                                Console.WriteLine(e.Message);
+
+                                Console.ReadKey();
                             }
-                            timer6.Stop();
-                            Console.WriteLine("logs{1} query passed   {0} rows", a.Count("select count(*) from logs" + j), j);
-                            break;
-                    }
-                    
-                        
-                    TimeSpan ts1 = timer1.Elapsed;
-                    TimeSpan ts2 = timer2.Elapsed;
-                    TimeSpan ts3 = timer3.Elapsed;
-                    TimeSpan ts4 = timer4.Elapsed;
-                    TimeSpan ts5 = timer5.Elapsed;
-                    TimeSpan ts6 = timer6.Elapsed;
-                    Console.WriteLine("czas1 {0}\nczas2 {1}\nczas3 {2}\nczas4 {3}\nczas5 {4}\nczas6 {5}",ts1,ts2,ts3,ts4,ts5,ts6);
+                        }
+                        break;
 
-                }
+                    case 3:
+                        a.Insert("Set Global Transaction isolation level READ uncommitted;");
+                        Console.Write("Read uncommitted\n");
+                        for (int j = 1; j <= 6; j++)
+                        {
+                            try
+                            {
 
-                catch (Exception e)
-                {
 
-                    Console.WriteLine("There was a problem in logs" + j + ":");
-                    Console.WriteLine(e.Message);
-                    
-                    Console.ReadKey();
+                                Random val = new Random();
+                                //a.Insert("Create table logs(temp double, czas datetime(6) not null primary key) engine = myisam; ");
+                                //a.Insert("");
+
+                                switch (j)
+                                {
+                                    case 1:
+
+                                        a.Insert("drop table if exists logs1");
+                                        a.Insert("Create table logs1(temp double,czas datetime(6) not null primary key) engine = myisam; ");
+                                        timer1.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6));  ");
+                                        }
+                                        timer1.Stop();
+                                        TimeSpan ts1 = timer1.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts1);
+
+                                        timer1.Reset(); break;
+
+                                    case 2:
+                                        a.Insert("drop table if exists logs2; Create table logs2(temp double,czas int not null primary key auto_increment) engine = myisam; ");
+                                        timer2.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer2.Stop();
+                                        TimeSpan ts2 = timer2.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts2);
+                                        timer2.Reset(); break;
+
+                                    case 3:
+                                        a.Insert("drop table if exists logs3; Create table logs3(temp double,czas int not null auto_increment unique) engine = myisam; ");
+                                        timer3.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer3.Stop();
+                                        TimeSpan ts3 = timer3.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts3);
+                                        timer3.Reset(); break;
+
+                                    case 4:
+                                        a.Insert("drop table if exists logs4; Create table logs4(temp double,czas datetime(6) not null primary key) engine = innodb;");
+                                        timer4.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6)+0);  ");
+                                        }
+                                        timer4.Stop();
+                                        TimeSpan ts4 = timer4.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts4);
+                                        timer4.Reset(); break;
+                                    case 5:
+                                        a.Insert("drop table if exists logs5; Create table logs5(temp double,czas int not null primary key auto_increment) engine = innodb; ");
+                                        timer5.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer5.Stop();
+                                        TimeSpan ts5 = timer5.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts5);
+                                        timer5.Reset(); break;
+
+                                    case 6:
+                                        a.Insert("drop table if exists logs6; Create table logs6(temp double,czas int not null auto_increment unique) engine = innodb; ");
+                                        timer6.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer6.Stop();
+                                        TimeSpan ts6 = timer6.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts6);
+                                        timer6.Reset(); break;
+
+
+
+                                }
+
+
+
+
+
+                            }
+
+                            catch (Exception e)
+                            {
+
+                                Console.WriteLine("There was a problem in logs" + j + ":");
+                                Console.WriteLine(e.Message);
+
+                                Console.ReadKey();
+                            }
+                        }
+                        break;
+
+                    case 4:
+                        Console.Write("SERIALIZABLE\n");
+                        a.Insert("Set Global Transaction isolation level SERIALIZABLE;");
+                        for (int j = 1; j <= 6; j++)
+                        {
+                            try
+                            {
+
+
+                                Random val = new Random();
+                                //a.Insert("Create table logs(temp double, czas datetime(6) not null primary key) engine = myisam; ");
+                                //a.Insert("");
+
+                                switch (j)
+                                {
+                                    case 1:
+
+                                        a.Insert("drop table if exists logs1");
+                                        a.Insert("Create table logs1(temp double,czas datetime(6) not null primary key) engine = myisam; ");
+                                        timer1.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6));  ");
+                                        }
+                                        timer1.Stop();
+                                        TimeSpan ts1 = timer1.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts1);
+
+                                        timer1.Reset(); break;
+
+                                    case 2:
+                                        a.Insert("drop table if exists logs2; Create table logs2(temp double,czas int not null primary key auto_increment) engine = myisam; ");
+                                        timer2.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer2.Stop();
+                                        TimeSpan ts2 = timer2.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts2);
+                                        timer2.Reset(); break;
+
+                                    case 3:
+                                        a.Insert("drop table if exists logs3; Create table logs3(temp double,czas int not null auto_increment unique) engine = myisam; ");
+                                        timer3.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer3.Stop();
+                                        TimeSpan ts3 = timer3.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts3);
+                                        timer3.Reset(); break;
+
+                                    case 4:
+                                        a.Insert("drop table if exists logs4; Create table logs4(temp double,czas datetime(6) not null primary key) engine = innodb;");
+                                        timer4.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp, czas) Values ("
+                                                            + val.Next(1000000, 10000000) + ", now(6)+0);  ");
+                                        }
+                                        timer4.Stop();
+                                        TimeSpan ts4 = timer4.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts4);
+                                        timer4.Reset(); break;
+                                    case 5:
+                                        a.Insert("drop table if exists logs5; Create table logs5(temp double,czas int not null primary key auto_increment) engine = innodb; ");
+                                        timer5.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer5.Stop();
+                                        TimeSpan ts5 = timer5.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts5);
+                                        timer5.Reset(); break;
+
+                                    case 6:
+                                        a.Insert("drop table if exists logs6; Create table logs6(temp double,czas int not null auto_increment unique) engine = innodb; ");
+                                        timer6.Start();
+                                        for (int i = 0; i < recordNum; i++)
+                                        {
+                                            a.Insert("insert into   lab4.logs" + j + "(temp) Values ("
+                                                + val.Next(1000000, 10000000) + ");");
+                                        }
+                                        timer6.Stop();
+                                        TimeSpan ts6 = timer6.Elapsed;
+                                        Console.WriteLine("logs{1} query passed   {0} rows   time{2}", a.Count("select count(*) from logs" + j), j, ts6);
+                                        timer6.Reset(); break;
+
+
+
+                                }
+
+
+
+
+
+                            }
+
+                            catch (Exception e)
+                            {
+
+                                Console.WriteLine("There was a problem in logs" + j + ":");
+                                Console.WriteLine(e.Message);
+
+                                Console.ReadKey();
+                            }
+                        }
+                        break;
+
                 }
             }
         }
