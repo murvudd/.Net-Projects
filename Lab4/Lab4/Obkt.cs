@@ -22,8 +22,8 @@ namespace Lab4
         public Obkt(string _name)
         {
             Random rnd = new Random();
-            this.PosX = rnd.Next(0, 20);
-            this.PosY = rnd.Next(0, 20);
+            this.PosX = rnd.Next(1, 19);
+            this.PosY = rnd.Next(1, 19);
             this.Name = _name;
         }
 

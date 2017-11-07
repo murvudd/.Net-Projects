@@ -18,6 +18,7 @@ namespace Lab4
             
             Obkt a = new Obkt("obiek"+Thread.CurrentThread.Name);
             Console.WriteLine("obiekt {0}  x {1},   y {2}", a.Name, a.PosX, a.PosY);
+
         }
     }
 }

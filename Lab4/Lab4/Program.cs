@@ -33,18 +33,18 @@ namespace Lab4
                 
             }
 
-            
 
+            Plansza.Populate();
 
+            Console.WriteLine(Plansza.Map[1, 1]);
             
-            
-            int x = 0;
-            do
-            {
+            //int x = 0;
+            //do
+            //{
 
-                Plansza.DrawBox(n1, n1);
-                x++;
-            } while (x<10);
+            //    Plansza.DrawBox(n1, n1);
+            //    x++;
+            //} while (x<10);
         }
     }
 }
