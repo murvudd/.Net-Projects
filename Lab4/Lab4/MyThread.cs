@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Lab4
 {
-    class Wtk
+    class MyThread
     {
-        public Wtk()
-            {
-            }
+        public MyThread()
+        {
+        }
 
         public void Run()
         {
-            
-            Obkt a = new Obkt("obiek"+Thread.CurrentThread.Name);
+
+            MyObject a = new MyObject("obiek" + Thread.CurrentThread.Name);
             Console.WriteLine("obiekt {0}  x {1},   y {2}", a.Name, a.PosX, a.PosY);
 
         }
