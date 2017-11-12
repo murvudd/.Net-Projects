@@ -13,12 +13,37 @@ namespace Lab4
         {
         }
 
-        public void Run()
+        public static void Run(Pole[,] a)
         {
 
-            MyObject a = new MyObject("obiek" + Thread.CurrentThread.Name);
-            Console.WriteLine("obiekt {0}  x {1},   y {2}", a.Name, a.PosX, a.PosY);
+            MyObject o = new MyObject("obiek" + Thread.CurrentThread.Name, a.GetUpperBound(1), a.GetUpperBound(0));
+            Console.WriteLine("Wątek {0} rozpoczyna pracę",
+                Thread.CurrentThread.Name, Thread.CurrentThread.Priority);
+            o.ChangeVel(a);
+            
+        }
+        public static void Run(int j, int i)
+        {
+
+            MyObject o = new MyObject("obiek" + Thread.CurrentThread.Name, j, i);
+            Console.WriteLine("Wątek {0} rozpoczyna pracę",
+                Thread.CurrentThread.Name, Thread.CurrentThread.Priority);
+
 
         }
+
+        public void ThreadControl(Pole[,] a, int n0)
+        {
+           
+            Thread[] T = new Thread[n0];
+            for (int i = 0; i < T.Length; i++)
+            {
+                T[i] = new Thread(new ThreadStart( ()=>Run(a)));
+                T[i].Name = "t_" + 1;                
+            }
+
+            
+        }
+       
     }
 }
