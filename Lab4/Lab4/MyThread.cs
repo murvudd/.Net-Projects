@@ -16,10 +16,12 @@ namespace Lab4
         public static void Run(Pole[,] a)
         {
 
-            MyObject o = new MyObject("obiek" + Thread.CurrentThread.Name, a.GetUpperBound(1), a.GetUpperBound(0));
+            MyObject o = new MyObject("" + Thread.CurrentThread.Name, a.GetUpperBound(1), a.GetUpperBound(0));
             Console.WriteLine("Wątek {0} rozpoczyna pracę",
                 Thread.CurrentThread.Name, Thread.CurrentThread.Priority);
-            o.ChangeVel(a);
+            o.DrawPole(a);
+            
+            o.DrawObjct(a);
             
         }
         public static void Run(int j, int i)
@@ -39,7 +41,7 @@ namespace Lab4
             for (int i = 0; i < T.Length; i++)
             {
                 T[i] = new Thread(new ThreadStart( ()=>Run(a)));
-                T[i].Name = "t_" + 1;                
+                T[i].Name = "" + 1;                
             }
 
             
