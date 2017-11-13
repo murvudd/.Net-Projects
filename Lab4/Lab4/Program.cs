@@ -18,41 +18,39 @@ namespace Lab4
 
             //int n1 = 20; // wymiary planszy (indeksowany od 0  !! )
             Console.WriteLine("wymiar X 20");
-
             int nx= Convert.ToInt16(Console.ReadLine());
 
             Console.WriteLine("wymiar Y 20");
             int ny = Convert.ToInt16(Console.ReadLine());
-            Random rng = new Random();
-            nx = 20;
-            ny = 20;
 
+            Random rng = new Random();
+            
+             
             //int n0 = int.Parse(Console.ReadLine());
             int n0 = 15;
             try
             {
-                Pole[,] Mapa = new Pole[ny, nx];
-
-                //MyObject[] O = new MyObject[n0];
-                //for (int i = 0; i < O.Length; i++)
-                //{
-                //    O[i] = new MyObject(""+i,Mapa.GetUpperBound(1),Mapa.GetUpperBound(0));
-                //    Thread.Sleep(10);
-                //}
-
-                
-                MyThread MyThreadObj = new MyThread();
-                //Thread Tcontrol = new Thread(new ThreadStart(MyThread.ThreadControl(()=>Print("s"))));
-                Thread Tcontrol = new Thread(new ThreadStart(
-                    ()=>MyThreadObj.ThreadControl(Mapa,n0)));
-                //Tcontrol.Start(Mapa);
-                Tcontrol.Start();
-
+                Pole[,] Mapa = new Pole[ny, nx];              
                 Console.WriteLine("Generowanie mapy proszę czekać");
                 MapGen(Mapa);
-                
+
                 Console.WriteLine("gotowe, wcisnij dowolny klawisz aby rozpocząć");
                 Console.ReadKey();
+                Console.Clear();
+                //MyThread MyThreadObj = new MyThread();
+                //Thread Tcontrol = new Thread(new ThreadStart(MyThread.ThreadControl(()=>Print("s"))));
+                Thread[] T = new Thread[n0];
+                MyObject[] O = new MyObject[n0];
+
+
+                Thread Tcontrol = new Thread(new ThreadStart(
+                    () => MyThread.ThreadControl(Mapa, n0, T, O)))
+                {
+                   //Priority = ThreadPriority.Highest
+                };
+                //Tcontrol.Start(Mapa);
+                Tcontrol.Start();                
+                
             //do
             //{
             //        Console.Clear();
@@ -77,7 +75,7 @@ namespace Lab4
 
         }
 
-        static public Semaphore sem = new Semaphore(0, 1);
+        static public Semaphore sem = new Semaphore(1, 1);
 
 
         static public void DrawArr(Pole[,] a)
@@ -154,7 +152,7 @@ namespace Lab4
 
         public static void DrawMap(Pole[,] a)
         {
-            Console.Clear();
+            
             Console.SetCursorPosition(0, 0);
             for (int j = 0; j <= a.GetUpperBound(0); j++)
             {
