@@ -67,7 +67,7 @@ namespace Lab4
                 Console.SetCursorPosition(0, 0);
                 Program.DrawMap(a);
 
-                for (int i  = 0; i < T.Length; i++)
+                for (int i  = 0; i < T.Length-1; i++)
                 {
                     for (int j=0; j<i;j++)
                     {

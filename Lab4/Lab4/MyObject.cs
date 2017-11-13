@@ -96,10 +96,10 @@ namespace Lab4
             }
 
 
-        public void ChangeView(Pole a)
-        {
-            a.View = (char)Convert.ToInt16(Name);
-        }
+        //public void ChangeView(Pole a)
+        //{
+        //    a.View = (char)Convert.ToInt16(Name);
+        //}
 
         public void DrawPole(Pole [,] a)
         {

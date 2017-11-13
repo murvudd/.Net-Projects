@@ -78,29 +78,29 @@ namespace Lab4
         static public Semaphore sem = new Semaphore(1, 1);
 
 
-        static public void DrawArr(Pole[,] a)
-        {
-            Console.Clear();
-            for (int j = 0; j <= a.GetUpperBound(0); j++)
-            {
-                for (int i = 0; i <= a.GetUpperBound(1); i++)
-                {
-                    a[j, i].View = (char)a[j, i].Dir;
-                }
-            }
-        }
+        //static public void DrawArr(Pole[,] a)
+        //{
+        //    Console.Clear();
+        //    for (int j = 0; j <= a.GetUpperBound(0); j++)
+        //    {
+        //        for (int i = 0; i <= a.GetUpperBound(1); i++)
+        //        {
+        //            a[j, i].View = (char)a[j, i].Dir;
+        //        }
+        //    }
+        //}
 
-        static public void DrawSpace(Pole[,] a)
-        {
-            Console.Clear();
-            for (int j = 1; j <= a.GetUpperBound(0) - 1; j++)
-            {
-                for (int i = 1; i <= a.GetUpperBound(1) - 1; i++)
-                {
-                    a[j, i].View = ' ';
-                }
-            }
-        }
+        //static public void DrawSpace(Pole[,] a)
+        //{
+        //    Console.Clear();
+        //    for (int j = 1; j <= a.GetUpperBound(0) - 1; j++)
+        //    {
+        //        for (int i = 1; i <= a.GetUpperBound(1) - 1; i++)
+        //        {
+        //            a[j, i].View = ' ';
+        //        }
+        //    }
+        //}
 
         static void MapGen(Pole[,] Mapa)
         {
