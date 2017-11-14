@@ -100,7 +100,7 @@ namespace mysql_connect.Models
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
                 //Execute command
-                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery(); 
 
                 //close connection
                 this.CloseConnection();
