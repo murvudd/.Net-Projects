@@ -18,19 +18,20 @@ namespace Lab4
 
             //int n1 = 20; // wymiary planszy (indeksowany od 0  !! )
             Console.WriteLine("wymiar X 20");
-            int nx= Convert.ToInt16(Console.ReadLine());
+            int nx = Convert.ToInt16(Console.ReadLine());
 
             Console.WriteLine("wymiar Y 20");
             int ny = Convert.ToInt16(Console.ReadLine());
 
             Random rng = new Random();
-            
-             
+            ny = 20;
+            nx = 20;
+
             //int n0 = int.Parse(Console.ReadLine());
-            int n0 = 15;
+            int n0 = 9;
             try
             {
-                Pole[,] Mapa = new Pole[ny, nx];              
+                Pole[,] Mapa = new Pole[ny, nx];
                 Console.WriteLine("Generowanie mapy proszę czekać");
                 MapGen(Mapa);
 
@@ -43,35 +44,87 @@ namespace Lab4
                 MyObject[] O = new MyObject[n0];
 
 
-                Thread Tcontrol = new Thread(new ThreadStart(
-                    () => MyThread.ThreadControl(Mapa, n0, T, O)))
-                {
-                   //Priority = ThreadPriority.Highest
-                };
-                //Tcontrol.Start(Mapa);
-                Tcontrol.Start();                
                 
-            //do
-            //{
-            //        Console.Clear();
-            //        Console.SetCursorPosition(0, 0);
-                  //  DrawMap(Mapa);
-            //        foreach (MyObject q in O)
-            //        {
-            //            //q.DrawObjct(Mapa);
-            //            //Thread.Sleep(1500);
-            //            //Console.CursorVisible = false;
-                        
-            //            q.DrawPole(Mapa);
-            //            q.ChangeVel(Mapa);
-            //            q.DrawObjct(Mapa);
-            //            Thread.Sleep(250);
-            //        }
-            //}
-            //while (true);
+                for (int i = 0; i <=( n0-1); i++)
+                {
+
+                    O[i] = new MyObject(""+i, Mapa.GetUpperBound(0), Mapa.GetUpperBound(1));
+
+                    T[i] = new Thread(() =>MyThread.Run(Mapa,O[i],i) );
+                    Console.WriteLine(i);
+                    if (i == 8) break;
+
+                }
+
+                for (int i = 0; i < n0; i++) {
+                    T[i].Start();
+                }
+                {
+                    //T[i] = new Thread(new ThreadStart(() => MyThread.Run(Mapa, O[i])));
+                    //{
+                    //    T[i].Name = "" + i;
+                    //    O[i] = new MyObject(""+T[i].Name,Mapa.GetUpperBound(0),Mapa.GetUpperBound(1));
+                    //    T[i].Start();
+
+                    //    do
+                    //    {
+                    //        Program.sem.WaitOne();
+                    //        //Console.WriteLine("tekst ze srodka wątku {0}", o.Name);
+                    //        O[i].DrawPole(Mapa);
+                    //        O[i].DrawObjct(Mapa);
+                    //        //Thread.Sleep(10);
+                    //        Program.sem.Release();
+                    //        if (O[i].PosX == 0 || O[i].PosX == Mapa.GetUpperBound(1) || O[i].PosY == 0 || O[i].PosY == Mapa.GetUpperBound(0)) break;
+                    //    }
+                    //    while (true);
+                    //};
+                    // Console.WriteLine("stan wątku {1}   {0}    {2}", T[i].ThreadState, T[i].Name, i);
+                }
+                Console.ReadKey();
+                Console.Clear();
+                do
+                {
+                    Console.SetCursorPosition(0, 0);
+                    DrawMap(Mapa);
+                    foreach (MyObject o in O) {
+                        o.DrawObjct(Mapa);
+                    }
+
+                }
+                while (MyThread.Alivecheck(T));
+
+                { 
+
+                //Thread Tcontrol = new Thread(new ThreadStart(
+                //    () => MyThread.ThreadControl(Mapa, n0, T, O)))
+                //{
+                //   //Priority = ThreadPriority.Highest
+                //};
+                ////Tcontrol.Start(Mapa);
+                //Tcontrol.Start();
+                 
+                //do
+                //{
+                //        Console.Clear();
+                //        Console.SetCursorPosition(0, 0);
+                //  DrawMap(Mapa);
+                //        foreach (MyObject q in O)
+                //        {
+                //            //q.DrawObjct(Mapa);
+                //            //Thread.Sleep(1500);
+                //            //Console.CursorVisible = false;
+
+                //            q.DrawPole(Mapa);
+                //            q.ChangeVel(Mapa);
+                //            q.DrawObjct(Mapa);
+                //            Thread.Sleep(250);
+                //        }
+                //}
+                //while (true);
+            }
 
             }
-            catch (Exception e) { Console.Write(e.Message); throw; }
+            catch (Exception e) { Console.Write("{0}            {1}",e.Message, e.StackTrace); }
 
         }
 
