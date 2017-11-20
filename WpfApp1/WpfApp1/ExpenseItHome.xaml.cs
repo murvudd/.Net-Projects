@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,6 +24,14 @@ namespace WpfApp1
         public ExpenseItHome()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // View Expense Report
+            ExpenseReportPage expenseReportPage = new ExpenseReportPage();
+            this.NavigationService.Navigate(expenseReportPage);
+
         }
     }
 }

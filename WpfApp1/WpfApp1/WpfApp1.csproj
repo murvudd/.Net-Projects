@@ -58,7 +58,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ExpenseItPage.xaml">
+    <Page Include="ExpenseReportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -73,8 +73,8 @@
     <Compile Include="ExpenseItHome.xaml.cs">
       <DependentUpon>ExpenseItHome.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExpenseItPage.xaml.cs">
-      <DependentUpon>ExpenseItPage.xaml</DependentUpon>
+    <Compile Include="ExpenseReportPage.xaml.cs">
+      <DependentUpon>ExpenseReportPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -109,6 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="watermark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sharks1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

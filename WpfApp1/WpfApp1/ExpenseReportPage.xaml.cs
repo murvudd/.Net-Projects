@@ -18,9 +18,9 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for ExpenseItPage.xaml
     /// </summary>
-    public partial class ExpenseItPage : Page
+    public partial class ExpenseReportPage : Page
     {
-        public ExpenseItPage()
+        public ExpenseReportPage()
         {
             InitializeComponent();
         }
