@@ -16,6 +16,13 @@ namespace Lab7
         {
             IsClosed = true;
         }
+        public void Close(object sender, EventArgs e)
+        {
+            IsClosed = true;
+        }
+
+
+
     }
     
 }

@@ -13,10 +13,13 @@ namespace Lab7
             get { return _poziomWody; }
             set { if (value >= 0) _poziomWody = value;}
         }
-
-        public void ZmniejszIlośćWody()
+        public ZbiornikRetenccyjny()
         {
-            PoziomWody -= 5;            
+            PoziomWody = 100;   
+        }
+        public  void ZmniejszIlośćWody(object sender, EventArgs e)
+        {
+            PoziomWody -= 5000;            
         }
 
     }

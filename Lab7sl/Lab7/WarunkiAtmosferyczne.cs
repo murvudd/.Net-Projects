@@ -9,48 +9,57 @@ namespace Lab7
     class WarunkiAtmosferyczne 
     {
         public event EventHandler IntensywneOpadyDeszczu;
-        public event EventHandler IntensywneOpadyŚnegu;
+        public event EventHandler IntensywneOpadyŚniegu;
         public event EventHandler SilnyWiatr;
         public event EventHandler Upał;
+        
 
+        public WarunkiAtmosferyczne()
+        {
+            IntensywneOpadyŚniegu += Program.OnŚnieg;
+            IntensywneOpadyDeszczu += Program.OnDeszcz;
+            SilnyWiatr += Program.OnWiatr;
+            Upał += Program.OnUpał;
+        }
         private int _wiatr {get; set;}
         public int Wiatr {
             get { return _wiatr; }
-            set { if ((_wiatr += value) >= 0) _wiatr += value;
-                if (_wiatr >= 50) OnWiatr(); } }
+            set { if ((_wiatr += value) >= 0) _wiatr = value;
+                if (_wiatr >= 50) SilnyWiatr(this, EventArgs.Empty); } }
 
         private int _deszcz { get; set; }
         public int OpadyDeszczu {
             get { return _deszcz; }
-
-            set { _deszcz = value; } }
+            set { _deszcz = value; if (_deszcz >= 250) IntensywneOpadyDeszczu(this, EventArgs.Empty); } }
 
         private int _śnieg { get; set; }
         public int OpadyŚniegu {
             get { return _śnieg; }
-            set { _śnieg = value; if (_śnieg >= 50) OnŚnieg() ; } }
+            set { _śnieg = value; if (_śnieg >= 100) IntensywneOpadyŚniegu(this,EventArgs.Empty) ; } }
 
         private int _temp { get; set; }
-        public int Temperatura { get; set; }
+        public int Temperatura {
+            get { return _temp; }
+                 set { _temp = value; if(_temp>=60) Upał(this,EventArgs.Empty); } }
 
-        protected void OnUpał()
-        {
-            if (Upał != null) Upał(this, EventArgs.Empty);
-        }
+        //public void OnUpał(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine("on temp");
+        //}
 
-        protected void OnŚnieg()
-        {
-            if (IntensywneOpadyŚnegu != null) IntensywneOpadyŚnegu(this, EventArgs.Empty);
-        }
+        //public void OnŚnieg(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine("ON Śnieg");
+        //}
 
-        protected void OnDeszcz()
-        {
-            if (IntensywneOpadyDeszczu!= null) IntensywneOpadyDeszczu(this, EventArgs.Empty);
-        }
+        //public void OnDeszcz(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine("On Deszcz");
+        //}
 
-        protected void OnWiatr()
-        {
-            if (SilnyWiatr != null) SilnyWiatr(this, EventArgs.Empty);
-        }
+        //public void OnWiatr(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine("on wiatr");
+        //}
     }
 }

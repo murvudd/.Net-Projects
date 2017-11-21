@@ -11,6 +11,13 @@ namespace Lab7
         public bool TrybAwaryjny { get; set; }
 
 
+        public void WłączZasilanieAwaryjne(object sender, EventArgs e)
+        {
+            TrybAwaryjny = true;
+            
+            
+        }
+
         public void WłączZasilanieAwaryjne()
         {
             TrybAwaryjny = true;

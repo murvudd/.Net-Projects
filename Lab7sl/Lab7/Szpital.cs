@@ -9,6 +9,12 @@ namespace Lab7
     class Szpital
     {
         public bool IsGeneratorOn { get; set; }
+
+        public void WłączZasilanieAwaryjne(object sender, EventArgs e)
+        {
+            IsGeneratorOn = true;
+        }
+
         public void WłączZasilanieAwaryjne()
         {
             IsGeneratorOn = true;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.IO;
 
 namespace Lab7
@@ -13,6 +14,7 @@ namespace Lab7
         
         static void Main(string[] args)
         {
+            Random rng = new Random();
             Email email = new Email();
             Console.WriteLine(email.Priorytet);
             email.Podnieś(email);
@@ -45,12 +47,77 @@ namespace Lab7
             Autostrada autostrada = new Autostrada();
             Szpital szpital = new Szpital();
             Lotnisko lotnisko = new Lotnisko();
+            pogoda.IntensywneOpadyŚniegu += autostrada.WyślijPługi;
+            
 
+            pogoda.IntensywneOpadyDeszczu += zbiornik.ZmniejszIlośćWody;
+            pogoda.SilnyWiatr += lotnisko.Close;
+            
+            pogoda.Upał += elektrownia.WłączZasilanieAwaryjne;
+            pogoda.Upał += szpital.WłączZasilanieAwaryjne;
+            pogoda.Upał += lotnisko.Close;
+            
+            for (int i =0; i <100; i++)
+            {
+                Console.WriteLine("Warunki:");
+                Console.WriteLine("opady deszczu: {0} \n" +
+                    "opady śniegu: {1} \n" +
+                    "temperatura: {2} \n" +
+                    "szybkość wiatru: {3}"
+                    ,pogoda.OpadyDeszczu,pogoda.OpadyŚniegu, pogoda.Temperatura, pogoda.Wiatr);
+                Console.WriteLine("\nStan: ");
+                Console.WriteLine("poziom wody zbiornika: {0}",zbiornik.PoziomWody);
+                Console.WriteLine("czy tryb awaryjny elektrowni on? {0}",elektrownia.TrybAwaryjny);
+                Console.WriteLine("dostępne pługi: {0}  pługi w użyciu {1}",autostrada.DostępnePługi,autostrada.PługiNaAutostradzie);
+                Console.WriteLine("czy generator on: {0}",szpital.IsGeneratorOn);
+                Console.WriteLine("czy lotnisko zamknięte: {0}",lotnisko.IsClosed);
+
+                pogoda.OpadyŚniegu =20*rng.Next(0,6);
+                
+                
+
+                pogoda.OpadyDeszczu = 10*rng.Next(0,31);
+                zbiornik.PoziomWody += pogoda.OpadyDeszczu;                
+
+                pogoda.Temperatura += 5;
+                pogoda.Wiatr += 10;
+                Thread.Sleep(1000);
+                
+                Console.Clear();
+                
+
+            }
 
 
            
         }
-    
+
+        
+
+        public static void OnUpał(object sender, EventArgs e)
+        {
+            
+        }
+
+        public static void OnPług(object sender, EventArgs e)
+        {
+            Console.WriteLine("Wszystkie pługi na autostradzie");
+        }
+
+        public static void OnŚnieg(object sender, EventArgs e)
+        {
+            
+        }
+
+        public static void OnDeszcz(object sender, EventArgs e)
+        {
+            
+        }
+
+        public static void OnWiatr(object sender, EventArgs e)
+        {
+            
+        }
     }
     static class Parse
     {
@@ -61,10 +128,7 @@ namespace Lab7
             return null;
         }
     }
-    interface IComparer
-    {
-
-    }
+    
 
     
 
