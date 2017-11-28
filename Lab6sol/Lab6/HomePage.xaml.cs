@@ -31,6 +31,7 @@ namespace Lab6
             CasePage casePageObj = new CasePage();
             this.NavigationService.Navigate(casePageObj);
 
+
         }
 
     }
