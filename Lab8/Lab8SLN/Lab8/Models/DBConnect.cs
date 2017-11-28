@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
 
-namespace mysql_connect.Models
+namespace Lab8
 {
     class DBConnect
     {
@@ -31,9 +31,9 @@ namespace mysql_connect.Models
             uid = "root";
             password = "admin1";
             string connectionString;
-            connectionString = "SERVER=" + server + ";" + 
+            connectionString = "SERVER=" + server + ";" +
                                "DATABASE=" + database + ";" +
-                               "UID=" + uid + ";" + 
+                               "UID=" + uid + ";" +
                                "PASSWORD=" + password + ";";
 
             connection = new MySqlConnection(connectionString);
@@ -89,10 +89,14 @@ namespace mysql_connect.Models
 
 
         //Insert statement
-        public void Insert(string query)
+        public void InsertEarthquake(object[] value)
         {
-            //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
-
+            string query = "INSERT INTO earthquake (Rok, Miejsce, Kraj, Siła) VALUES('"
+                + value[0] + "', '"
+                + value[1] + "','" 
+                + value[2] + "','" 
+                + value[3] + ");";
+            //INSERT INTO table_name (columns) VALUES('  ',' ',' ')
             //open connection
             if (this.OpenConnection() == true)
             {
@@ -100,17 +104,18 @@ namespace mysql_connect.Models
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
                 //Execute command
-                cmd.ExecuteNonQuery(); 
+                cmd.ExecuteNonQuery();
 
                 //close connection
                 this.CloseConnection();
             }
         }
 
-        //Update statement
-        public void Update(string query)
+
+        //Any MySQL statement
+        public void Any(string query)
         {
-            // string query = "UPDATE tableinfo SET name='Joe', age='22' WHERE name='John Smith'";
+            //query = any MySql query
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -130,10 +135,51 @@ namespace mysql_connect.Models
             }
         }
 
+
+        //Update statement
+        public void Update(int id, int magnitude)
+        {
+            string query = "UPDATE earthquake SET Siła='"+magnitude+"'" +
+                " WHERE ID='"+id+"';";
+
+            //Open connection
+            if (this.OpenConnection() == true)
+            {
+                //create mysql command
+                MySqlCommand cmd = new MySqlCommand();
+                //Assign the query using CommandText
+                cmd.CommandText = query;
+                //Assign the connection using Connection
+                cmd.Connection = connection;
+
+                //Execute query
+                cmd.ExecuteNonQuery();
+
+                //close connection
+                this.CloseConnection();
+            }
+        }
+
+
+        //Delete IDstatement
+        public void DeleteID(int id)
+        {
+            // string query = "DELETE FROM tableinfo WHERE name='John Smith'";
+            string query = "DELTE FROM earthquake where ID="+id+";";
+
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                this.CloseConnection();
+            }
+        }
+
         //Delete statement
         public void Delete(string query)
         {
             // string query = "DELETE FROM tableinfo WHERE name='John Smith'";
+            
 
             if (this.OpenConnection() == true)
             {
@@ -144,47 +190,54 @@ namespace mysql_connect.Models
         }
 
         //Select statement
-        public List<string>[] Select()
+        public List<string>[] SelectAllFrom()
         {
+
+            string query = "SELECT * FROM earthquake;";
+
+            //Create a list to store the result
+            List<string>[] list = new List<string>[5];
+            list[0] = new List<string>();
+            list[1] = new List<string>();
+            list[2] = new List<string>();
+            list[3] = new List<string>();
+            list[4] = new List<string>();
             
-                string query = "SELECT * FROM logs";
+            //list[2] = new List<string>();
 
-                //Create a list to store the result
-                List<string>[] list = new List<string>[3];
-                list[0] = new List<string>();
-                list[1] = new List<string>();
-                //list[2] = new List<string>();
+            //Open connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                //Open connection
-                if (this.OpenConnection() == true)
+                //Read the data and store them in the list
+                while (dataReader.Read())
                 {
-                    //Create Command
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
-                    //Create a data reader and Execute the command
-                    MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                    //Read the data and store them in the list
-                    while (dataReader.Read())
-                    {
-                        list[0].Add(dataReader["temp"] + "");
-                        list[1].Add(dataReader["czas"] + "");
-                        //list[2].Add(dataReader["age"] + "");
-                    }
-
-                    //close Data Reader
-                    dataReader.Close();
-
-                    //close Connection
-                    this.CloseConnection();
-
-                    //return list to be displayed
-                    return list;
+                    list[0].Add(dataReader["ID"] + "");
+                    list[1].Add(dataReader["Rok"] + "");
+                    list[2].Add(dataReader["Miejsce"] + "");
+                    list[3].Add(dataReader["Kraj"] + "");
+                    list[4].Add(dataReader["Siła"] + "");
+                    
                 }
-                else
-                {
-                    return list;
-                }
-            
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                this.CloseConnection();
+
+                //return list to be displayed
+                return list;
+            }
+            else
+            {
+                return list;
+            }
+
         }
 
         ///Count statement

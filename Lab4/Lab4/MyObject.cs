@@ -10,9 +10,34 @@ namespace Lab4
     {
         private int _velx;
         private int _vely;
+        private int _posx;
+        private int _posy;
         public string Name { get; private set; }
-        public int PosX { get; set; }
-        public int PosY { get; set; }
+        public int PosX {
+            get { return _posx; }
+
+            set {
+                if(value>=0 && value <= 19)
+                {
+                    _posx = value;
+                }
+            }
+        }
+
+
+        public int PosY
+        {
+            get { return _posy; }
+
+            set
+            {
+                if (value >= 0 && value <= 19)
+                {
+                    _posy = value;
+                }
+            }
+        }
+
         public int VelX
         {
             get { return this._velx; }
@@ -48,8 +73,8 @@ namespace Lab4
         public MyObject(string _name, int n0, int n1)
         {
             Random rnd = new Random();
-            PosX = rnd.Next(1, n0);
-            PosY = rnd.Next(1, n1);
+            PosX = rnd.Next(1, n1);
+            PosY = rnd.Next(1, n0);
             Name = _name;
             VelX = rnd.Next(0, 2) * 2 - 1;
             VelY = rnd.Next(0, 2) * 2 - 1;
@@ -96,10 +121,10 @@ namespace Lab4
             }
 
 
-        public void ChangeView(Pole a)
-        {
-            a.View = (char)Convert.ToInt16(Name);
-        }
+        //public void ChangeView(Pole a)
+        //{
+        //    a.View = (char)Convert.ToInt16(Name);
+        //}
 
         public void DrawPole(Pole [,] a)
         {
