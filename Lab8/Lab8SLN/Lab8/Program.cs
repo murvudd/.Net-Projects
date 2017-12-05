@@ -43,14 +43,25 @@ namespace Lab8
                 int d0 = Convert.ToInt32(c[0]);
                 string[] d1 = b[13].Split('"');
                 string[] d2 = b[14].Split('"');
+                
+                //foreach(var e in d1)
+                //{
+                //    Console.WriteLine(e);
+                //}
+                //foreach (var e in d2)
+                //{
+                //    Console.WriteLine(e);
+                //}
 
-
+                //Console.ReadKey();
+                
                 try
                 {
-                    a.InsertEarthquake(d0, d1[1], d2[0], b[4]);
+                    if(d1[1]!=null && d2[0] !=null) a.InsertEarthquake(d0, d1[1], d2[0], b[4]);
                 }
                 catch (Exception e)
                 {
+                    a.CloseConnection();
                     Console.WriteLine("Błąd     {0}     {1}\n{2}        {3}", e.Message, e.StackTrace, e.Source, e.InnerException);
 
                 }

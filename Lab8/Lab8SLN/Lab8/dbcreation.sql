@@ -8,7 +8,7 @@ ID int primary key auto_increment,
 Rok int,
 Miejsce varchar(255),
 Kraj varchar(255),
-Siła decimal(3,1)
+Siła decimal(4,2)
 )engine = myisam;
 use lab8;
 SELECT * FROM earthquake;

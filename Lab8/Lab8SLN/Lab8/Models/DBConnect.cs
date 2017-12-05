@@ -71,7 +71,7 @@ namespace Lab8
         }
 
         //Close connection
-        private bool CloseConnection()
+        public bool CloseConnection()
         {
             try
             {
