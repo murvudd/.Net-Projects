@@ -8,9 +8,9 @@ namespace Lab8.Models
 {
     class Earthquake
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public int Rok { get; set; }
-        public int Siła { get; set; }
+        public decimal Siła { get; set; }
         public string Kraj { get; set; }
         public string Miejsce { get; set; }
 

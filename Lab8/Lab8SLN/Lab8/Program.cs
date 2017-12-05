@@ -14,66 +14,101 @@ namespace Lab8
         static void Main(string[] args)
         {
             DBConnect a = new DBConnect();
-
-
-            //            Console.WriteLine("Connectiod_id: {0}",a.Count("select connection_id
-
-            //Console.Write(a.SelectAllFrom());
             /* TODO
-             *  Dodać wyświetlanie tabel / wypisanie listy stringów !!!!!
+             
              *  dodać w aplikacji konsolowej loopa z casem od wybierania przez użytkownika kolejnego kroku
              *  
              */
-            //PopulateDB(a);
-            //Console.WriteLine(a.SelectAll());
-            Console.ReadKey();
+            
+            {
+                while (true)
+                {
+                    Console.WriteLine("Witaj w InterFejsie bazy danych, co chesz zrobić?");
+                    Console.WriteLine("\n1.Dodaj Zdarzenie\n2.Usuń zdarzenie\n3.Zmiana Zdarzenia\n4.Wyświetl n pierwszych zdarzeń\n5.Wybierz Zdarzenia gdzie Siła > n\n0.Wyjście z Programu");
+                    int opcja = int.Parse(Console.ReadLine());
+                    switch (opcja)
+                    {
+                        case 1:
+                            DodajZdarzenie(a);
+                            break;
 
+                        case 2:
+                            UsuńZdarzenie(a);
+                            break;
+
+                        case 3:
+                            ZmianaZdarzenia(a);
+                            break;
+
+                        case 4:
+                            Wyświetl(a);
+                            break;
+
+                        case 5:
+                            Wybierz(a);
+                            break;
+
+
+                        case 0:
+                            Console.WriteLine("Do zobaczenia\n");
+                            System.Environment.Exit(1);
+                            break;
+
+                        default:
+                            Console.WriteLine("Zły wybór");
+                            Console.Clear();
+                            break;
+                    }
+                }
+            }
 
 
         }
 
-        static void PopulateDB(DBConnect a)
+        static void DodajZdarzenie(DBConnect a)
         {
-            string[] plik = File.ReadAllLines("all_month.csv");
-            //char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
-            for (int i = 1; i < plik.Length; i++)
-            {
-                string[] b = plik[i].Split(',');
-                string[] c = b[0].Split('-');
-                int d0 = Convert.ToInt32(c[0]);
-                string[] d1 = b[13].Split('"');
-                string[] d2 = b[14].Split('"');
-                
-                //foreach(var e in d1)
-                //{
-                //    Console.WriteLine(e);
-                //}
-                //foreach (var e in d2)
-                //{
-                //    Console.WriteLine(e);
-                //}
+            Console.Clear();
+            Console.WriteLine("Dodaj Nowe Zdarzenie\n\n");
+            Console.WriteLine("Rok:");
+            int Rok = int.Parse(Console.ReadLine());
+            Console.WriteLine("Miejsce:");
+            string Miejsce= Console.ReadLine();
+            Console.WriteLine("Kraj:");
+            string Kraj = Console.ReadLine();
+            Console.WriteLine("Siła:");
+            string Siła = Console.ReadLine();
 
-                //Console.ReadKey();
-                
-                try
-                {
-                    if(d1[1]!=null && d2[0] !=null) a.InsertEarthquake(d0, d1[1], d2[0], b[4]);
-                }
-                catch (Exception e)
-                {
-                    a.CloseConnection();
-                    Console.WriteLine("Błąd     {0}     {1}\n{2}        {3}", e.Message, e.StackTrace, e.Source, e.InnerException);
+            a.InsertEarthquake(Rok, Miejsce, Kraj, Siła);
+        }
 
-                }
-                //ID = b[11],
-                //Rok = Convert.ToInt32(c[0]),
-                //Siła = Convert.ToInt32(b[4]),
-                //Kraj = "USA",
-                //Miejsce = b[13],
+        static void UsuńZdarzenie(DBConnect a)
+        {
+            Console.Clear();
+            Console.WriteLine("Wybierz ID zdarzenia które chcesz usunąć");
+            a.DeleteID(int.Parse(Console.ReadLine()));
+        }
+        
+        static void ZmianaZdarzenia(DBConnect a)
+        {
+            Console.Clear();
+            Console.WriteLine("Zmiana Siły Zdarzenia\nWybierz ID:");
+            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Wstaw siłę: ");
+            a.Update(id,int.Parse(Console.ReadLine()));
+        }
 
+        static void Wyświetl(DBConnect a)
+        {
+            Console.Clear();
+            Console.WriteLine("Wybierz n pierwszych Zdarzeń\nWprowadź n");
+            DBConnect.PrintList(a.SelectAll(), int.Parse(Console.ReadLine()));
+        }
 
-            }
-            Console.WriteLine("Gotowe!");
+        static void Wybierz(DBConnect a)
+        {
+            Console.Clear();
+            Console.WriteLine("Wybierz wszystkie Zdarzenia o Sile większej niż n\nWprowadź n");
+            DBConnect.PrintList(a.SelectWhereMagnitude((decimal)double.Parse(Console.ReadLine())));
         }
     }
 }
