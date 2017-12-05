@@ -14,18 +14,18 @@ namespace Lab8
         static void Main(string[] args)
         {
             DBConnect a = new DBConnect();
-            
-            
+
+
             //            Console.WriteLine("Connectiod_id: {0}",a.Count("select connection_id
 
             //Console.Write(a.SelectAllFrom());
             /* TODO
-             *  Dodać wyświetlanie tabel / wypisanie listy stringów 
+             *  Dodać wyświetlanie tabel / wypisanie listy stringów !!!!!
              *  dodać w aplikacji konsolowej loopa z casem od wybierania przez użytkownika kolejnego kroku
              *  
              */
-
-            Console.WriteLine(a.SelectAll());
+            //PopulateDB(a);
+            //Console.WriteLine(a.SelectAll());
             Console.ReadKey();
 
 
