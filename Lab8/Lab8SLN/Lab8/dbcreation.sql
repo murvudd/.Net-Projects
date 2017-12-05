@@ -8,9 +8,9 @@ ID int primary key auto_increment,
 Rok int,
 Miejsce varchar(255),
 Kraj varchar(255),
-Siła int
+Siła decimal(3,1)
 )engine = myisam;
-
+use lab8;
 SELECT * FROM earthquake;
-insert into earthquake (Rok, Miejsce, Kraj, Siła) values('13','P','POL','10');
-update earthquake set Siła
+insert into earthquake (Rok, Miejsce, Kraj, Siła) values('13','P','POL','9.0');
+update earthquake set Siła = '155' where id = 1;

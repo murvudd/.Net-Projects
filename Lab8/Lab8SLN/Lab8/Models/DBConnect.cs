@@ -89,13 +89,12 @@ namespace Lab8
 
 
         //Insert statement
-        public void InsertEarthquake(object[] value)
+        public void InsertEarthquake(int Rok, string Miejsce, string Kraj,  string Siła)
         {
             string query = "INSERT INTO earthquake (Rok, Miejsce, Kraj, Siła) VALUES('"
-                + value[0] + "', '"
-                + value[1] + "','" 
-                + value[2] + "','" 
-                + value[3] + ");";
+                + Rok + "', '"+Miejsce + "', '" 
+                + Kraj  + "', '" 
+                + Siła + "');";
             //INSERT INTO table_name (columns) VALUES('  ',' ',' ')
             //open connection
             if (this.OpenConnection() == true)
@@ -190,7 +189,7 @@ namespace Lab8
         }
 
         //Select statement
-        public List<string>[] SelectAllFrom()
+        public List<string>[] SelectAll()
         {
 
             string query = "SELECT * FROM earthquake;";
