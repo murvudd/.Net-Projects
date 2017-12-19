@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.IO;
+using System.Threading;
 
 
 namespace Lab9
@@ -34,28 +35,87 @@ namespace Lab9
     {
         static void Main(string[] args)
         {
-            DataSet Lab9DS = new DataSet("Event Set");
-            Lab9DS.ExtendedProperties["TimeStamp"] = DateTime.Now;
-            Lab9DS.ExtendedProperties["DateSetID"] = Guid.NewGuid();
             try
             {
-                FillDataSet(Lab9DS);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                PrintDataSet(Lab9DS);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
 
-            Console.ReadKey();
+
+                DataSet Lab9DS = new DataSet("Event Set");
+                Lab9DS.ExtendedProperties["TimeStamp"] = DateTime.Now;
+                Lab9DS.ExtendedProperties["DateSetID"] = Guid.NewGuid();
+                try
+                {
+                    FillDataSet(Lab9DS);
+                }
+                catch
+                {
+                    throw;
+                }
+                try
+                {
+                    RndError(Lab9DS);
+                    PrintDataSet(Lab9DS,"r");
+                }
+                catch
+                {
+                    throw;
+                }                
+                
+                try
+                {
+                    // rngCheck(Lab9DS);
+                    HowManyErrors(Lab9DS);
+                    Console.WriteLine("\n\n\n###############");
+                    //PrintDataSet(Lab9DS, "r");
+                    //Console.WriteLine(Lab9DS.HasChanges());
+                    //PrintDataSet(Lab9DS.GetChanges());
+                    //Console.WriteLine(Lab9DS.GetChanges());
+                    NaprawaBłędów(Lab9DS);
+                    PrintDataSet(Lab9DS, "t");
+                }
+                catch
+                {
+                    throw;
+                }
+                Console.ReadKey();
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
+
+        static void CheckChanges(DataSet ds)
+        {
+            ds.GetChanges();
+        }
+
+        static void rngCheck(DataSet ds)
+        {
+            Random rng = new Random();
+            for (int i =0; i < ds.Tables[0].Rows.Count; i ++ )
+            {
+                
+                Console.WriteLine("i:{0},   rng:{1}",i , rng.Next(0, 2));
+            }
+        }
+        //static void FillErrorSet(DataSet ds, DataSet es)
+        //{
+        //    DataRow[] er = ds.Tables[0].GetErrors();
+        //    DataColumn ErrColumn = new DataColumn("Error", typeof(string));
+        //    DataTable ErrTable = new DataTable("Error Table");
+        //    ErrTable.Columns.Add(ErrColumn);
+            
+        //    foreach (var e in er)
+        //    {
+        //        ErrTable.Rows.Add(e);
+        //    };
+        //    ErrTable.AcceptChanges();
+        //    es.Tables.Add(ErrTable);
+
+        //}
+
         static void FillDataSet(DataSet ds)
         {
             //create datacolumns
@@ -151,6 +211,8 @@ namespace Lab9
 
             ds.Tables.Add(Lab9Table);
 
+            ds.AcceptChanges();
+
         }
 
         static void PrintDataSet(DataSet ds)
@@ -186,12 +248,95 @@ namespace Lab9
             }
         }
 
+        static void PrintDataSet(DataSet ds, string f)
+        {
+            
+            // Print out the DataSet name and any extended properties.
+            Console.WriteLine("DataSet is named: {0}", ds.DataSetName);
+            foreach (System.Collections.DictionaryEntry de in ds.ExtendedProperties)
+            {
+                Console.WriteLine("Key = {0}, Value = {1}", de.Key, de.Value);
+            }
+            Console.WriteLine();
+
+            // Print out each table.
+            foreach (DataTable dt in ds.Tables)
+            {
+                Console.WriteLine("=> {0} Table:", dt.TableName);
+                // Print out the column names.
+                for (int curCol = 0; curCol < dt.Columns.Count; curCol++)
+                {
+                    Console.Write(dt.Columns[curCol].ColumnName + "\t\t");
+                }
+                Console.Write("Row Error");
+                Console.WriteLine("\n------------------------------------------");
+
+                // Print the DataTable.
+                for (int curRow = 0; curRow < dt.Rows.Count; curRow++)
+                {
+                    for (int curCol = 0; curCol < dt.Columns.Count; curCol++)
+                    {
+                        Console.Write(dt.Rows[curRow][curCol].ToString() + "\t\t");
+                    }
+                    Console.Write(dt.Rows[curRow].RowError);
+                    Console.WriteLine();
+                }
+            }
+        }
+
         static void RndError(DataSet ds)
         {
             Random rng = new Random();
-            rng.Next(1, ds.Tables.Count);
-            DataTable tablica = ds.Tables[0];
+            DataRow dr = ds.Tables[0].Rows[0];
+            for (int i = 0; i < 40; i++) {
+                Thread.Sleep(10);
+                dr = ds.Tables[0].Rows[rng.Next(1, ds.Tables[0].Rows.Count)];
+                Thread.Sleep(10);
+                //if (0 == rng.Next(0, 2)) { dr.RowError = "Rekord Uszkodzony"; dr.RowState = DataRowState  };
+                if (0 == rng.Next(0, 2)) dr.RowError = "Rekord Uszkodzony";
+                else dr.RowError = "Rekord Nadpisany";
+            }
             
+        }
+
+        static void HowManyErrors(DataSet ds)
+        {
+            Console.WriteLine("\n\n\n##############################");
+            int i = 0;
+            foreach(DataTable dt in ds.Tables)
+            {
+                for (int curRow = 0; curRow < dt.Rows.Count; curRow++)
+                {
+                    if (dt.Rows[curRow].RowError != "")
+                    {
+                        i++;
+                        Console.WriteLine("Row ID:{0}       Row Error: {1}      Row State:{2}",dt.Rows[curRow]["ID"],dt.Rows[curRow].RowError,
+                            dt.Rows[curRow].RowState);
+
+                    }; 
+                }
+                Console.WriteLine("Łącznie wystąpiło {0} błędów", i);
+            }
+        }
+
+        static void NaprawaBłędów(DataSet ds)
+        {
+            foreach (DataTable dt in ds.Tables)
+            {
+
+                
+                int i = 0;
+                for (int curRow = 0; curRow < dt.Rows.Count; curRow++)
+                {
+                    if (dt.Rows[curRow].RowError != "")
+                    {
+                        i++;
+                        dt.Rows[curRow].ClearErrors();
+                    };
+                }
+                ds.AcceptChanges();
+                Console.WriteLine("Naprawiono {0}  błędów", i);
+            }
         }
     }
 }
