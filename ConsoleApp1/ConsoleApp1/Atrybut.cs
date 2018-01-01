@@ -15,6 +15,11 @@ namespace ConsoleApp1
         public string e { get; set; }
         public string f { get; set; }
 
+        public void Metoda()
+        {
+            string dupa = nameof(this.a);
+            Console.WriteLine(dupa);
+        }
         //public Atrybut(string _a, string _b, string _c, string _d, string _e, string _f)
         //{
         //    a = _a;
@@ -24,32 +29,44 @@ namespace ConsoleApp1
         //    e = _e;
         //    f = _f;
         //}
-        //public int IleWystąpień(string x,int sw )
-        //{
-        //    int i = 0;
-            
-        //    switch (sw)
-        //    {
-        //        case 1:
-        //            this.a;
-        //            break;
-        //        case 2:
-        //            this.b
-        //            break;
-        //        case 3:
-        //            this.c
-        //            break;
-        //        case 4:
-        //            this.d
-        //            break;
-        //        case 5:
-        //            this.e
-        //            break;
-        //        case 6:
-        //            this.f
-        //            break;
-        //    }
-        //    return i;
-        //}
+        public int IleWystąpień(char sw, string x)
+        {
+            int i = 0;
+            switch (sw)
+            {
+                case 'a':
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (this.a == x) i++;
+                    }
+                    break;
+                case 'b':
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (this.b == x) i++;
+                    }
+                    break;
+                case 'c':
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (this.c == x) i++;
+                    }
+                    break;
+                case 'd':
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (this.d == x) i++;
+                    }
+                    break;
+                case 'e':
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (this.e == x) i++;
+                    }
+                    break;
+            }
+
+            return i;
+        }
     }
 }

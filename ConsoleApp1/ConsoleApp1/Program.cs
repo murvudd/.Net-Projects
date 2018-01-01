@@ -24,14 +24,50 @@ namespace ConsoleApp1
             List<Branch> ListaOpcji = new List<Branch>();
             List<Atrybut> ListaA = new List<Atrybut>();
             ReadPlik(ListaA);
-            Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t", ListaA[0].a, ListaA[0].b, ListaA[0].c, ListaA[0].d, ListaA[0].e, ListaA[0].f);            
+            Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t", ListaA[0].a, ListaA[0].b, ListaA[0].c, ListaA[0].d, ListaA[0].e, ListaA[0].f);
 
-
+            
+            ListaA[1].Metoda();
+            
+            
         }
-        static int IleWystąpień(List<Atrybut> ListaA)
+        static int IleWystąpień(List<Atrybut> ListaA, int sw, string x)
         {
             int i = 0;
-
+            switch (sw)
+            {
+                case 1:
+                    for (int j = 0; j<8; j++)
+                    {
+                        if (ListaA[j].a == x) i++;
+                    }
+                    break;
+                case 2:
+                    for (int j = 0; j<8; j++)
+                    {
+                        if (ListaA[j].b == x) i++;
+                    }
+                    break;
+                case 3:
+                    for (int j = 0; j<8; j++)
+                    {
+                        if (ListaA[j].c == x) i++;
+                    }
+                    break;
+                case 4:
+                    for (int j = 0; j<8; j++)
+                    {
+                        if (ListaA[j].d == x) i++;
+                    }
+                    break;
+                case 5:
+                    for (int j = 0; j<8; j++)
+                    {
+                        if (ListaA[j].e == x) i++;
+                    }
+                    break;
+            }
+            
             return i;
         }
 
