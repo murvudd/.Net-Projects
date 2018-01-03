@@ -12,6 +12,7 @@
     
     -->
     <Page.Resources>
+        <ResourceDictionary>
         <Style TargetType="Button"
                x:Key="Moja nazwa stylu przycisków"
                
@@ -50,16 +51,24 @@
         <ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary x:Key =" Dark">
                 <Style BasedOn="{StaticResource Moja nazwa stylu przycisków}"
-                       TargetType="Button">
-                    <Setter 
+                       TargetType="Button"
+                       >
+                    
                 </Style>
             </ResourceDictionary>
 
             <ResourceDictionary x:Key =" Light">
-            </ResourceDictionary>
+                    <Style BasedOn="{StaticResource Moja nazwa stylu przycisków}"
+                       TargetType="Button"
+                       >
+
+                    </Style>
+
+
+                </ResourceDictionary>
         </ResourceDictionary.ThemeDictionaries>
 
-
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="Panele.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Panele"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Page.Resources>
+        <Thickness x:Key="DefaultMargin">20</Thickness>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize"
+                Value="30"/>
+            <Setter Property="Margin"
+                    Value="{StaticResource DefaultMargin}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize"
+                Value="30"/>
+            <Setter Property="Margin"
+                    Value="{StaticResource DefaultMargin}"/>
+        </Style>
+
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Tworzenie wiersza-->
+            <RowDefinition Height="*" />
+            
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBox Text="Pole tekstowe"
+                       />
+            <ListBox x:Name="ListBoxInformacje" Height="40"
+                     Margin="20,20,-73,20"
+                       />
+            
+        </StackPanel>
+            
+            
+    </Grid>
+</Page>
