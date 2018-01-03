@@ -1,0 +1,99 @@
+﻿<Page
+    x:Class="App1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <!--
+    
+    Comment 
+    
+    -->
+    <Page.Resources>
+        <Style TargetType="Button"
+               x:Key="Moja nazwa stylu przycisków"
+               
+               >
+            <Setter Property="FontSize"
+                    Value="50"
+            />
+            <Setter Property="Width"
+                    Value="250"/>
+            <Setter Property="Height"
+                    Value="100"/>
+
+            <Setter Property="VerticalAlignment"
+                    Value="Top" />
+
+            <Setter Property="HorizontalAlignment"
+                    Value="Stretch" />
+
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush 
+                    StartPoint="0,0"
+                     EndPoint="1,1">
+                        <GradientStop 
+                        Color="Aquamarine"/>
+                        <GradientStop 
+                        Color="Black" 
+                        Offset="0.99"/>
+
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key =" Dark">
+                <Style BasedOn="{StaticResource Moja nazwa stylu przycisków}"
+                       TargetType="Button">
+                    <Setter 
+                </Style>
+            </ResourceDictionary>
+
+            <ResourceDictionary x:Key =" Light">
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+
+
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Button Content="Testest"                
+                Margin="10,50,10,10"
+                Click="TestButton_Click"
+                ClickMode="Hover"
+                Style="{StaticResource Moja nazwa stylu przycisków}"
+                >
+            
+            <Button.Background>
+                <LinearGradientBrush 
+                    StartPoint="0,0"
+                     EndPoint="1,1">
+                    <GradientStop 
+                        Color="Coral"/>
+                    <GradientStop 
+                        Color="Black" 
+                        Offset="0.99"/>
+
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button
+            Margin="10,150,10,10"
+            Content="Test2"
+            Style="{StaticResource Moja nazwa stylu przycisków}"
+            />
+        <Button
+            Margin="10,250,10,10"
+            Content="Test3"
+            Style="{StaticResource Moja nazwa stylu przycisków}"
+            
+            />
+    </Grid>
+</Page>
