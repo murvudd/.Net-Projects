@@ -25,8 +25,8 @@ namespace ConsoleApp1
             List<Atrybut> ListaA = new List<Atrybut>();
             ReadPlik(ListaA);
             Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t", ListaA[0].a, ListaA[0].b, ListaA[0].c, ListaA[0].d, ListaA[0].e, ListaA[0].f);
-
-
+            
+            Console.ReadKey();
         }
         //static int IleWystąpień(List<Atrybut> ListaA, int sw, string x)
         //{
@@ -71,7 +71,7 @@ namespace ConsoleApp1
         static double Entropia(List<Atrybut> ListaA)
         {
             double v = 0;
-            v=Math.Log(,2);
+            //v=Math.Log(,2);
             return v;
         }
 

@@ -17,8 +17,8 @@ namespace ConsoleApp1
 
         public void Metoda()
         {
-            string dupa = nameof(this.a);
-            Console.WriteLine(dupa);
+            string str = nameof(this.a);
+            Console.WriteLine(str);
         }
         //public Atrybut(string _a, string _b, string _c, string _d, string _e, string _f)
         //{
@@ -32,24 +32,54 @@ namespace ConsoleApp1
 
         public List<string> IleWystąpień(char sw)
         {
-            string[] v = { " ", " " };
             List<string> lista = new List<string>();
             switch (sw)
             {
                 case 'a':
-                    if() lista.Add(this.a);
+                    foreach (var e in lista) {
+                        if (e != this.a)
+                        {
+                            lista.Add(this.a);
+                            
+                        }
+                    }
                     break;
                 case 'b':
-                    
+                    foreach (var e in lista)
+                    {
+                        if (e != this.b)
+                        {
+                            lista.Add(this.b);
+                        }
+                    }
                     break;
                 case 'c':
-                    
+                    foreach (var e in lista)
+                    {
+                        if (e != this.c)
+                        {
+                            lista.Add(this.c);
+                        }
+                    }
                     break;
                 case 'd':
-                    
+                    foreach (var e in lista)
+                    {
+                        if (e != this.e)
+                        {
+                            lista.Add(this.d);
+                        }
+                    }
+
                     break;
                 case 'e':
-                    
+                    foreach (var e in lista)
+                    {
+                        if (e != this.e)
+                        {
+                            lista.Add(this.e);
+                        }
+                    }
                     break;
             }
 
