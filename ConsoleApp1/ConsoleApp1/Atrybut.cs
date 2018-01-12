@@ -37,7 +37,17 @@ namespace ConsoleApp1
             switch (sw)
             {
                 case 'a':
-                    if() lista.Add(this.a);
+                    for (int i =0; i <3; i++) {
+                        for (int j =0; j <3; j++) {
+
+                            if (true)
+                            {
+                                lista.Add(this.a);
+                                break;
+                            }
+                        }
+                    }
+
                     break;
                 case 'b':
                     
