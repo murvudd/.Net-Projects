@@ -1,3 +1,4 @@
+
 require(numbers);
 # definicje funkcji 
 {
@@ -86,7 +87,7 @@ require(numbers);
 
     PopulateFData <- function() {
         Dane <- matrix(0, ncol = Ncolumns, nrow = Nrows)
-        vec <- matrix(c(sample((-range + (percent * range)):(range - (percent * range)), 4 * k, replace = T)), ncol = 2, nrow = k)
+        vec <- matrix(c(sample((-range +(percent*range) ):(range - (percent*range)), 4 * k, replace = T)), ncol = 2, nrow = k)
         for (i in 1:Nrows) {
             Dane[i, 1:2] <- c((sample(-range:range, 1) / (percent * range)) + vec[mod(i, k) + 1, 1], (sample(-range:range, 1) / (percent * range)) + vec[mod(i, k) + 1, 2])
             #Data[i, 1:2] <- 0 + vec[mod(i, k) + 1,]
@@ -96,7 +97,7 @@ require(numbers);
             Dane[j, 1:2] <- c(sample(-range:range, 1), sample(-range:range, 1))
 
         }
-        Dane[, 4:(3 + k)] = matrix(c((sample(0:1000, k * Nrows) / 1000)), ncol = k, nrow = Nrows)
+        Dane[,4:(3+k)] = matrix(c((sample(0:1000,k*Nrows)/1000)),ncol = k,nrow = Nrows)
         #Data[, 1:2] <- c(sample(-range:range, 2 * Nrows, replace = T));
         return(Dane)
     }
@@ -104,74 +105,39 @@ require(numbers);
 
     FWeights <- function(x, y) {
         # przypisanie na podstawie min odleg³oœci do clustera 
-        vec <- matrix(c(0), ncol = k, nrow = Nrows)
-
+        vec <- matrix(c(0),ncol = k, nrow=Nrows)
+       
         for (i in 1:Nrows) {
-            vec[i,] <- (CentEucDist(x[, 1:2], y)[i,]) # obliczenie odleg³oœci od Przypadkowych centroidów
+            vec[i,] <- (CentEucDist(x[, 1:2], y)[i,] )# obliczenie odleg³oœci od Przypadkowych centroidów
         }
-
-        vec <- vec / max(abs(vec));
-        # unormowanie wag nale¿enia do clustera
-        x[, 4:(3 + k)] <- (1 - vec);
-        # przemianowanie z najmniejszej odleg³oœci na najwiêksze prawdopodobieñstwo nale¿enia
+        
+        vec <- vec / max(abs(vec)); # unormowanie wag nale¿enia do clustera
+        x[, 4:(3 + k)] <-(1- vec); # przemianowanie z najmniejszej odleg³oœci na najwiêksze prawdopodobieñstwo nale¿enia
         #x[, 3] <- which.max(x[, 4:(3 + k)])
         return(x)
     }
+
 
     Fcentroid <- function(x) {
         odp <- matrix(0, ncol = 2, byrow = T, nrow = k)
         lx <- c(0)
         ly <- c(0)
-        mxy <- c(0)
+        mx <- c(0)
+        my <- c(0)
         for (j in 1:k) {
             for (i in 1:Nrows) {
-                lx[i] <- x[i, (3 + j)] * x[i, 1]
-                ly[i] <- x[i, (3 + j)] * x[i, 2]
-                mxy[i] <- x[i, (3 + j)]
+                lx[i] <- x[i, (3 + j)] * x[i, 1]*(x[i, 1]) ^ m
+                ly[i] <- x[i, (3 + j)] * x[i, 2]  * (x[i, 2])^m
+                mx[i] <- x[i, (3 + j)] * (x[i, 1])^m
+                my[i] <- x[i, (3 + j)] * (x[i, 2])^m
             }
-
-
             #c(sum(x[, 4:(k + 3)] * x[, 1]) / sum((x[, 4:(k + 3)])), sum(x[, 4:(k + 3)] * x[, 2]) / sum((x[, 4:(k + 3)])))
             #centroid <- c(sum(x[i, 4:(k + 3)] * x[i, 1]) / sum((x[i, 4:(k + 3)])), sum(x[i, 4:(k + 3)] * x[i, 2]) / sum((x[i, 4:(k + 3)])))
-
-            odp[j,] <- c(sum(lx) / sum(mxy), sum(ly) / sum(mxy))
+            odp[j,] <- c(sum(lx) / sum(mx), sum(ly) / sum(my))
             #print(odp)
         }
         #odp <- matrix(centroid, ncol = 2, byrow = T, nrow = k)
-
         return(odp);
     }
 
 }
-k = 7
-Ncolumns = k + 3
-Nrows = 20*k
-range = 200
-percent = 0.025
-m=2
-
-Fdata <- PopulateFData()
-Fdata
-Fcenters <- Fcentroid(Fdata)
-ColorPlot(Fdata, Fcenters)
-#Kcenters = matrix(c(sample(-range:range, 2 * k)), ncol = 2, nrow = k);
-#Fdata <- FWeights(Fdata, Kcenters)
-#Fdata
-for (i in 1:20) {
-    Fdata <- FWeights(Fdata, Fcenters)
-    Fcenters <- Fcentroid(Fdata)
-    ColorPlot(Fdata, Fcenters)
-    print(i)
-}
-
-
-#Data[, 1:2] <- c(sample(-range:range, 2 * Nrows, replace = T));
-#Data[, 1:2] <- c(sample(-100:100, 2 * Nrows, replace = T)) / 10000;
-Data <- PopulateDataKMeans();
-Data
-Data[, 3] = KMeansCluster(Data[, 1:2], Kcenters)
-Plot(Data, Kcenters)
-ColorPlot(Data, Kcenters)
-Kcenters
-StartKMeans(50, dane, Kcenters)
-
