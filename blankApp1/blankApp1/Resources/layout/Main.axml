@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:id="@+id/seekBar1"
+        android:layout_marginLeft="100.0dp"
+        android:layout_marginTop="25.0dp"
+        android:progressTint="#ffff0080"
+        android:thumbTint="#ffff0080" />
+    <TextView
+        android:text="R"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="100.0dp"
+        android:layout_height="50.0dp"
+        android:id="@+id/textView1" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:id="@+id/seekBar2"
+        android:layout_marginLeft="100.0dp"
+        android:layout_marginTop="25.0dp"
+        android:thumbTint="#ff00ff80"
+        android:indeterminateTint="#ff00ff80"
+        android:progressTint="#ff00ff80" />
+    <TextView
+        android:text="G"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="100.0dp"
+        android:layout_height="50.0dp"
+        android:id="@+id/textView1" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:id="@+id/seekBar3"
+        android:layout_marginLeft="100.0dp"
+        android:layout_marginTop="25.0dp"
+        android:progressTint="#ff0080ff"
+        android:secondaryProgressTint="#00000000"
+        android:indeterminateTint="#ff0080ff"
+        android:thumbTint="#ff0080ff" />
+    <TextView
+        android:text="B"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="100.0dp"
+        android:layout_height="50.0dp"
+        android:id="@+id/textView1" />
+</LinearLayout>
