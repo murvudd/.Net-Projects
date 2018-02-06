@@ -1,37 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="50.0dp"
-        android:id="@+id/seekBar1"
-        android:layout_marginLeft="100.0dp"
-        android:layout_marginTop="25.0dp"
-        android:progressTint="#ffff0080"
-        android:thumbTint="#ffff0080" />
-    <TextView
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:rowCount="3"
+    android:columnCount="1">
+<!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="2*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="200" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="Auto" />
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+    </Grid>
+-->
+<!--<TextView
         android:text="R"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="100.0dp"
         android:layout_height="50.0dp"
-        android:id="@+id/textView1" />
+        android:id="@+id/textView1" />-->
+<!--
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="50.0dp"
-        android:id="@+id/seekBar2"
-        android:layout_marginLeft="100.0dp"
-        android:layout_marginTop="25.0dp"
+        android:id="@+id/seekBarRed"
+        android:progressTint="#ffff0080"
+        android:thumbTint="#ffff0080" />
+-->
+<!--<EditText
+        android:text="B"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="100.0dp"
+        android:layout_height="50.0dp"
+        android:id="@+id/editText1" />-->
+<!--
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:id="@+id/seekBarGreen"
         android:thumbTint="#ff00ff80"
         android:indeterminateTint="#ff00ff80"
         android:progressTint="#ff00ff80" />
-    <TextView
+-->
+<!--<TextView
         android:text="G"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="100.0dp"
         android:layout_height="50.0dp"
-        android:id="@+id/textView1" />
+        android:id="@+id/textView1" />-->
+<!--
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="50.0dp"
@@ -42,10 +70,16 @@
         android:secondaryProgressTint="#00000000"
         android:indeterminateTint="#ff0080ff"
         android:thumbTint="#ff0080ff" />
-    <TextView
-        android:text="B"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="100.0dp"
-        android:layout_height="50.0dp"
-        android:id="@+id/textView1" />
-</LinearLayout>
+-->
+<!--<TextView
+      android:text="B"
+      android:textAppearance="?android:attr/textAppearanceSmall"
+      android:layout_width="100.0dp"
+      android:layout_height="50.0dp"
+      android:id="@+id/textView1" />-->
+<!--
+-->
+<!--</LinearLayout>-->
+<!--
+-->
+</GridLayout>

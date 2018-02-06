@@ -13,6 +13,7 @@ namespace blankApp1
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+
         }
     }
 }
