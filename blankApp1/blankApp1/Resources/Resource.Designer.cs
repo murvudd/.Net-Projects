@@ -9,69 +9,75 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("blankApp1.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("blankApp1.Resource", IsApplication = true)]
 
 namespace blankApp1
 {
-	
-	
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "1.0.0.0")]
-	public partial class Resource
-	{
-		
-		static Resource()
-		{
-			global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-		}
-		
-		public static void UpdateIdValues()
-		{
-		}
-		
-		public partial class Attribute
-		{
-			
-			static Attribute()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Attribute()
-			{
-			}
-		}
-		
-		public partial class Layout
-		{
-			
-			// aapt resource value: 0x7f020000
-			public const int Main = 2130837504;
-			
-			static Layout()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Layout()
-			{
-			}
-		}
-		
-		public partial class String
-		{
-			
-			// aapt resource value: 0x7f030000
-			public const int app_name = 2130903040;
-			
-			static String()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private String()
-			{
-			}
-		}
-	}
+
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "1.0.0.0")]
+    public partial class Resource
+    {
+
+        static Resource()
+        {
+            global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+        }
+
+        public static void UpdateIdValues()
+        {
+        }
+
+        public partial class Attribute
+        {
+
+            static Attribute()
+            {
+                global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+            }
+
+            private Attribute()
+            {
+            }
+        }
+
+        public partial class Layout
+        {
+
+            // aapt resource value: 0x7f020000
+            public const int ColorChange = 2130837504;
+
+            // aapt resource value: 0x7f020001
+            public const int Hello = 2130837505;
+
+            // aapt resource value: 0x7f020002
+            public const int Main = 2130837506;
+
+            static Layout()
+            {
+                global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+            }
+
+            private Layout()
+            {
+            }
+        }
+
+        public partial class String
+        {
+
+            // aapt resource value: 0x7f030000
+            public const int app_name = 2130903040;
+
+            static String()
+            {
+                global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+            }
+
+            private String()
+            {
+            }
+        }
+    }
 }
 #pragma warning restore 1591

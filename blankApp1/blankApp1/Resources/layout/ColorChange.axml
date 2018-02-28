@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:rowCount="3"
+    android:columnCount="2">
+<!--tools:gridSpec="1|12|#0093eeff|K:#ee8700ff:16,l:72,l:16,r|S:#83ee00ff:16,0,l:16,56,l:16,0,r">-->
+<!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="2*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="200" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="Auto" />
+            <ColumnDefinition
+                Width="*" />
+      </Grid>
+-->
+    <TextView
+        android:text="R"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width=""
+        android:layout_height="55.0dp"
+        android:layout_marginLeft="1.0dp"
+        android:layout_marginTop="25.0dp"
+        android:gravity="center_vertical|right"
+        android:id="@+id/textView1" />
+    <TextView
+        android:text="G"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="Auto"
+        android:layout_height="55.0dp"
+        android:layout_marginLeft="1.0dp"
+        android:layout_marginTop="25.0dp"
+        android:gravity="center_vertical|right"
+        android:id="@+id/textView1" />
+    <TextView
+        android:text="B"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="Auto"
+        android:layout_height="55.0dp"
+        android:layout_marginLeft="1.0dp"
+        android:layout_marginTop="25.0dp"
+        android:gravity="center_vertical|right"
+        android:id="@+id/textView1" />
+    <SeekBar
+        android:layout_width="Auto"
+        android:layout_height="55.0dp"
+        android:id="@+id/seekBarRed"
+        android:layout_marginLeft="1.0dp"
+        android:layout_marginTop="25.0dp"
+        android:progressTint="#ffff0080"
+        android:thumbTint="#ffff0080" />
+    <SeekBar
+        android:layout_width="Auto"
+        android:layout_height="55.0dp"
+        android:id="@+id/seekBarGreen"
+        android:layout_marginLeft="1.0dp"
+        android:layout_marginTop="25.0dp"
+        android:thumbTint="#ff00ff80"
+        android:indeterminateTint="#ff00ff80"
+        android:progressTint="#ff00ff80" />
+    <SeekBar
+        android:layout_width="Auto"
+        android:layout_height="55.0dp"
+        android:id="@+id/seekBarBlue"
+        android:layout_marginLeft="1.0dp"
+        android:layout_marginTop="25.0dp"
+        android:progressTint="#ff0080ff"
+        android:secondaryProgressTint="#00000000"
+        android:indeterminateTint="#ff0080ff"
+        android:thumbTint="#ff0080ff" />
+<!--<TextView
+        android:text="B"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="100.0dp"
+        android:layout_height="50.0dp"
+        android:id="@+id/textView1" />-->
+<!--</LinearLayout>-->
+</GridLayout>

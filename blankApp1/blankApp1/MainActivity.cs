@@ -14,6 +14,8 @@ namespace blankApp1
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            Button mainButton1= FindViewById<Button>(Resource.Id.mainbutton1);
+
         }
     }
 }
