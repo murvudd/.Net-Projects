@@ -27,9 +27,9 @@ namespace mysql_connect.Models
         public void Initialize()
         {
             server = "localhost";
-            database = "lab8";
-            uid = "root";
-            password = "admin1";
+            database = "lab8"; // nazwa bazy danych
+            uid = "root";//login usera
+            password = "admin1";// hasło usera
             string connectionString;
             connectionString = "SERVER=" + server + ";" + 
                                "DATABASE=" + database + ";" +
