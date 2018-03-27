@@ -12,14 +12,17 @@ namespace NNtest2
         static void Main(string[] args)
         {
 
-            var a = new Perceptron(new double[] { });
-            var b = new Perceptron(new double[] { 1, 2, 3 });
-            var c = new Perceptron(new double[] { 2, 3, 4, 5 });
-            var d = new Perceptron(new double[] { 3, 4, 5, 6, 7 });
+            //var a = new Perceptron(new double[] { });
+            //var b = new Perceptron(new double[] { 1, 2, 3 });
+            //var c = new Perceptron(new double[] { 2, 3, 4, 5 });
+            //var d = new Perceptron(new double[] { 3, 4, 5, 6, 7 });
 
-            d.Print();
+            //d.Print();
 
-            Console.WriteLine(d.Guess());
+            //Console.WriteLine(d.Guess());
+
+            var w = new double[][] { };
+            
 
 
             Console.ReadLine();

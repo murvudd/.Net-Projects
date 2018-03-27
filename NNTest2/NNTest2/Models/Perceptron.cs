@@ -12,7 +12,7 @@ namespace test2.Models
         //protected double[] Inputs { get; set; }
         public double[] Inputs { get; set; }
         //protected double[] Weights { get; set; }
-        public double[] Weights { get; set; }
+        public double[,] Weights { get; set; }
 
         public Perceptron(double[] inp)
         {
@@ -37,12 +37,12 @@ namespace test2.Models
             }
         }
 
-        public int Guess()
+        public int Guess() 
         {
             double sum = 0;
             for (int i = 0; i < Inputs.Count(); i++)
             {
-                sum += Inputs[i] * Weights[i];
+                sum += Inputs[i] * Weights[i][i];
             }
             return Math.Sign(sum);
         }
