@@ -1,6 +1,6 @@
 create table shops(
 
-city varchar2(20 char) not null,
+city varchar2(20 char) not null unique,
 shop_id NUMBER primary key
 );
 
