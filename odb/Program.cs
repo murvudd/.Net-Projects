@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 using System.IO;
-   
+
 
 namespace odb
 {
@@ -15,19 +15,44 @@ namespace odb
         {
             MyConnect a = new MyConnect();
             OracleConnect b = new OracleConnect();
-            
+            Random rng = new Random();
+
             b.Check();
             string[] imiona = File.ReadAllLines("imiona.txt");
             string[] nazwiska = File.ReadAllLines("nazwiska.txt");
             string[] miasta = File.ReadAllLines("miasta.txt");
 
+            a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[1]));
+            for (int i = 0; i < miasta.Length; i++)
+            {
+                try
+                {
+                    a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[i]));
 
-            b.Insert(@"insert into shops values ('"+miasta[1]+"' , "+5+")");
-            Console.WriteLine(miasta[1]);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+
+
+
         }
 
-       
-        
+        public static void InsertShops(MyConnect a, OracleConnect b, string miasto, int id)
+        {
+            string text = @"INSERT INTO SHOPS (CITY, SHOP_ID) values ({0}, {1});";
+            a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ({0});", miasto));
+            b.Insert(String.Format(text, miasto, id));
+        }
+
+        public void InsertCustomers()
+        {
+
+        }
 
         //public static string RNGCity()
         //{
