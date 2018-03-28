@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
+using System.IO;
    
 
 namespace odb
@@ -16,8 +17,17 @@ namespace odb
             OracleConnect b = new OracleConnect();
             
             b.Check();
+            string[] imiona = File.ReadAllLines("imiona.txt");
+            string[] nazwiska = File.ReadAllLines("nazwiska.txt");
+            string[] miasta = File.ReadAllLines("miasta.txt");
 
+
+            b.Insert(@"insert into shops values ('"+miasta[1]+"' , "+5+")");
+            Console.WriteLine(miasta[1]);
         }
+
+       
+        
 
         //public static string RNGCity()
         //{
@@ -71,7 +81,7 @@ namespace odb
         //            break;
         //    }
         //    return s;
-            
+
         //}
 
 
