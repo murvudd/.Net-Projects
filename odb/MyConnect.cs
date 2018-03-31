@@ -26,7 +26,7 @@ namespace odb
         protected void Initialize()
         {
             server = "localhost";
-            database = "eshop"; // nazwa bazy danych
+            database = "eshopinnodb"; // nazwa bazy danych
             uid = "root";//login usera
             password = "admin1";// hasło usera
             string connectionString;
@@ -96,8 +96,10 @@ namespace odb
                 //create command and assign the query and connection from the constructor
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
+
                 //Execute command
                 cmd.ExecuteNonQuery();
+                
 
                 //close connection
                 this.CloseConnection();

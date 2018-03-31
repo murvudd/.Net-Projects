@@ -7,31 +7,30 @@ insert into shops (city) values ('Warszawa');
 select * from shops order by shop_id;
 truncate table shops;
 
--- SELECT (data_length+index_length)/power(1024,3) tablesize
-SELECT (data_length+index_length)/power(1024,2) tablesize
+SELECT (data_length+index_length)/power(1024,3) tablesize
 FROM information_schema.tables
-WHERE table_schema='eshopinnodb' and table_name='customers';
+WHERE table_schema='eshop' and table_name='customers';
 
 DROP database eshop;
-Create database eshopInnoDB;
-use eshopInnoDB;
+Create database eshopMyISAM;
+use eshopMyISAM;
 
 CREATE TABLE `shops` (
   `city` char(20) UNIQUE,
   `shop_id` int(10) unsigned AUTO_INCREMENT,
   PRIMARY KEY (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `orders` (
   `order_id` int(10) unsigned  AUTO_INCREMENT,
   `custm_id` int(10) unsigned ,
   `item_id` int(10) unsigned ,
-  PRIMARY KEY (`order_id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
-ALTER TABLE `orders` 
-	add CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`custm_id`) REFERENCES `customers` (`customer_id`),
-	add CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `stock` (`item_id`);
+  PRIMARY KEY (`order_id`) -- ,
+   -- KEY `custm_id` (`custm_id`),
+   -- KEY `item_id` (`item_id`),
+  
+) ENGINE=MyISAM AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
 
 	
 CREATE TABLE `stock` (
@@ -44,7 +43,7 @@ CREATE TABLE `stock` (
   PRIMARY KEY (`item_id`),
   KEY `shop_id` (`shop_id`)
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `order_status` (
@@ -66,7 +65,7 @@ CREATE TABLE `customers` (
   `phone` varchar(20) ,
   `customer_id` int(10) unsigned AUTO_INCREMENT,
   PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 
