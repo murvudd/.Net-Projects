@@ -5,6 +5,7 @@ order by TABLE_NAME;
 
 insert into shops (city) values ('Warszawa');
 select * from shops order by shop_id;
+select * from stock ;
 truncate table shops;
 
 -- SELECT (data_length+index_length)/power(1024,3) tablesize

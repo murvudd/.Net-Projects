@@ -22,9 +22,13 @@ namespace odb
             string[] imiona = File.ReadAllLines("imiona.txt");
             string[] nazwiska = File.ReadAllLines("nazwiska.txt");
             string[] miasta = File.ReadAllLines("miasta.txt");
+            string[] stock = File.ReadAllLines("stock.csv");
 
+            
 
-
+            
+            //InsertShop(a, b, miasta);
+            //InsertStock(a, b, "stock.csv", miasta);
 
             {////a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[1]));
              //for (int i = 0; i < miasta.Length; i++)
@@ -58,107 +62,55 @@ namespace odb
 
 
         }
-
-        public static void InsertEshop(MyConnect a, 
-            //OracleConnect b,
-            string miasto, int id)
+        public static void InsertStock(MyConnect a, OracleConnect b, string path, string[] miasta)
+        //function adding stock to db's
         {
-            string text = @"INSERT INTO SHOPS (CITY, SHOP_ID) values ({0}, {1});";
-            a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ({0});", miasto));
-            //b.Insert(String.Format(text, miasto, id));
-        }
-
-
-        public static void Write()
-        {
-            string item_name = "Item";
-            string category = "Category";
-            int quantity;
-            decimal price;
-            int shop_id;
-            Random rng = new Random();
-
-            for (int i = 0; i < 10; i++)
+            int k = 0;
+            string[] stock = File.ReadAllLines(path);
+            for (int j = 0; j < miasta.Length; j++)
             {
-                item_name = item_name + " " + i + 1;
-                category = category + " " + i + 1;
-                quantity = rng.Next(0, 20);
-                Thread.Sleep(1);
-                price = rng.Next(100, 1000) / 100;
 
+                foreach (var item in stock)
+                {
 
-                File.WriteAllLines(@"C:\Users\Żaba\Desktop\.Net-Projects\odb\lib\Item.txt", item_name, category, quantity.ToString, price.ToString, shop_id.ToString, );
+                    string[] i = item.Split(',');
+                    string s1 = @"Insert into stock (item_name, category, price, quantity, shop_id) values ('{0}', '{1}', '{2}', '{3}', '{4}') ";
+                    string s2 = @"Insert into stock (item_name, category, price, quantity, shop_id, item_id) values ('{0}', '{1}', {2}, {3}, {4}, {5})";
+                    //Console.WriteLine(" wartosc i0: {0}", i[0]);
+
+                    Console.WriteLine(" wartosc stringa s: {0}", String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
+                    //a.Insert(String.Format(s1, i[0], i[1], i[2], i[3], j + 1));
+                    k += 1;
+                    //b.Insert(String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
+
+                }
             }
         }
 
-        public static void InsertStock(MyConnect a, OracleConnect b)
-        {
-            Random rng = new Random();
-            string @string = @"insert into stock (item name, category, quantity, price, shop_id) 
-                                           values ('{0}', '{1}', {2}, {3}, {4}, {5})";
-            a.Insert(string.Format(@string));
 
+
+        public static void InsertShop(MyConnect a, OracleConnect b, string[] miasto)
+        //
+        {
+            int k = 0;
+            foreach (var item in miasto)
+            {
+                k += 1;
+                a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", item));
+                b.Insert(String.Format(@"INSERT INTO SHOPS (CITY, SHOP_ID) values ('{0}', '{1}')", item, k));
+            }
         }
+
+
+
+
 
         public void InsertCustomers()
         {
 
         }
 
-        //public static string RNGCity()
-        //{
-        //    string s;
-        //    Random rng = new Random();
 
-        //    switch (rng.Next(0,10))
-        //    {
-        //        case 0:
-        //            s = "Warszawa";
-        //            break;
-
-        //        case 1:
-        //            s = "Kraków";
-        //            break;
-
-        //        case 2:
-        //            s = "Łódź";
-        //            break;
-
-        //        case 3:
-        //            s = "Wrocław";
-        //            break;
-
-        //        case 4:
-        //            s = "Poznań";
-        //            break;
-
-        //        case 5:
-        //            s = "Gdańsk";
-        //            break;
-
-        //        case 6:
-        //            s = "Szczecin";
-        //            break;
-
-        //        case 7:
-        //            s = "Bydgoszcz";
-        //            break;
-
-        //        case 8:
-        //            s = "Lublin";
-        //            break;
-
-        //        case 9:
-        //            s = "Katowice";
-        //            break;
-
-        //        default:
-        //            s = "Internet";
-        //            break;
-        //    }
-        //    return s;
-
-        //}
 
 
     }
