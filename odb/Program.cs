@@ -26,34 +26,34 @@ namespace odb
 
 
 
-            ////a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[1]));
-            //for (int i = 0; i < miasta.Length; i++)
-            //{
-            //    try
-            //    {
-            //        a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[i]));
+            {////a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[1]));
+             //for (int i = 0; i < miasta.Length; i++)
+             //{
+             //    try
+             //    {
+             //        a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", miasta[i]));
 
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e.Message);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        Console.WriteLine(e.Message);
 
-            //    }
-            //}
-            //for (int i = 0; i < miasta.Length; i++)
-            //{
-            //    try
-            //    {
-            //        b.Insert(String.Format(@"INSERT INTO SHOPS (CITY, shop_id) values ('{0}', {1});", miasta[i], i+1));
+                //    }
+                //}
+                //for (int i = 0; i < miasta.Length; i++)
+                //{
+                //    try
+                //    {
+                //        b.Insert(String.Format(@"INSERT INTO SHOPS (CITY, shop_id) values ('{0}', {1});", miasta[i], i+1));
 
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e.Message);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        Console.WriteLine(e.Message);
 
-            //    }
-            //}
-
+                //    }
+                //}
+            }
 
 
 
@@ -82,7 +82,7 @@ namespace odb
                 category = category + " " + i + 1;
                 quantity = rng.Next(0, 20);
                 Thread.Sleep(1);
-                price = rng.Next(100, 1000)/100;
+                price = rng.Next(100, 1000) / 100;
 
 
                 File.WriteAllLines(@"C:\Users\Żaba\Desktop\.Net-Projects\odb\lib\Item.txt", item_name, category, quantity.ToString, price.ToString, shop_id.ToString, lines);
