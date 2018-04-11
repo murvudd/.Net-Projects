@@ -1,0 +1,12 @@
+item_id
+Item Name
+category 1-10
+quantity
+price decimal
+shop_id 1 - 10
+1
+Item1
+Category1
+10
+9.99
+
