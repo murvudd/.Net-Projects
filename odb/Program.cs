@@ -59,11 +59,13 @@ namespace odb
 
         }
 
-        public static void InsertEshop(MyConnect a, OracleConnect b, string miasto, int id)
+        public static void InsertEshop(MyConnect a, 
+            //OracleConnect b,
+            string miasto, int id)
         {
             string text = @"INSERT INTO SHOPS (CITY, SHOP_ID) values ({0}, {1});";
             a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ({0});", miasto));
-            b.Insert(String.Format(text, miasto, id));
+            //b.Insert(String.Format(text, miasto, id));
         }
 
 
@@ -85,7 +87,7 @@ namespace odb
                 price = rng.Next(100, 1000)/100;
 
 
-                File.WriteAllLines(@"C:\Users\Żaba\Desktop\.Net-Projects\odb\lib\Item.txt", item_name, category, quantity.ToString, price.ToString, shop_id.ToString, lines);
+                File.WriteAllLines(@"C:\Users\Żaba\Desktop\.Net-Projects\odb\lib\Item.txt", item_name, category, quantity.ToString, price.ToString, shop_id.ToString, );
             }
         }
 
