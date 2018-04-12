@@ -123,7 +123,34 @@ namespace odb
                     switch (e.Number)
                     {
                         case 1062:
+                            int k = 0;
 
+                            email = name + "." + lastName + "@mail" + k + ".com";
+                            MySqlCommand cmd = new MySqlCommand(String.Format(@"insert into customers
+                            (first_name, last_name, city, email, phone)
+                            values ('{0}', '{1}', '{2}', '{3}', '{4}')",
+                            name, lastName, city, email, phone, a.connection));
+                            //if (a.OpenConnection() == true)
+                            //{
+                            //    //create command and assign the query and connection from the constructor
+                            //    MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                            //    try
+                            //    {
+
+                            //        //Execute command
+                            //        cmd.ExecuteNonQuery();
+                            //    }
+                            //    catch (Exception)
+                            //    {
+                            //        this.CloseConnection();
+                            //        throw;
+                            //    }
+
+
+                            //    //close connection
+                            //    this.CloseConnection();
+                            //}
                             break;
 
                         default:
