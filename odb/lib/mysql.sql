@@ -1,13 +1,18 @@
+use eshopinnodb;
+
 select table_name, TABLE_TYPE, engine
 from information_schema.TABLES 
 where TABLE_SCHEMA = 'eshop'
 order by TABLE_NAME;
+
+truncate table customers;
 
 insert into shops (city) values ('Warszawa');
 select * from shops order by shop_id;
 select * from stock;
 select * from customers order by customer_id;
 select count(*) from customers;
+select city from customers where customer_id = 400325;
 truncate table shops;
 
 -- SELECT (data_length+index_length)/power(1024,3) tablesize
@@ -15,7 +20,7 @@ SELECT (data_length+index_length)/power(1024,3) tablesize
 FROM information_schema.tables
 WHERE table_schema='eshopinnodb' and table_name='customers';
 
-DROP database eshop;
+DROP database eshopinnodb;
 Create database eshopInnoDB;
 use eshopInnoDB;
 
@@ -32,9 +37,7 @@ CREATE TABLE `orders` (
   `item_id` int(10) unsigned ,
   PRIMARY KEY (`order_id`)
   ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
-ALTER TABLE `orders` 
-	add CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`custm_id`) REFERENCES `customers` (`customer_id`),
-	add CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `stock` (`item_id`);
+
 
 	
 CREATE TABLE `stock` (
@@ -60,12 +63,12 @@ CREATE TABLE `order_status` (
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-drop table `customers`;
+
 CREATE TABLE `customers` (
   `first_name` char(20) ,
   `last_name` char(30) ,
-  `city` char(20) ,
-  `email` varchar(60) ,
+  `city` char(50) ,
+  `email` varchar(255) unique,
   `phone` varchar(20) ,
   `customer_id` int(10) unsigned AUTO_INCREMENT,
   PRIMARY KEY (`customer_id`)

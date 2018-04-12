@@ -51,8 +51,8 @@ item_id number(10)
 create table customers(
 first_name char(20 char),
 last_name char(30 char),
-city char(20),
-email varchar2(255),
+city char(50),
+email varchar2(255) Unique,
 phone varchar2(20 char),
 customer_id number(10) primary key
 );

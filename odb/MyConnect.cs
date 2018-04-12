@@ -9,11 +9,12 @@ namespace odb
 {
     class MyConnect
     {
-        private MySqlConnection connection;
+        public MySqlConnection connection;
         private string server;
         private string database;
         private string uid;
         private string password;
+        
 
         //Constructor
         public MyConnect()
@@ -35,11 +36,11 @@ namespace odb
                                "UID=" + uid + ";" +
                                "PASSWORD=" + password + ";";
 
-            connection = new MySqlConnection(connectionString);
+            connection =  new MySqlConnection(connectionString);
         }
 
         //Open connection to database
-        private bool OpenConnection()
+        public bool OpenConnection()
         {
             try
             {
@@ -70,7 +71,7 @@ namespace odb
         }
 
         //Close connection
-        private bool CloseConnection()
+        public bool CloseConnection()
         {
             try
             {
@@ -96,9 +97,17 @@ namespace odb
                 //create command and assign the query and connection from the constructor
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
+                try
+                {
 
                 //Execute command
                 cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    this.CloseConnection();
+                    throw;
+                }
                 
 
                 //close connection

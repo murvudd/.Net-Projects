@@ -68,7 +68,7 @@ namespace odb
                 //        break;
                 //}
                 //return false;
-                
+
                 Console.WriteLine("Connection open failed !          Exception Number {0}, Message {1}, inner exception {2}",ex.Number, ex.Message, ex.InnerException);
                 return false;
 
@@ -77,7 +77,7 @@ namespace odb
 
 
         //Close connection
-        private bool CloseConnection()
+        public bool CloseConnection()
         {
             try
             {
@@ -88,7 +88,9 @@ namespace odb
             {
                 //MessageBox.Show(ex.Message);
                 Console.WriteLine("Connection Close failed !          Exception Number {0}, Message {1}, inner exception {2}", ex.Number, ex.Message, ex.InnerException);
+                
                 return false;
+                throw;
             }
         }
 
