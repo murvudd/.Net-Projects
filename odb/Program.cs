@@ -123,9 +123,9 @@ namespace odb
                     switch (e.Number)
                     {
                         case 1062:
-                            int k = 0;
+                            
 
-                            email = name + "." + lastName + "@mail" + k + ".com";
+                            email = name + "." + lastName + "@mail" + 1 + ".com";
                             MySqlCommand cmd = new MySqlCommand(String.Format(@"insert into customers
                             (first_name, last_name, city, email, phone)
                             values ('{0}', '{1}', '{2}', '{3}', '{4}')",
