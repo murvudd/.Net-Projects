@@ -24,9 +24,9 @@ namespace odb
             string[] miasta = File.ReadAllLines("miasta.txt");
             string[] stock = File.ReadAllLines("stock.csv");
 
-            
 
-            
+
+            InsertCustomers(a, b, imiona, nazwiska, miasta);
             //InsertShop(a, b, miasta);
             //InsertStock(a, b, "stock.csv", miasta);
 
@@ -62,6 +62,8 @@ namespace odb
 
 
         }
+
+
         public static void InsertStock(MyConnect a, OracleConnect b, string path, string[] miasta)
         //function adding stock to db's
         {
@@ -88,9 +90,7 @@ namespace odb
         }
 
 
-
         public static void InsertShop(MyConnect a, OracleConnect b, string[] miasto)
-        //
         {
             int k = 0;
             foreach (var item in miasto)
@@ -101,13 +101,27 @@ namespace odb
             }
         }
 
-
-
-
-
-        public void InsertCustomers()
+        public static void InsertCustomers(MyConnect a, OracleConnect b, string[] imiona, string[] nazwiska, string[] miasta)
         {
+            Random rng1 = new Random();
+            Random rng2 = new Random();
+            Random rng3 = new Random();
+            Random rng4 = new Random();
+            string name, lastName, city, email;
+            int phone;
 
+            for (int i = 0; i < 100000; i++)
+            {
+                name = imiona[rng1.Next(0, imiona.Length)];
+                lastName = nazwiska[rng2.Next(0, nazwiska.Length)];
+                city = miasta[rng3.Next(0, miasta.Length)];
+                email = name + "." + lastName + "@mail.com";
+                phone = rng4.Next(100000000, 1000000000);
+
+                //a.Insert(String.Format(@"insert into customers (first_name, last_name, city, email, phone) values ('{0}', '{1}', '{2}', '{3}', '{4}')", name, lastName, city, email, phone));
+
+                //b.Insert(String.Format(@"insert into customers (first_name, last_name, city, email, phone, customer_id) values ('{0}', '{1}', '{2}', '{3}', {4}, {5})", name, lastName, city, email, phone, i + 1));
+            }
         }
 
 
