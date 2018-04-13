@@ -127,7 +127,7 @@ namespace odb
                     switch (e.Number)
                     {
                         case 1062:
-                            int k = 0;
+
 
                             email = name + "." + lastName + "@mail" + k + ".com";
                             MySqlCommand cmd = new MySqlCommand(String.Format(@"
@@ -215,6 +215,32 @@ namespace odb
             string s = "Duplicate entry 'Bartlomiej.Kowalczyk@mail.com' for key 'email'";
         }
 
+
+
+    }
+
+    public class Parameters : EventArgs
+    {
+        private int _k;
+        public int K { get => _k; set => _k = value; }
+
+    }
+
+    public class Metronome
+    {
+        public event TickHandler Tick;
+        public EventArgs e = null;
+        public delegate void TickHandler(Metronome m, EventArgs e);
+        public void Start()
+        {
+            System.Threading.Thread.Sleep(500);
+
+            Tick?.Invoke(this, e);
+        }
+    }
+
+    public class Listner
+    {
 
     }
 }
