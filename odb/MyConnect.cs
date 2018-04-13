@@ -114,5 +114,12 @@ namespace odb
                 this.CloseConnection();
             }
         }
+
+        //Select statement
+        //public List <string>[] Select()
+        //{
+        //    "select count(*) from INFORMATION_SCHEMA.COLUMNS"
+        //    return;
+        //}
     }
 }

@@ -21,14 +21,11 @@ namespace odb
             Random rng = new Random();
 
             b.Check();
-            //string[] imiona = File.ReadAllLines("imiona.txt");
-            //string[] nazwiska = File.ReadAllLines("nazwiska.txt");
-            //string[] miasta = File.ReadAllLines("miasta.txt");
-            //string[] stock = File.ReadAllLines("stock.csv");
 
 
 
-            InsertCustomers(100000, a, b, "imiona.txt", "nazwiska.txt", "miasta_all.txt");
+
+            InsertCustomers(100000, a, b, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
             //InsertShop(a, b, "miasta.txt");
             //InsertStock(a, b, "stock.csv", miasta);
 
@@ -90,90 +87,128 @@ namespace odb
             string[] nazwiska = File.ReadAllLines(nazwiskaPath);
             string[] miasta = File.ReadAllLines(miastaPath);
 
-            Random rng1 = new Random();
-            Random rng2 = new Random();
-            Random rng3 = new Random();
-            Random rng4 = new Random();
-            string name, lastName, city, email;
+            Random rng = new Random();
+
+            string name, lastName, city;
             int phone;
 
 
             Stopwatch timer = new Stopwatch();
-
+            Increment inc = new Increment();
             timer.Start();
             WriteLine("Running (...)\n");
             for (int i = 0; i < n; i++)
             {
+                name = imiona[rng.Next(0, imiona.Length)];
                 Thread.Sleep(1);
-                name = imiona[rng1.Next(0, imiona.Length)];
-                lastName = nazwiska[rng2.Next(0, nazwiska.Length)];
-                city = miasta[rng3.Next(0, miasta.Length)];
-                email = name + "." + lastName + "@mail.com";
-                phone = rng4.Next(100000000, 1000000000);
-                //Console.WriteLine("wartość stringa {0}", String.Format(@"insert into customers (first_name, last_name, city, email, phone) values ('{0}', '{1}', '{2}', '{3}', '{4}')", name, lastName, city, email, phone));
+                lastName = nazwiska[rng.Next(0, nazwiska.Length)];
+                Thread.Sleep(1);
+                city = miasta[rng.Next(0, miasta.Length)];
+                Thread.Sleep(1);
+                phone = rng.Next(100000000, 1000000000);
+                //Console.WriteLine("wartość stringa {0}", String.Format(@"
+                //insert into customers (first_name, last_name, city, email, phone)
+                //values ('{0}', '{1}', '{2}', '{3}', '{4}')
+                //", name, lastName, city, email, phone));
 
                 try
                 {
 
+                    inc.Reset();
                     Write(".");
                     a.Insert(String.Format(@"
                                             insert into customers 
                                             (first_name, last_name, city, email, phone) 
-                                            values ('{0}', '{1}', '{2}', '{3}', '{4}')
-                                            ", name, lastName, city, email, phone));
+                                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
+                                            ", name, lastName, city, inc.I, phone));
                 }
                 catch (MySqlException e)
                 {
                     switch (e.Number)
                     {
                         case 1062:
+                            a.CloseConnection();
+                            try
+                            {
 
+                                a.Insert(String.Format(@"
+                                            insert into customers 
+                                            (first_name, last_name, city, email, phone) 
+                                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
+                                            ", name, lastName, city, inc.I, phone));
 
-                            email = name + "." + lastName + "@mail" + k + ".com";
-                            MySqlCommand cmd = new MySqlCommand(String.Format(@"
-                            insert into customers
-                            (first_name, last_name, city, email, phone)
-                            values ('{0}', '{1}', '{2}', '{3}', '{4}')
-                            ", name, lastName, city, email, phone, a.connection));
-                            //if (a.OpenConnection() == true)
+                            }
+                            catch (MySqlException)
+                            {
+
+                                throw;
+                            }
+                            //MySqlCommand cmd = new MySqlCommand(String.Format(@"
+                            //                insert into customers 
+                            //                (first_name, last_name, city, email, phone) 
+                            //                values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
+                            //                ", name, lastName, city, inc.I, phone));
+                            //WriteLine("wartosc inc {0}", inc.I);
+                            //try
                             //{
-                            //    //create command and assign the query and connection from the constructor
-                            //    MySqlCommand cmd = new MySqlCommand(query, connection);
+                            //    fffffffffffffffffff
+                            //cmd.ExecuteNonQuery();
 
-                            //    try
-                            //    {
-
-                            //        //Execute command
-                            //        cmd.ExecuteNonQuery();
-                            //    }
-                            //    catch (Exception)
-                            //    {
-                            //        this.CloseConnection();
-                            //        throw;
-                            //    }
-
-
-                            //    //close connection
-                            //    this.CloseConnection();
                             //}
+                            //catch (MySqlException)
+                            //{
+
+                            //    throw;
+                            //}
+                            ////close connection
+                            //a.CloseConnection();
+                            ////inc.Reset();
                             break;
 
-                        default:
                             {
-                                a.CloseConnection();
-                                break;
+                                //if (a.OpenConnection() == true)
+                                //{
+                                //    //create command and assign the query and connection from the constructor
+                                //    MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                                //    try
+                                //    {
+
+                                //        //Execute command
+                                //        cmd.ExecuteNonQuery();
+                                //    }
+                                //    catch (Exception)
+                                //    {
+                                //        this.CloseConnection();
+                                //        throw;
+                                //    }
+
+
+                                //    //close connection
+                                //    this.CloseConnection();
+                                //}
                             }
+
+                        //default:
+                        //    {
+                        //        a.CloseConnection();
+                        //        break;
+                        //    }
                     }
                     WriteLine("BŁĄD !!   " + e.Number + " ||  " + e.Message + "     \n");
-                    ReadKey();
-                    a.CloseConnection();
+                    //ReadKey();
+                    //a.CloseConnection();
                     //throw;
                 }
 
                 try
                 {
-                    b.Insert(String.Format(@"insert into customers (first_name, last_name, city, email, phone, customer_id) values ('{0}', '{1}', '{2}', '{3}', {4}, {5})", name, lastName, city, email, phone, i + 1));
-
+                    b.Insert(String.Format(@"
+                                            insert into customers 
+                                            (first_name, last_name, city, email, phone, customer_id) 
+                                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}', customer_id.nextval)
+                                            ", name, lastName, city, inc.I, phone));
+                    inc.Reset();
                 }
                 catch (OracleException e)
                 {
@@ -219,28 +254,46 @@ namespace odb
 
     }
 
-    public class Parameters : EventArgs
+    public static class CustmID
     {
-        private int _k;
-        public int K { get => _k; set => _k = value; }
-
-    }
-
-    public class Metronome
-    {
-        public event TickHandler Tick;
-        public EventArgs e = null;
-        public delegate void TickHandler(Metronome m, EventArgs e);
-        public void Start()
+        private static int _i = 1;
+        public static int I
         {
-            System.Threading.Thread.Sleep(500);
-
-            Tick?.Invoke(this, e);
+            get
+            {
+                _i += 1;
+                return _i;
+            }
+            private set { _i = value; }
+        }
+        public static void Reset(int r)
+        {
+            _i = r;
         }
     }
 
-    public class Listner
+    public class Increment
     {
-
+        private int _i = -1;
+        public int I
+        {
+            get
+            {
+                _i += 1;
+                return _i;
+            }
+            private set { _i = value; }
+        }
+        public void Reset()
+        {
+            this._i = -1;
+        }
     }
+
+
+
+
+
+
+
 }

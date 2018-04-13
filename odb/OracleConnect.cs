@@ -107,6 +107,10 @@ namespace odb
                 this.CloseConnection();
             }
         }
+        public void CheckCustomer_ID()
+        {
+
+        }
 
         //Insert statement
         public void Insert(string query)

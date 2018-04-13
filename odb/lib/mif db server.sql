@@ -54,8 +54,13 @@ last_name char(30 char),
 city char(50),
 email varchar2(255) Unique,
 phone varchar2(20 char),
-customer_id number(10) primary key
+customer_id number(10) primary key 
 );
+
+CREATE SEQUENCE customer_id
+  START WITH 1
+  INCREMENT BY 1
+  CACHE 100;
 
 drop table customers;
 drop table order_status;
