@@ -41,6 +41,15 @@ DROP database eshopinnodb;
 Create database eshopInnoDB;
 use eshopInnoDB;
 
+
+
+start transaction;
+
+DROP database eshopinnodb;
+Create database eshopInnoDB;
+use eshopInnoDB;
+
+
 CREATE TABLE `shops` (
   `city` char(20) UNIQUE,
   `shop_id` int(10) unsigned AUTO_INCREMENT,
@@ -102,3 +111,4 @@ alter table `stock`
 ALTER TABLE `orders` 
 	add CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`custm_id`) REFERENCES `customers` (`customer_id`),
 	add CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `stock` (`item_id`);
+commit;

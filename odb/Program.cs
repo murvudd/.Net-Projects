@@ -22,21 +22,23 @@ namespace odb
 
             b.Check();
 
+            TruncateDB(a);
 
+            InsertShop(a, b, "Data/miasta.txt");
             CreateNewStock(1500);
-
-            InsertCustomers(100, a, b, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
-            //InsertShop(a, b, "miasta.txt");
             InsertStock(a, b, "Data/stock.txt", "Data/miasta.txt");
+
+            InsertCustomers(1000000, a, b, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
 
 
         }
 
 
-        public static void InsertStock(MyConnect a, OracleConnect b, string stockPath, string miastaPath)
         //function adding stock to db's
+        public static void InsertStock(MyConnect a, OracleConnect b, string stockPath, string miastaPath)
         {
-            int k = 0;
+            Console.WriteLine("Inserting stock");
+
             string[] stock = File.ReadAllLines(stockPath);
             string[] miasta = File.ReadAllLines(miastaPath);
             for (int j = 0; j < miasta.Length; j++)
@@ -46,40 +48,57 @@ namespace odb
                 {
 
                     string[] i = item.Split(',');
-                    string s1 = @"Insert into stock (item_name, category, price, quantity, shop_id) values ('{0}', '{1}', '{2}', '{3}', '{4}') ";
-                    string s2 = @"Insert into stock (item_name, category, price, quantity, shop_id, item_id) values ('{0}', '{1}', {2}, {3}, {4}, {5})";
-                    //Console.WriteLine(" wartosc i0: {0}", i[0]);
 
-                    //Console.WriteLine(" wartosc stringa s: {0}", String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
-                    a.Insert(String.Format(s1, i[0], i[1], i[2], i[3], j + 1));
-                    k += 1;
-                    b.Insert(String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
 
+                    try
+                    {
+
+                    a.Insert(String.Format(@"
+                                            Insert into stock (item_name, category, price, quantity, shop_id)
+                                            values ('{0}', '{1}', '{2}', '{3}', '{4}') 
+                                            ", i[0], i[1], i[2], i[3], j + 1));
+
+                    b.Insert(String.Format(@"
+                                            Insert into stock (item_name, category, price, quantity, shop_id, item_id) 
+                                            values ('{0}', '{1}', {2}, {3}, {4}, {5})
+                                            ", i[0], i[1], i[2], i[3], j + 1, "stock_id.nextval"));
+
+                    }
+                    catch (MySqlException e)
+                    {
+                        WriteLine("mysql error : ",e.Message);
+                        throw;
+                    }
+                    catch (OracleException e)
+                    {
+                        WriteLine("oracle error : ", e.Message);
+                        throw;
+                    }
                 }
             }
         }
 
-
         public static void InsertShop(MyConnect a, OracleConnect b, string miastoPath)
         {
-            int k = 0;
+            WriteLine("inserting shops");
             string[] miasto = File.ReadAllLines(miastoPath);
             foreach (var item in miasto)
             {
-                k += 1;
+
                 try
                 {
                     a.Insert(String.Format(@"INSERT INTO SHOPS (CITY) values ('{0}');", item));
-                    //b.Insert(String.Format(@"INSERT INTO SHOPS (CITY, SHOP_ID) values ('{0}', '{1}')", item, k));
+                    b.Insert(String.Format(@"INSERT INTO SHOPS (CITY, SHOP_ID) values ('{0}', '{1}')", item, "shop_id.nextval"));
 
                 }
                 catch (MySqlException e)
                 {
+                    WriteLine("mysql error : ", e.Message);
                     a.CloseConnection();
                 }
-                catch(OracleException e)
+                catch (OracleException e)
                 {
-
+                    WriteLine("oracle error : ", e.Message);
                     b.CloseConnection();
                 }
             }
@@ -110,10 +129,6 @@ namespace odb
                 city = miasta[rng.Next(0, miasta.Length)];
                 Thread.Sleep(1);
                 phone = rng.Next(100000000, 1000000000);
-                //Console.WriteLine("wartość stringa {0}", String.Format(@"
-                //insert into customers (first_name, last_name, city, email, phone)
-                //values ('{0}', '{1}', '{2}', '{3}', '{4}')
-                //", name, lastName, city, email, phone));
 
 
                 while (true)
@@ -149,101 +164,17 @@ namespace odb
                         b.CloseConnection();
                         continue;
                     }
-
+                    catch (OracleException e)
+                    {
+                        throw;
+                    }
                 }
 
-                //try
-                //{
-
-                //    inc.Reset();
-                //    Write(".");
-                //    a.Insert(String.Format(@"
-                //                            insert into customers 
-                //                            (first_name, last_name, city, email, phone) 
-                //                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
-                //                            ", name, lastName, city, inc.I, phone));
-                //}
-                //catch (MySqlException e) when (e.Number == 1062)
-                //{
-                //    WriteLine("BŁĄD !! ||  " + e.Number + " ||  " + e.Message + "     \n");
-
-                //    a.CloseConnection();
-                //    try
-                //    {
-
-                //        a.Insert(String.Format(@"
-                //                            insert into customers 
-                //                            (first_name, last_name, city, email, phone) 
-                //                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
-                //                            ", name, lastName, city, inc.I, phone));
-
-                //    }
-                //    catch (MySqlException)
-                //    {
-                //        //if (a.OpenConnection() == true) a.CloseConnection();
-                //        throw e;
-                //    }
-                //MySqlCommand cmd = new MySqlCommand(String.Format(@"
-                //                insert into customers 
-                //                (first_name, last_name, city, email, phone) 
-                //                values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
-                //                ", name, lastName, city, inc.I, phone));
-                //WriteLine("wartosc inc {0}", inc.I);
-                //try
-                //{
-                //    fffffffffffffffffff
-                //cmd.ExecuteNonQuery();
-
-                //}
-                //catch (MySqlException)
-                //{
-
-                //    throw;
-                //}
-                ////close connection
-                //a.CloseConnection();
-                ////inc.Reset();
-
-
-                {
-                    //if (a.OpenConnection() == true)
-                    //{
-                    //    //create command and assign the query and connection from the constructor
-                    //    MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                    //    try
-                    //    {
-
-                    //        //Execute command
-                    //        cmd.ExecuteNonQuery();
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        this.CloseConnection();
-                    //        throw;
-                    //    }
-
-
-                    //    //close connection
-                    //    this.CloseConnection();
-                    //}
-                }
-
-                //default:
-                //    {
-                //        a.CloseConnection();
-                //        break;
-                //    }
-                //ReadKey();
-                //a.CloseConnection();
-                //throw;
             }
-
 
             timer.Stop();
             Console.WriteLine("czas wykonywania: {0}", timer.Elapsed);
         }
-
 
         public static void CreateNewStock(int n)
         {
@@ -268,31 +199,172 @@ namespace odb
 
         }
 
-        public static void Method()
+        public static void TruncateDB(MyConnect a)
         {
-            string s = "Duplicate entry 'Bartlomiej.Kowalczyk@mail.com' for key 'email'";
+
+            string sa = @"
+            
+                start transaction;
+
+DROP database eshopinnodb;
+Create database eshopInnoDB;
+use eshopInnoDB;
+
+
+CREATE TABLE `shops` (
+  `city` char(20) UNIQUE,
+  `shop_id` int(10) unsigned AUTO_INCREMENT,
+  PRIMARY KEY (`shop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `orders` (
+  `order_id` int(10) unsigned  AUTO_INCREMENT,
+  `custm_id` int(10) unsigned ,
+  `item_id` int(10) unsigned ,
+  PRIMARY KEY (`order_id`)
+  ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
+
+
+	
+CREATE TABLE `stock` (
+  `item_name` varchar(15) ,
+  `category` varchar(15) ,
+  `quantity` int(10) unsigned ,
+  `price` decimal(6,2) ,
+  `shop_id` int(10) unsigned ,
+  `item_id` int(10) unsigned AUTO_INCREMENT,
+  PRIMARY KEY (`item_id`),
+  KEY `shop_id` (`shop_id`)
+  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `order_status` (
+  `status` varchar(20) ,
+  `order_date` datetime ,
+  `order_id` int(10) unsigned ,
+  `status_id` int(10) unsigned AUTO_INCREMENT unique
+  -- UNIQUE KEY `status_id` (`status_id`),
+  -- KEY `order_id` (`order_id`)
+  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `customers` (
+  `first_name` char(20) ,
+  `last_name` char(30) ,
+  `city` char(50) ,
+  `email` varchar(255) unique,
+  `phone` varchar(20) ,
+  `customer_id` int(10) unsigned AUTO_INCREMENT,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+alter table `order_status` 
+add CONSTRAINT `order_status_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+
+alter table `stock`
+	add CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`shop_id`);
+
+ALTER TABLE `orders` 
+	add CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`custm_id`) REFERENCES `customers` (`customer_id`),
+	add CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `stock` (`item_id`);
+commit;
+            
+            ";
+            // string a
+
+
+//            string sb = @"
+//            drop table customers;
+//            drop table order_status;
+//            drop table orders;
+//            drop table shops;
+//            drop table stock;
+
+
+//create table shops(
+
+//	city varchar2(20 char) not null unique,
+//	shop_id NUMBER primary key
+//)
+
+//CREATE TABLE stock(
+//	item_name VARCHAR2(20 char),
+//	categry VARCHAR2(15 char) not null,
+    
+    
+//	quantity    NUMBER not null
+//    CONSTRAINT check_qty CHECK (quantity > 0),
+      
+//	price decimal(6,2) 
+//    CONSTRAINT nn_price NOT NULL 
+//    CONSTRAINT check_price CHECK (price > 0),
+
+//	shop_id NUMBER not null,
+//    -- CONSTRAINT fk_stock FOREIGN KEY (shops) references shops(shop_id),
+
+//	item_id NUMBER primary key
+
+//    -- GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1),
+//    -- CONSTRAINT pk_stock PRIMARY KEY (item_id)
+//)
+
+//CREATE TABLE order_status
+//( 
+//    status varchar2(20 char) not null,
+
+//	order_date date not null,
+
+//	order_id NUMBER(10) not null
+//		CONSTRAINT uint_order_id check (order_id > 0),
+
+//	status_id NUMBER(10) not null,
+//		CONSTRAINT uint_status_id check (status_id > 0)
+    
+//    /*CONSTRAINT fk_order_status
+//        FOREIGN KEY (order_id)
+//        REFERENCES orders(order_id) */
+//)
+
+//create table orders(
+//	order_id number(10) primary key,
+//	custm_id number(10),
+//	item_id number(10)
+//)
+
+//create table customers(
+//	first_name char(20 char),
+//	last_name char(30 char),
+//	city char(50),
+//	email varchar2(255) Unique,
+//	phone varchar2(20 char),
+//	customer_id number(10) primary key 
+//)
+
+//CREATE SEQUENCE stock_id
+//  START WITH 1
+//  INCREMENT BY 1
+//  CACHE 100
+
+//CREATE SEQUENCE customer_id
+//  START WITH 1
+//  INCREMENT BY 1
+//  CACHE 100
+
+//CREATE SEQUENCE shop_id
+//  START WITH 1
+//  INCREMENT BY 1
+//  CACHE 100
+//            ";
+
+            a.Insert(sa);
+            //b.Insert(sb);
         }
 
-    }
-
-
-
-    public static class CustmID
-    {
-        private static int _i = 1;
-        public static int I
-        {
-            get
-            {
-                _i += 1;
-                return _i;
-            }
-            private set { _i = value; }
-        }
-        public static void Reset(int r)
-        {
-            _i = r;
-        }
     }
 
     public class Increment
@@ -312,13 +384,6 @@ namespace odb
             this._i = -1;
         }
     }
-
-
-
-
-
-
-
 }
 
 
