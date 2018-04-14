@@ -27,7 +27,7 @@ item_id NUMBER primary key
 
 CREATE TABLE order_status
 ( 
-status varchar2(20 char) not null,
+    status varchar2(20 char) not null,
 
 order_date date not null,
 
@@ -57,6 +57,9 @@ phone varchar2(20 char),
 customer_id number(10) primary key 
 );
 
+insert into customers(first_name, last_name, city, email, phone, customer_id)
+values ('dupa', 'dupaduap', 'dupowo', 'dupa.dupadupa@dupa.com', 00, customer_id.nextval);
+select * from customers;
 CREATE SEQUENCE customer_id
   START WITH 1
   INCREMENT BY 1

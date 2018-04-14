@@ -23,11 +23,11 @@ namespace odb
             b.Check();
 
 
+            CreateNewStock(1500);
 
-
-            InsertCustomers(100000, a, b, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
+            InsertCustomers(100, a, b, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
             //InsertShop(a, b, "miasta.txt");
-            //InsertStock(a, b, "stock.csv", miasta);
+            InsertStock(a, b, "Data/stock.txt", "Data/miasta.txt");
 
 
         }
@@ -51,9 +51,9 @@ namespace odb
                     //Console.WriteLine(" wartosc i0: {0}", i[0]);
 
                     //Console.WriteLine(" wartosc stringa s: {0}", String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
-                    //a.Insert(String.Format(s1, i[0], i[1], i[2], i[3], j + 1));
+                    a.Insert(String.Format(s1, i[0], i[1], i[2], i[3], j + 1));
                     k += 1;
-                    //b.Insert(String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
+                    b.Insert(String.Format(s2, i[0], i[1], i[2], i[3], j + 1, k));
 
                 }
             }
@@ -73,9 +73,13 @@ namespace odb
                     //b.Insert(String.Format(@"INSERT INTO SHOPS (CITY, SHOP_ID) values ('{0}', '{1}')", item, k));
 
                 }
-                catch (Exception)
+                catch (MySqlException e)
                 {
                     a.CloseConnection();
+                }
+                catch(OracleException e)
+                {
+
                     b.CloseConnection();
                 }
             }
@@ -111,135 +115,154 @@ namespace odb
                 //values ('{0}', '{1}', '{2}', '{3}', '{4}')
                 //", name, lastName, city, email, phone));
 
-                try
-                {
 
-                    inc.Reset();
-                    Write(".");
-                    a.Insert(String.Format(@"
-                                            insert into customers 
-                                            (first_name, last_name, city, email, phone) 
-                                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
-                                            ", name, lastName, city, inc.I, phone));
-                }
-                catch (MySqlException e)
+                while (true)
                 {
-                    switch (e.Number)
+                    try
                     {
-                        case 1062:
-                            a.CloseConnection();
-                            try
-                            {
-
-                                a.Insert(String.Format(@"
+                        a.Insert(String.Format(@"
                                             insert into customers 
                                             (first_name, last_name, city, email, phone) 
                                             values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
                                             ", name, lastName, city, inc.I, phone));
 
-                            }
-                            catch (MySqlException)
-                            {
+                        b.Insert(String.Format(@"
+                                                    insert into customers 
+                                                    (first_name, last_name, city, email, phone, customer_id) 
+                                                    values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}', customer_id.nextval)
+                                                    ", name, lastName, city, inc.I, phone));
 
-                                throw;
-                            }
-                            //MySqlCommand cmd = new MySqlCommand(String.Format(@"
-                            //                insert into customers 
-                            //                (first_name, last_name, city, email, phone) 
-                            //                values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
-                            //                ", name, lastName, city, inc.I, phone));
-                            //WriteLine("wartosc inc {0}", inc.I);
-                            //try
-                            //{
-                            //    fffffffffffffffffff
-                            //cmd.ExecuteNonQuery();
-
-                            //}
-                            //catch (MySqlException)
-                            //{
-
-                            //    throw;
-                            //}
-                            ////close connection
-                            //a.CloseConnection();
-                            ////inc.Reset();
-                            break;
-
-                            {
-                                //if (a.OpenConnection() == true)
-                                //{
-                                //    //create command and assign the query and connection from the constructor
-                                //    MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                                //    try
-                                //    {
-
-                                //        //Execute command
-                                //        cmd.ExecuteNonQuery();
-                                //    }
-                                //    catch (Exception)
-                                //    {
-                                //        this.CloseConnection();
-                                //        throw;
-                                //    }
-
-
-                                //    //close connection
-                                //    this.CloseConnection();
-                                //}
-                            }
-
-                        //default:
-                        //    {
-                        //        a.CloseConnection();
-                        //        break;
-                        //    }
+                        Write(".");
+                        inc.Reset();
+                        break;
                     }
-                    WriteLine("BŁĄD !!   " + e.Number + " ||  " + e.Message + "     \n");
-                    //ReadKey();
-                    //a.CloseConnection();
-                    //throw;
+                    catch (MySqlException e) when (e.Number == 1062)
+                    {
+                        WriteLine("BŁĄD !! ||  " + e.Number + " ||  " + e.Message + "     \n");
+                        continue;
+
+                    }
+                    catch (OracleException e) when (e.ErrorCode == -2147467259)
+                    {
+
+                        WriteLine("BŁĄD !! ||  " + e.ErrorCode + " ||  " + e.Message + "     \n");
+                        b.CloseConnection();
+                        continue;
+                    }
+
                 }
 
-                try
+                //try
+                //{
+
+                //    inc.Reset();
+                //    Write(".");
+                //    a.Insert(String.Format(@"
+                //                            insert into customers 
+                //                            (first_name, last_name, city, email, phone) 
+                //                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
+                //                            ", name, lastName, city, inc.I, phone));
+                //}
+                //catch (MySqlException e) when (e.Number == 1062)
+                //{
+                //    WriteLine("BŁĄD !! ||  " + e.Number + " ||  " + e.Message + "     \n");
+
+                //    a.CloseConnection();
+                //    try
+                //    {
+
+                //        a.Insert(String.Format(@"
+                //                            insert into customers 
+                //                            (first_name, last_name, city, email, phone) 
+                //                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
+                //                            ", name, lastName, city, inc.I, phone));
+
+                //    }
+                //    catch (MySqlException)
+                //    {
+                //        //if (a.OpenConnection() == true) a.CloseConnection();
+                //        throw e;
+                //    }
+                //MySqlCommand cmd = new MySqlCommand(String.Format(@"
+                //                insert into customers 
+                //                (first_name, last_name, city, email, phone) 
+                //                values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}')
+                //                ", name, lastName, city, inc.I, phone));
+                //WriteLine("wartosc inc {0}", inc.I);
+                //try
+                //{
+                //    fffffffffffffffffff
+                //cmd.ExecuteNonQuery();
+
+                //}
+                //catch (MySqlException)
+                //{
+
+                //    throw;
+                //}
+                ////close connection
+                //a.CloseConnection();
+                ////inc.Reset();
+
+
                 {
-                    b.Insert(String.Format(@"
-                                            insert into customers 
-                                            (first_name, last_name, city, email, phone, customer_id) 
-                                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}', customer_id.nextval)
-                                            ", name, lastName, city, inc.I, phone));
-                    inc.Reset();
-                }
-                catch (OracleException e)
-                {
-                    WriteLine("oracle e.Number " + e.Number + "oracle error code" + e.ErrorCode);
-                    b.CloseConnection();
-                    throw;
+                    //if (a.OpenConnection() == true)
+                    //{
+                    //    //create command and assign the query and connection from the constructor
+                    //    MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                    //    try
+                    //    {
+
+                    //        //Execute command
+                    //        cmd.ExecuteNonQuery();
+                    //    }
+                    //    catch (Exception)
+                    //    {
+                    //        this.CloseConnection();
+                    //        throw;
+                    //    }
+
+
+                    //    //close connection
+                    //    this.CloseConnection();
+                    //}
                 }
 
+                //default:
+                //    {
+                //        a.CloseConnection();
+                //        break;
+                //    }
+                //ReadKey();
+                //a.CloseConnection();
+                //throw;
             }
+
+
             timer.Stop();
             Console.WriteLine("czas wykonywania: {0}", timer.Elapsed);
-
         }
 
-        public static void CreateNewStock()
+
+        public static void CreateNewStock(int n)
         {
             Stopwatch t = new Stopwatch();
             t.Start();
-            string s;
-            string[] lines = new string[800];
+
+            string[] lines = new string[n];
             decimal d;
             Random rng = new Random();
             for (int i = 0; i < lines.Length; i++)
             {
-                s = @"item{0},category{1},{2},{3}";
-                d = rng.Next(0, 10000);
 
-                lines[i] = String.Format(s, i + 1, rng.Next(0, 100), d / 100, rng.Next(0, 1000));
+
+                d = rng.Next(0, 10000);
+                lines[i] = String.Format("item{0},category{1},{2},{3}", i + 1, rng.Next(0, 100), d / 100, rng.Next(0, 1000));
 
             }
-            System.IO.File.WriteAllLines(@"C:\Users\Żaba\Desktop\.Net-Projects\odb\lib\stock.txt", lines);
+            System.IO.File.WriteAllLines(@"D:\Source\Repos\.Net-Projects\.Net-Projects\odb\lib\Data\stock.txt", lines);
+            System.IO.File.WriteAllLines(@"D:\Source\Repos\.Net-Projects\.Net-Projects\odb\bin\Debug\Data\stock.txt", lines);
             t.Stop();
             Console.WriteLine("upłyneło {0}", t.Elapsed);
 
@@ -250,9 +273,9 @@ namespace odb
             string s = "Duplicate entry 'Bartlomiej.Kowalczyk@mail.com' for key 'email'";
         }
 
-
-
     }
+
+
 
     public static class CustmID
     {
@@ -297,3 +320,5 @@ namespace odb
 
 
 }
+
+

@@ -7,10 +7,27 @@ order by TABLE_NAME;
 
 truncate table customers;
 
+select count(*) Noofcolumns from SYSCOLUMNS where id=(select id from SYSOBJECTS where name='customers');
+
+
+
+SELECT COUNT(*)
+  FROM INFORMATION_SCHEMA.COLUMNS
+ WHERE table_catalog = 'eshopinnodb' -- the database
+   AND table_name = 'customers'
+   ;
+select customer_id from customers;
+   
+
+
+
 insert into shops (city) values ('Warszawa');
 select * from shops order by shop_id;
 select * from stock;
 select * from customers order by customer_id;
+
+select * from customers;
+
 select count(*) from customers;
 select city from customers where customer_id = 400325;
 truncate table shops;
