@@ -7,8 +7,9 @@ using MySql.Data.MySqlClient;
 
 namespace odb
 {
-    class MyConnect
+    class TestConnect
     {
+
         public MySqlConnection connection;
         private string server;
         private string database;
@@ -17,7 +18,7 @@ namespace odb
 
 
         //Constructor
-        public MyConnect()
+        public TestConnect()
         {
             Initialize();
         }
@@ -86,62 +87,9 @@ namespace odb
             }
         }
 
-        //Insert statement
-        public void Insert(string query)
-        {
-            //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
-
-            //open connection
-            if (this.OpenConnection() == true)
-            {
-                //create command and assign the query and connection from the constructor
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                try
-                {
-
-                    //Execute command
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception)
-                {
-                    this.CloseConnection();
-                    throw;
-                }
-
-
-                //close connection
-                this.CloseConnection();
-            }
-        }
-        public int CheckMaxOrderID()
-        {
-            int i = -1;
-            if (this.OpenConnection() == true)
-            {
-                MySqlCommand cmd = new MySqlCommand("select max(order_id) from orders", this.connection);
-                try
-                {
-                    int.TryParse(cmd.ExecuteScalar() + "", out i);
-                    this.CloseConnection();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("no MaxOrderID  {0}", e.Message);
-                    this.CloseConnection();
-                    throw;
-                }
-                return i;
-            }
-            else
-            {
-
-                return i;
-            }
-        }
 
         ////Select statement
-        public int[] CheckMaxCustmIDItmID()
+        public int[] SelectOrdersID()
         {
             //Create a list to store the result
             int[] list = new int[2] { -1, -1 };
@@ -173,10 +121,6 @@ namespace odb
 
                     throw;
                 }
-                finally
-                {
-                    this.CloseConnection();
-                }
 
                 return list;
             }
@@ -186,9 +130,13 @@ namespace odb
                 return list;
             }
         }
-        public int Count(string query)
-        {
 
+
+
+        //Count statement
+        public int Count()
+        {
+            string query = "SELECT Count(*) FROM tableinfo";
             int Count = -1;
 
             //Open Connection
@@ -211,88 +159,29 @@ namespace odb
             }
         }
 
-        public void TruncateDB()
+        public void TestMethod()
         {
-            //query
-            string sa = @"
-            
-                DROP database eshopinnodb;
-Create database eshopInnoDB;
-use eshopInnoDB;
-
-
-CREATE TABLE `shops` (
-  `city` char(20) UNIQUE,
-  `shop_id` int(10) unsigned AUTO_INCREMENT,
-  PRIMARY KEY (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `orders` (
-  `order_id` int(10) unsigned  AUTO_INCREMENT,
-  `customer_id` int(10) unsigned ,
-  `item_id` int(10) unsigned ,
-  PRIMARY KEY (`order_id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
-
-
-	
-CREATE TABLE `stock` (
-  `item_name` varchar(15) ,
-  `category` varchar(15) ,
-  `quantity` int(10) unsigned ,
-  `price` decimal(6,2) ,
-  `shop_id` int(10) unsigned ,
-  `item_id` int(10) unsigned AUTO_INCREMENT,
-  PRIMARY KEY (`item_id`),
-  KEY `shop_id` (`shop_id`)
-  
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `order_status` (
-  `status` varchar(255) ,
-  `status_changed` datetime ,
-  `order_id` int(10) unsigned ,
-  `status_id` int(10) unsigned AUTO_INCREMENT unique
-  -- UNIQUE KEY `status_id` (`status_id`),
-  -- KEY `order_id` (`order_id`)
-  
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `customers` (
-  `first_name` char(20) ,
-  `last_name` char(30) ,
-  `city` char(50) ,
-  `email` varchar(255) unique,
-  `phone` varchar(20) ,
-  `customer_id` int(10) unsigned AUTO_INCREMENT,
-  PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-            
-            ";
-
-            this.Insert(sa);
-
+            int MaxOrderId = -1;
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("select max(order_id) from orders;", this.connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    int.TryParse(dataReader["max(order_id)"] + "", out MaxOrderId);
+                }
+                dataReader.Close();
+                CloseConnection();
+                Console.WriteLine("Max orded id {0}", MaxOrderId);
+            }
         }
 
-        public void ApplyConstraints()
+        
+        public string RandomDay(Random rng, int range, DateTime start)
         {
-            string sa = @"
-                         
-alter table `order_status` 
-add CONSTRAINT `order_status_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
-
-alter table `stock`
-	add CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`shop_id`);
-
-ALTER TABLE `orders` 
-	add CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
-	add CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `stock` (`item_id`);
-                         ";
-            this.Insert(sa);
+            start = new DateTime(2016, 1, 1);
+            range = (DateTime.Today - start).Days;
+            return start.AddDays(rng.Next(range)).ToString("yyyy-MM-dd H:mm:ss"); ;
         }
 
     }

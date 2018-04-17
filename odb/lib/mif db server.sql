@@ -18,7 +18,7 @@ create table shops(
 
 CREATE TABLE stock(
 	item_name VARCHAR2(20 char),
-	categry VARCHAR2(15 char) not null,
+	category VARCHAR2(15 char) not null,
     
     
 	quantity    NUMBER not null
@@ -85,7 +85,13 @@ CREATE SEQUENCE customer_id
   INCREMENT BY 1
   CACHE 100;
   
+  23819
+  
+  ORA-00001
+  
 insert into customers(first_name, last_name, city, email, phone, customer_id)
 values ('dupa', 'dupaduap', 'dupowo', 'dupa.dupadupa@dupa.com', 00, customer_id.nextval);
-select * from customers;
+select count(*) from customers;
+
+SELECT FILE_NAME, BYTES FROM DBA_DATA_FILES WHERE TABLESPACE_NAME = 'LEGAL_DATA';
 
