@@ -213,7 +213,7 @@ namespace odb
 
         public void TruncateDB()
         {
-            //query
+            //query AUTO_INCREMENT=10001 
             string sa = @"
             
                 DROP database eshopinnodb;
@@ -233,7 +233,7 @@ CREATE TABLE `orders` (
   `customer_id` int(10) unsigned ,
   `item_id` int(10) unsigned ,
   PRIMARY KEY (`order_id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 	

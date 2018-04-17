@@ -22,6 +22,7 @@ namespace odb
 
             //b.Check();
 
+
             a.TruncateDB();
             a.ApplyConstraints();
 
@@ -34,6 +35,7 @@ namespace odb
 
             InsertOrders(a, 150);
             InsertOrderStatus(a, 200);
+            //a.Insert("insert into order_status(status, status_changed, order_id) values('Order Created', '2018-04-17 10:47:51', 10002);");
 
         }
 
@@ -417,6 +419,7 @@ namespace odb
         {
             return start.AddDays(rng.Next(range)).ToString("yyyy-MM-dd H:mm:ss"); ;
         }
+
         public static void InsertOrderStatus(MyConnect a, int n)
         {
             string[] status = new string[]
@@ -428,6 +431,8 @@ namespace odb
                 "Order Closed",
             };
             int MaxOrderId = a.CheckMaxOrderID();
+            WriteLine("Maxorder id {0}", MaxOrderId);
+            ReadKey();
             int ordr_id;
             Random rng = new Random();
             DateTime start = new DateTime(2016, 1, 1);
@@ -439,7 +444,7 @@ namespace odb
                 {
                     ordr_id = rng.Next(1, MaxOrderId + 1);
                     int j = a.Count(String.Format("select count(*) from orders where order_id = '{0}';", ordr_id));
-                    if (j == 0)
+                    if (j != 0)
                     {
                         Console.WriteLine("Trying insert orded status");
                         try
@@ -464,6 +469,7 @@ namespace odb
                 }
             }
         }
+
         public static void CreateNewStock(int n)
         {
             Stopwatch t = new Stopwatch();
@@ -491,13 +497,11 @@ namespace odb
         {
 
             string sa = @"
-            
-                DROP database eshopinnodb;
+DROP database eshopinnodb;
 Create database eshopInnoDB;
 use eshopInnoDB;
 
-
-CREATE TABLE `shops` (
+   CREATE TABLE `shops` (
   `city` char(20) UNIQUE,
   `shop_id` int(10) unsigned AUTO_INCREMENT,
   PRIMARY KEY (`shop_id`)
@@ -509,7 +513,7 @@ CREATE TABLE `orders` (
   `customer_id` int(10) unsigned ,
   `item_id` int(10) unsigned ,
   PRIMARY KEY (`order_id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8;
+  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 	
@@ -546,7 +550,6 @@ CREATE TABLE `customers` (
   `customer_id` int(10) unsigned AUTO_INCREMENT,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
             
             ";
             // string a
@@ -643,6 +646,7 @@ CREATE TABLE `customers` (
         {
             string sa = @"
                          
+
 alter table `order_status` 
 add CONSTRAINT `order_status_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
 
