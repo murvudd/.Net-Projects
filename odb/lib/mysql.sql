@@ -8,7 +8,8 @@ select count(*) from customers where (customers.first_name = 'Jakobina' && custo
 
 select (customer_id) from customers order by customer_id desc;
 
-select * from orders;
+select count(*) from customers;
+select count(*) from orders;
 
 select max(order_id) from orders;
 
@@ -30,6 +31,11 @@ SELECT COUNT(*)
  WHERE table_catalog = 'eshopinnodb' -- the database
    AND table_name = 'customers'
    ;
+-- SELECT (data_length+index_length)/power(1024,3) tablesize
+SELECT (data_length+index_length)/power(1024,3) tablesize
+FROM information_schema.tables
+WHERE table_schema='eshopinnodb' and table_name='order_status';
+
 
 
 -- SELECT (data_length+index_length)/power(1024,3) tablesize
@@ -43,7 +49,7 @@ DROP database eshopinnodb;
 Create database eshopInnoDB;
 use eshopInnoDB;
 
-
+-- a;
 CREATE TABLE `shops` (
   `city` char(20) UNIQUE,
   `shop_id` int(10) unsigned AUTO_INCREMENT,

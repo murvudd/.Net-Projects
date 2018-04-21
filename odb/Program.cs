@@ -23,18 +23,18 @@ namespace odb
             //b.Check();
 
 
-            a.TruncateDB();
-            a.ApplyConstraints();
+            //a.TruncateDB();
+            //a.ApplyConstraints();
 
-            InsertShop(a, "Data/miasta.txt");
-            CreateNewStock(25);
-            InsertStock(a, "Data/stock.txt", "Data/miasta.txt");
+            //InsertShop(a, "Data/miasta.txt");
+            //CreateNewStock(25000);
+            //InsertStock(a, "Data/stock.txt", "Data/miasta.txt");
 
-            InsertCustomers(100, a, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
+            //InsertCustomers(100000, a, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
 
 
-            InsertOrders(a, 150);
-            InsertOrderStatus(a, 200);
+            InsertOrders(a, 150000);
+            InsertOrderStatus(a, 2000000);
             //a.Insert("insert into order_status(status, status_changed, order_id) values('Order Created', '2018-04-17 10:47:51', 10002);");
 
         }
