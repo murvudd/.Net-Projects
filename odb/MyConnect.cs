@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using static odb.StaticMethods;
 
 namespace odb
 {
@@ -213,6 +214,7 @@ namespace odb
 
         public void TruncateDB()
         {
+            Console.WriteLine("Truncating DB");
             //query AUTO_INCREMENT=10001 
             string sa = @"
             
@@ -275,11 +277,12 @@ CREATE TABLE `customers` (
             ";
 
             this.Insert(sa);
-
+            this.ApplyConstraints();
         }
 
         public void ApplyConstraints()
         {
+            Console.WriteLine("Applying constraints");
             string sa = @"
                          
 alter table `order_status` 
@@ -293,6 +296,26 @@ ALTER TABLE `orders`
 	add CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `stock` (`item_id`);
                          ";
             this.Insert(sa);
+        }
+
+        public void InitalizeDB(int[] n)
+        {
+            if (n.Length == 4)
+            {
+
+                this.TruncateDB();
+                //this.ApplyConstraints();
+
+                InsertShop(this, "Data/miasta.txt");
+                CreateNewStock(n[0]);
+                InsertStock(this, "Data/stock.txt", "Data/miasta.txt");
+
+                InsertCustomers(n[1], this, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
+
+
+                InsertOrders(this, n[2]);
+                InsertOrderStatus(this, n[3]);
+            }
         }
 
     }
