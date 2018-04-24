@@ -10,6 +10,7 @@ using System.Diagnostics;
 using static System.Console;
 using MySql.Data.MySqlClient;
 using static odb.StaticMethods;
+using static odb.TestConnect;
 
 namespace odb
 {
@@ -17,18 +18,24 @@ namespace odb
     {
         static void Main(string[] args)
         {
-            MyConnect a = new MyConnect();
-            MyConnect[] myConnect = new MyConnect[2];
-            //OracleConnect b = new OracleConnect();
-            //Random rng = new Random();
+            MyConnect root = new MyConnect();
+            for (int i = 0; i < 100; i++)
+            {
+            Console.WriteLine("{0}      {1}",i,root.CheckEmailOfCustomer()==null);
+                Thread.Sleep(10);
+            }
 
-            //b.Check();
-            //
 
-            //{ #new stock, #insert customers, #insert orders,
-            // #insert orderstatus}
-            a.InitalizeDB(new int[] { 25, 10, 15, 20 }); 
+            //MyConnect[] myConnect = new MyConnect[5];
+            //myConnect[0] = new MyConnect(root.CheckEmailOfCustomer());
+            //////OracleConnect b = new OracleConnect();
+            //////Random rng = new Random();
 
+            //////b.Check();
+            //////
+
+
+            ////root.InitializeDB(new int[] { 25, 10, 15, 20 });
 
 
             //a.Insert("insert into order_status(status, status_changed, order_id) values('Order Created', '2018-04-17 10:47:51', 10002);");

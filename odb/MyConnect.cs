@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using MySql.Data.MySqlClient;
 using static odb.StaticMethods;
 
@@ -22,6 +23,18 @@ namespace odb
         {
             Initialize();
         }
+        public MyConnect(string user)
+        {
+
+            Initialize(user, "password");
+            CreateUser();
+        }
+        public MyConnect(string user, string pass, string _server, string db)
+        {
+            Initialize(user, pass, _server, db);
+        }
+
+
 
         //Initialize values
         //private void Initialize()
@@ -31,6 +44,34 @@ namespace odb
             database = "eshopinnodb"; // nazwa bazy danych
             uid = "root";//login usera
             password = "admin1";// hasło usera
+            string connectionString;
+            connectionString = "SERVER=" + server + ";" +
+                               "DATABASE=" + database + ";" +
+                               "UID=" + uid + ";" +
+                               "PASSWORD=" + password + ";";
+
+            connection = new MySqlConnection(connectionString);
+        }
+        protected void Initialize(string user, string pass)
+        {
+            server = "localhost";
+            database = "eshopinnodb"; // nazwa bazy danych
+            uid = user;//login usera
+            password = pass;// hasło usera
+            string connectionString;
+            connectionString = "SERVER=" + server + ";" +
+                               "DATABASE=" + database + ";" +
+                               "UID=" + uid + ";" +
+                               "PASSWORD=" + password + ";";
+
+            connection = new MySqlConnection(connectionString);
+        }
+        protected void Initialize(string user, string pass, string _server, string db)
+        {
+            server = _server;
+            database = db; // nazwa bazy danych
+            uid = user;//login usera
+            password = pass;// hasło usera
             string connectionString;
             connectionString = "SERVER=" + server + ";" +
                                "DATABASE=" + database + ";" +
@@ -141,7 +182,132 @@ namespace odb
             }
         }
 
-        ////Select statement
+        public int SelectMaxCustomer_id()
+        {
+            int j = -1;
+            MySqlCommand cmd;
+            if (this.OpenConnection() == true)
+            {
+                cmd = new MySqlCommand("select max(customer_id) from customers", this.connection);
+                int.TryParse(cmd.ExecuteScalar() + "", out j);
+                this.CloseConnection();
+            }
+            return j;
+        }
+        /// <summary>
+        /// <para>
+        /// returns true when theres customer with given id
+        /// </para>
+        /// </summary>
+        /// <param name="j"></param>
+        /// <param name="i"></param>
+        public bool CheckIfCustomerExists(int id)
+        {
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(string.Format("select count(*) from customers where customer_id = {0}", id), this.connection);
+                int.TryParse(cmd.ExecuteScalar() + "", out int j);
+                CloseConnection();
+                if (j == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                CloseConnection();
+                return false;
+            }
+
+        }
+        public string CheckEmailOfCustomer(out bool f)
+        {
+            string mail = null;
+            Random rng = new Random();
+            int MaxId = this.SelectMaxCustomer_id() + 1;
+            int id = rng.Next(1, MaxId);
+            if (CheckIfCustomerExists(id))
+            {
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(string.Format("select email from customers where customer_id = {0}", id), this.connection);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        mail = reader["email"] + "";
+                    }
+                    reader.Close();
+                    CloseConnection();
+                }
+            }
+            f = (mail == null);
+            return mail;
+        }
+        public string CheckEmailOfCustomer(int id, bool cond)
+        {
+            string mail = null;
+            if (cond)
+            {
+
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(string.Format("select email from customers where customer_id = {0}", id), this.connection);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        mail = reader["email"] + "";
+                    }
+                    reader.Close();
+                    CloseConnection();
+                }
+            }
+            return mail;
+        }
+        //public void CheckIasffRandomUserExists(out int i, out int j, out string mail)
+        //{
+        //    i = -1;
+        //    j = -1;
+        //    mail = null;
+
+
+        //    if (this.OpenConnection() == true && j != 0 && j != -1)
+        //    {
+        //        Console.WriteLine("drugi if  " + j);
+        //        int k = rng.Next(1, j);
+        //        //cmd = new MySqlCommand(string.Format("select count(customer_id) from customers where customer_id = {0};", k, this.connection));
+        //        cmd = new MySqlCommand(string.Format("select count(customer_id) from customers where customer_id = {0};", 1984, this.connection));
+        //        Console.WriteLine("dwa i pol if");
+
+
+        //        int.TryParse(cmd.ExecuteScalar() + "", out i);
+        //        this.CloseConnection();
+
+        //    }
+        //    if (this.OpenConnection() == true && j != 0 && j != -1 && i != 0)
+        //    {
+        //        Console.WriteLine("trzeci if");
+        //        cmd = new MySqlCommand(string.Format("select email from customers where customer_id = {0}", 1984), this.connection);
+        //        MySqlDataReader DataReader = cmd.ExecuteReader();
+        //        while (DataReader.Read())
+        //        {
+        //            mail = DataReader["email"] + "";
+        //        }
+        //        this.CloseConnection();
+        //    }
+        //    else
+        //    {
+        //        this.CloseConnection();
+        //    }
+
+
+
+
+
+        //}
         public int[] CheckMaxCustmIDItmID()
         {
             //Create a list to store the result
@@ -298,7 +464,16 @@ ALTER TABLE `orders`
             this.Insert(sa);
         }
 
-        public void InitalizeDB(int[] n)
+        /// <summary>
+        /// <para>a</para>
+        /// </summary>
+        /// <param name="n">
+        /// <para>n[0] # of new stock</para>
+        /// <para>n[1] # new customers</para>
+        /// <para>n[2] # of new orders</para>
+        /// <para>n[3] # of orderStatuses</para>
+        /// </param>
+        public void InitializeDB(int[] n)
         {
             if (n.Length == 4)
             {
@@ -315,6 +490,33 @@ ALTER TABLE `orders`
 
                 InsertOrders(this, n[2]);
                 InsertOrderStatus(this, n[3]);
+            }
+        }
+
+        /// <summary>
+        /// <para>Creates user of db from initialized MyConnect instance</para>
+        /// </summary>
+        public void CreateUser()
+        {
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                //int.TryParse(cmd.ExecuteScalar() + "", out i);
+                cmd = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'localhost' IDENTIFIED BY '{1}'; 
+                                            grant select, insert on {2}.orders to '{0}'@'{3}';
+                                            grant select, insert, delete on {2}.customers to '{0}'@'{3}';
+                                            ", this.uid, this.password, this.database, this.server), this.connection);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (MySqlException)
+                {
+
+                    throw;
+                }
             }
         }
 

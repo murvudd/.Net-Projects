@@ -16,7 +16,7 @@ namespace odb
 
         public void CreateUser()
         {
-            MySqlClient mySqlClient = new ;
+            
         }
 
     }

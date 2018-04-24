@@ -159,24 +159,24 @@ namespace odb
             }
         }
 
-        public void TestMethod()
+        public static void TestMethod(MyConnect a, out string mail)
         {
-            int MaxOrderId = -1;
-            if (this.OpenConnection() == true)
+            mail = null;
+            //Console.Write("Początek test metody");
+            if (a.OpenConnection() == true)
             {
-                MySqlCommand cmd = new MySqlCommand("select max(order_id) from orders;", this.connection);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
+                //Console.Write("while test metody");
+                MySqlCommand cmd = new MySqlCommand(string.Format("select email from customers where customer_id = {0}", 1984), a.connection);
+                MySqlDataReader DataReader = cmd.ExecuteReader();
+                while (DataReader.Read())
                 {
-                    int.TryParse(dataReader["max(order_id)"] + "", out MaxOrderId);
+                    mail = DataReader["email"] + "";
                 }
-                dataReader.Close();
-                CloseConnection();
-                Console.WriteLine("Max orded id {0}", MaxOrderId);
             }
+            a.CloseConnection();
         }
 
-        
+
         public string RandomDay(Random rng, int range, DateTime start)
         {
             start = new DateTime(2016, 1, 1);

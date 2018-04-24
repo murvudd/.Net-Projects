@@ -1,5 +1,11 @@
 use eshopinnodb;
 
+create user if not exists 'jeffrey'@'localhost' IDENTIFIED BY 'password';
+show grants for 'jeffrey'@'localhost';
+GRANT SELECT, INSERT, DELETE ON eshopinnodb.tb_Users TO 'jeffrey'@'localhost';
+grant select, insert, delete on eshopinnodb.orders to 'jeffrey'@'localhost';
+grant select, insert, delete on eshopinnodb.customers to 'jeffrey'@'localhost';
+
 select * from customers where ( customer_id =500);
 
 select max(item_id) from stock;
