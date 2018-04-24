@@ -1,36 +1,24 @@
 use eshopinnodb;
 
-create user if not exists 'jeffrey'@'localhost' IDENTIFIED BY 'password';
-show grants for 'jeffrey'@'localhost';
+select count(customer_id) from customers where customer_id = 1984;
+select count(*) from customers where customer_id = 1984;
+select email from customers where customer_id = 1984;
+
+
+create user if not exists ''@'localhost' IDENTIFIED BY 'password';
+select * from mysql.user;
+drop user if exists 'user1'@'localhost';
+show grants for 'janek'@'localhost';
 GRANT SELECT, INSERT, DELETE ON eshopinnodb.tb_Users TO 'jeffrey'@'localhost';
-grant select, insert, delete on eshopinnodb.orders to 'jeffrey'@'localhost';
+grant select, insert on eshopinnodb.orders to 'jeffrey'@'localhost';
 grant select, insert, delete on eshopinnodb.customers to 'jeffrey'@'localhost';
-
-select * from customers where ( customer_id =500);
-
-select max(item_id) from stock;
-
-select count(*) from customers where (customers.first_name = 'Jakobina' && customers.last_name = 'Wieczorek');
-
-select (customer_id) from customers order by customer_id desc;
-
-select count(*) from customers;
-select count(*) from orders;
-
-select max(order_id) from orders;
-
-
 
 select table_name, TABLE_TYPE, engine
 from information_schema.TABLES 
 where TABLE_SCHEMA = 'eshop'
 order by TABLE_NAME;
 
-
-
 select count(*) Noofcolumns from SYSCOLUMNS where id=(select id from SYSOBJECTS where name='customers');
-
-
 
 SELECT COUNT(*)
   FROM INFORMATION_SCHEMA.COLUMNS
