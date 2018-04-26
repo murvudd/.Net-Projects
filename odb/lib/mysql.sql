@@ -7,11 +7,14 @@ select email from customers where customer_id = 1984;
 
 create user if not exists ''@'localhost' IDENTIFIED BY 'password';
 select * from mysql.user;
-drop user if exists 'user1'@'localhost';
-show grants for 'janek'@'localhost';
+select count(user) from mysql.user where user = 'root';
+drop user if exists ''@'localhost';
+drop user if exists ''@'localhost';
+show grants for 'jeffrey'@'localhost';
 GRANT SELECT, INSERT, DELETE ON eshopinnodb.tb_Users TO 'jeffrey'@'localhost';
 grant select, insert on eshopinnodb.orders to 'jeffrey'@'localhost';
 grant select, insert, delete on eshopinnodb.customers to 'jeffrey'@'localhost';
+grant select on eshopinnodb.stock to 'jeffrey'@'localhost';
 
 select table_name, TABLE_TYPE, engine
 from information_schema.TABLES 
