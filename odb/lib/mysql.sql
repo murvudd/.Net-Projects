@@ -7,7 +7,7 @@ select email from customers where customer_id = 1984;
 
 create user if not exists ''@'localhost' IDENTIFIED BY 'password';
 select * from mysql.user;
-select count(user) from mysql.user where user = 'root';
+select count(user) from mysql.user where user like 'user%';
 drop user if exists ''@'localhost';
 drop user if exists ''@'localhost';
 show grants for 'jeffrey'@'localhost';
