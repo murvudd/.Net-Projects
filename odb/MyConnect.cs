@@ -1,204 +1,204 @@
-﻿//using Oracle.ManagedDataAccess.Client;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Threading;
-//using MySql.Data.MySqlClient;
-//using static System.Console;
-//using System.IO;
-//using System.Diagnostics;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using MySql.Data.MySqlClient;
+using static System.Console;
+using System.IO;
+using System.Diagnostics;
 
-//namespace odb
-//{
-//    public class MyConnect
-//    {
-//        public MySqlConnection connection;
-//        private string server;
-//        private string database;
-//        private string uid;
-//        private string password;
-
-
-//        //Constructor
-//        public MyConnect()
-//        {
-//            Initialize();
-//        }
-//        public MyConnect(string user)
-//        {
-
-//            //CreateUser(user);
-//            Initialize(user);
-//        }
-//        public MyConnect(string user, string pass, string _server, string db)
-//        {
-//            Initialize(user, pass, _server, db);
-//        }
+namespace odb
+{
+    public class MyConnect
+    {
+        public MySqlConnection connection;
+        private string server;
+        private string database;
+        private string uid;
+        private string password;
 
 
+        //Constructor
+        public MyConnect()
+        {
+            Initialize();
+        }
+        //public MyConnect(string user)
+        //{
 
-//        //Initialize values
-//        //private void Initialize()
-//        protected void Initialize()
-//        {
-//            server = "localhost";
-//            database = "eshopinnodb"; // nazwa bazy danych
-//            uid = "root";//login usera
-//            password = "admin1";// hasło usera
-//            string connectionString;
-//            connectionString = "SERVER=" + server + ";" +
-//                               "DATABASE=" + database + ";" +
-//                               "UID=" + uid + ";" +
-//                               "PASSWORD=" + password + ";";
-
-//            connection = new MySqlConnection(connectionString);
-//        }
-//        protected void Initialize(string user)
-//        {
-//            server = "localhost";
-//            database = "eshopinnodb"; // nazwa bazy danych
-//            uid = user;//login usera
-//            password = "password";// hasło usera
-//            string connectionString;
-//            connectionString = "SERVER=" + server + ";" +
-//                               "DATABASE=" + database + ";" +
-//                               "UID=" + uid + ";" +
-//                               "PASSWORD=" + password + ";";
-
-//            connection = new MySqlConnection(connectionString);
-//        }
-//        protected void Initialize(string user, string pass)
-//        {
-//            server = "localhost";
-//            database = "eshopinnodb"; // nazwa bazy danych
-//            uid = user;//login usera
-//            password = pass;// hasło usera
-//            string connectionString;
-//            connectionString = "SERVER=" + server + ";" +
-//                               "DATABASE=" + database + ";" +
-//                               "UID=" + uid + ";" +
-//                               "PASSWORD=" + password + ";";
-
-//            connection = new MySqlConnection(connectionString);
-//        }
-//        protected void Initialize(string user, string pass, string _server, string db)
-//        {
-//            server = _server;
-//            database = db; // nazwa bazy danych
-//            uid = user;//login usera
-//            password = pass;// hasło usera
-//            string connectionString;
-//            connectionString = "SERVER=" + server + ";" +
-//                               "DATABASE=" + database + ";" +
-//                               "UID=" + uid + ";" +
-//                               "PASSWORD=" + password + ";";
-
-//            connection = new MySqlConnection(connectionString);
-//        }
-
-//        //Open connection to database
-//        public bool OpenConnection()
-//        {
-//            try
-//            {
-//                connection.Open();
-//                return true;
-//            }
-//            catch (MySqlException ex)
-//            {
-//                //When handling errors, you can your application's response based 
-//                //on the error number.
-//                //The two most common error numbers when connecting are as follows:
-//                //0: Cannot connect to server.
-//                //1045: Invalid user name and/or password.
-//                switch (ex.Number)
-//                {
-//                    case 0:
-//                        //MessageBox.Show("Cannot connect to server.  Contact administrator");
-//                        Console.WriteLine("Cannot connect to server.  Contact administrator:        " + ex.Message);
-//                        break;
-
-//                    case 1045:
-//                        //MessageBox.Show("Invalid username/password, please try again");
-//                        Console.WriteLine("Invalid username/password, please try again");
-//                        break;
-//                }
-//                return false;
-//            }
-//        }
-
-//        //Close connection
-//        public bool CloseConnection()
-//        {
-//            try
-//            {
-//                connection.Close();
-//                return true;
-//            }
-//            catch (MySqlException ex)
-//            {
-//                //MessageBox.Show(ex.Message);
-//                Console.WriteLine(ex.Message);
-//                return false;
-//            }
-//        }
-
-//        //Insert statement
-//        public void Insert(string query)
-//        {
-//            //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
-
-//            //open connection
-//            if (this.OpenConnection() == true)
-//            {
-//                //create command and assign the query and connection from the constructor
-//                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-//                try
-//                {
-
-//                    //Execute command
-//                    cmd.ExecuteNonQuery();
-//                }
-//                catch (Exception)
-//                {
-//                    this.CloseConnection();
-//                    throw;
-//                }
+        //    //CreateUser(user);
+        //    Initialize(user);
+        //}
+        //public MyConnect(string user, string pass, string _server, string db)
+        //{
+        //    Initialize(user, pass, _server, db);
+        //}
 
 
-//                //close connection
-//                this.CloseConnection();
-//            }
-//        }
 
-//        //COUNT!
-//        public int Count(string query)
-//        {
+        //Initialize values
+        //private void Initialize()
+        protected void Initialize()
+        {
+            server = "localhost";
+            database = "eshopinnodb"; // nazwa bazy danych
+            uid = "root";//login usera
+            password = "admin1";// hasło usera
+            string connectionString;
+            connectionString = "SERVER=" + server + ";" +
+                               "DATABASE=" + database + ";" +
+                               "UID=" + uid + ";" +
+                               "PASSWORD=" + password + ";";
 
-//            int Count = -1;
+            connection = new MySqlConnection(connectionString);
+        }
+        //protected void Initialize(string user)
+        //{
+        //    server = "localhost";
+        //    database = "eshopinnodb"; // nazwa bazy danych
+        //    uid = user;//login usera
+        //    password = "password";// hasło usera
+        //    string connectionString;
+        //    connectionString = "SERVER=" + server + ";" +
+        //                       "DATABASE=" + database + ";" +
+        //                       "UID=" + uid + ";" +
+        //                       "PASSWORD=" + password + ";";
 
-//            //Open Connection
-//            if (this.OpenConnection() == true)
-//            {
-//                //Create Mysql Command
-//                MySqlCommand cmd = new MySqlCommand(query, connection);
+        //    connection = new MySqlConnection(connectionString);
+        //}
+        //protected void Initialize(string user, string pass)
+        //{
+        //    server = "localhost";
+        //    database = "eshopinnodb"; // nazwa bazy danych
+        //    uid = user;//login usera
+        //    password = pass;// hasło usera
+        //    string connectionString;
+        //    connectionString = "SERVER=" + server + ";" +
+        //                       "DATABASE=" + database + ";" +
+        //                       "UID=" + uid + ";" +
+        //                       "PASSWORD=" + password + ";";
 
-//                //ExecuteScalar will return one value
-//                Count = int.Parse(cmd.ExecuteScalar() + "");
+        //    connection = new MySqlConnection(connectionString);
+        //}
+        //protected void Initialize(string user, string pass, string _server, string db)
+        //{
+        //    server = _server;
+        //    database = db; // nazwa bazy danych
+        //    uid = user;//login usera
+        //    password = pass;// hasło usera
+        //    string connectionString;
+        //    connectionString = "SERVER=" + server + ";" +
+        //                       "DATABASE=" + database + ";" +
+        //                       "UID=" + uid + ";" +
+        //                       "PASSWORD=" + password + ";";
 
-//                //close Connection
-//                this.CloseConnection();
+        //    connection = new MySqlConnection(connectionString);
+        //}
 
-//                return Count;
-//            }
-//            else
-//            {
-//                return Count;
-//            }
-//        }
+        //Open connection to database
+        private bool OpenConnection()
+        {
+            try
+            {
+                connection.Open();
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                //When handling errors, you can your application's response based 
+                //on the error number.
+                //The two most common error numbers when connecting are as follows:
+                //0: Cannot connect to server.
+                //1045: Invalid user name and/or password.
+                switch (ex.Number)
+                {
+                    case 0:
+                        //MessageBox.Show("Cannot connect to server.  Contact administrator");
+                        Console.WriteLine("Cannot connect to server.  Contact administrator:        " + ex.Message);
+                        break;
+
+                    case 1045:
+                        //MessageBox.Show("Invalid username/password, please try again");
+                        Console.WriteLine("Invalid username/password, please try again");
+                        break;
+                }
+                return false;
+            }
+        }
+
+        //Close connection
+        private bool CloseConnection()
+        {
+            try
+            {
+                connection.Close();
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                //MessageBox.Show(ex.Message);
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        //Insert statement
+        public void Insert(string query)
+        {
+            //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
+
+            //open connection
+            if (this.OpenConnection() == true)
+            {
+                //create command and assign the query and connection from the constructor
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                try
+                {
+
+                    //Execute command
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    this.CloseConnection();
+                    throw;
+                }
+
+
+                //close connection
+                this.CloseConnection();
+            }
+        }
+
+        //COUNT!
+        public int Count(string query)
+        {
+
+            int Count = -1;
+
+            //Open Connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Mysql Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                //ExecuteScalar will return one value
+                Count = int.Parse(cmd.ExecuteScalar() + "");
+
+                //close Connection
+                this.CloseConnection();
+
+                return Count;
+            }
+            else
+            {
+                return Count;
+            }
+        }
 
 //        public void TruncateDB()
 //        {
@@ -1016,7 +1016,7 @@
 //                //int.TryParse(cmd.ExecuteScalar() + "", out i);
 //                MySqlCommand cmd0 = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
 //                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
-                
+
 //                MySqlCommand cmd1 = new MySqlCommand(string.Format(@"grant all on {2}.* to '{0}'@'{3}';
 //                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
 
@@ -1090,7 +1090,7 @@
 //        public void UserDelete() { }
 //        public void TruncateUsers(int n)
 //        {
-//            int k=0;
+//            int k = 0;
 //            if (this.OpenConnection() == true)
 //            {
 
@@ -1142,7 +1142,7 @@
 //            {
 //                this.Insert(string.Format("drop user if exists 'admin{0}'@'localhost';", i));
 //            }
-           
+
 
 //            for (int i = 0; i < n; i++)
 //            {
@@ -1269,5 +1269,5 @@
 
 //        }
 
-//    }
-//}
+    }
+}

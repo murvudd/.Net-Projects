@@ -50,7 +50,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticMethods.cs" />
-    <Compile Include="TestConnect.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

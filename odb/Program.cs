@@ -9,8 +9,6 @@ using System.IO;
 using System.Diagnostics;
 using static System.Console;
 using MySql.Data.MySqlClient;
-using static odb.StaticMethods;
-using static odb.TestConnect;
 
 namespace odb
 {
@@ -37,7 +35,8 @@ namespace odb
             //        InsertOrderStatus(a, n[3]);
             //    }
             //}
-            UserOfDB root = new UserOfDB();
+            UserOfDB.Admin root = new UserOfDB.Admin();
+            
             root.TruncateUsers(100);
             for (int i = 0; i < 100; i++)
             {
@@ -49,17 +48,15 @@ namespace odb
                 thread[i].Start();
 
             }
-            UserOfDB.IKupa kupa = new UserOfDB.Customer();
-            UserOfDB.Customer myFoo = new UserOfDB.Customer();
-            
+                        
         }
         static Thread[] thread = new Thread[100];
         static void Task()
         {
-            UserOfDB user = new UserOfDB("user" + Thread.CurrentThread.Name);
+            UserOfDB.Customer user = new UserOfDB.Customer("user" + Thread.CurrentThread.Name);
             for (int i = 0; i < 100; i++)
             {
-                user.UserInsertOrders();
+                user.InsertOrders();
             }
 
         }
