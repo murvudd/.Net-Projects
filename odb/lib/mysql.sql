@@ -4,13 +4,13 @@ select count(customer_id) from customers where customer_id = 1984;
 select count(*) from customers where customer_id = 1984;
 select email from customers where customer_id = 1984;
 
-
+delete from customers where customers.email = '';
 create user if not exists ''@'localhost' IDENTIFIED BY 'password';
 select * from mysql.user;
-select count(user) from mysql.user where user like 'user%';
+select count(user) from mysql.user where user like 'admin%';
+drop user if exists 'user'@'localhost';
 drop user if exists ''@'localhost';
-drop user if exists ''@'localhost';
-show grants for 'jeffrey'@'localhost';
+show grants for 'admin0'@'localhost';
 GRANT SELECT, INSERT, DELETE ON eshopinnodb.tb_Users TO 'jeffrey'@'localhost';
 grant select, insert on eshopinnodb.orders to 'jeffrey'@'localhost';
 grant select, insert, delete on eshopinnodb.customers to 'jeffrey'@'localhost';
