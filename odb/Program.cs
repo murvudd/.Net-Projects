@@ -14,6 +14,8 @@ namespace odb
 {
     class Program
     {
+
+        static Thread[] thread = new Thread[50];
         static void Main(string[] args)
         {
             //public static void InitalizeDB(MyConnect a, int[] n)
@@ -36,25 +38,42 @@ namespace odb
             //    }
             //}
             UserOfDB.Admin root = new UserOfDB.Admin();
-            //List<UserOfDB.Customer>  cstmrs = new List<UserOfDB.Customer>();
-
+            //root.DropUsers();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    thread[i] = new Thread(root.CustomerSim)
+            //    {
+            //        Name = i + ""
+            //    };
+            //    thread[i].Start();
+            //}
 
             root.DropUsers();
+            root.DropAdmins();
             
-            for (int i = 0; i < 10; i++)
-            {
+            WriteLine("Number of threads created " + thread.Length);
 
-                thread[i] = new Thread(root.Task)
+            ////for (int i = 0; i < int; i++)
+            for (int i = 0; i < thread.Length; i++)
+            {
+                thread[i] = new Thread(root.CreateAdmin("admin" + i).AdminSim)
                 {
                     Name = i + ""
                 };
+                WriteLine("thread" + Thread.CurrentThread.Name + "  rozpoczyna pracę");
                 thread[i].Start();
-                
             }
+            //WriteLine("za minute zamknięcie threadów");
+            //Thread.Sleep(10 * 1000);
+            //WriteLine("zamykanie threadów");
+            //foreach (var thrd in thread)
+            //{
+            //    thrd.Abort();
+            //}
+            //WriteLine("thready zamkniete");
 
         }
-        static Thread[] thread = new Thread[100];
-       
+
     }
 
     public class Increment

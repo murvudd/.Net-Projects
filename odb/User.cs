@@ -17,11 +17,11 @@ namespace odb
         public MySqlConnection connection;
         private string server = "localhost";
         private string database = "eshopinnodb";
-        private string uid= "";
+        private string uid = "";
         private string password = "password";
         //Constructor
 
-        
+
 
         //Initialize values
         protected void Initialize()
@@ -50,7 +50,8 @@ namespace odb
                 {
                     case 0:
                         //MessageBox.Show("Cannot connect to server.  Contact administrator");
-                        Console.WriteLine("Cannot connect to server.  Contact administrator:        " + ex.Message);
+                        Console.WriteLine("Cannot connect to server.  Message: " + ex.Message+ "Inner Exception" + ex.InnerException);
+                        throw;
                         break;
 
                     case 1045:
@@ -90,9 +91,9 @@ namespace odb
         {
             int Count(string query);
         }
-        protected interface IDelete
+        protected interface IDrop
         {
-            void Delete(string query);
+            void Drop(string query);
         }
         protected interface IUpdate
         {
@@ -103,7 +104,7 @@ namespace odb
         {
 
         }
-        protected interface IShopManager : ISelect, IDelete, IUpdate, IInsert, ICount
+        protected interface IShopManager : ISelect, IDrop, IUpdate, IInsert, ICount
         {
 
         }
@@ -117,19 +118,19 @@ namespace odb
             /// str[3] server
             /// </summary>
             /// <param name="str"></param>
-            
+
             public Customer(params string[] str)
             {
                 if (str.Length == 1)
                 {
                     uid = str[0];
-                    
+
                 }
                 if (str.Length == 2)
                 {
                     uid = str[0];
                     password = str[1];
-                    
+
                 }
                 if (str.Length == 4)
                 {
@@ -288,7 +289,7 @@ namespace odb
             }
 
         }
-        class ShopManager : UserOfDB, IShopManager
+        public class ShopManager : UserOfDB, IShopManager
         {
             public void Insert(string query)
             {
@@ -353,12 +354,12 @@ namespace odb
 
             }
 
-            public void Delete(string query)
+            public void Drop(string query)
             {
                 throw new NotImplementedException();
             }
         }
-        class ShopBot : UserOfDB, IShopManager
+        public class ShopBot : UserOfDB, IShopManager
         {
             public void Insert(string query)
             {
@@ -423,12 +424,12 @@ namespace odb
 
             }
 
-            public void Delete(string query)
+            public void Drop(string query)
             {
                 throw new NotImplementedException();
             }
         }
-        public class Admin : UserOfDB, IInsert, ICount
+        public class Admin : UserOfDB
         {
             public Admin()
             {
@@ -454,14 +455,14 @@ namespace odb
                 if (str.Length == 1)
                 {
                     uid = str[0];
-                    password = "admin1";
-                    
+                    password = "password";
+
                 }
                 if (str.Length == 2)
                 {
                     uid = str[0];
                     password = str[1];
-                   
+
                 }
                 if (str.Length == 4)
                 {
@@ -473,6 +474,24 @@ namespace odb
                 Initialize();
             }
 
+            public void Query(string qry)
+            {
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(qry, this.connection);
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                    
+                        CloseConnection();
+                }
+            }
             public void Insert(string query)
             {
                 //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
@@ -850,18 +869,19 @@ ALTER TABLE `orders`
             //        }
             //    }
             //}
-            public void CreateAdmin(string uid)
+            public Admin CreateAdmin(string uid)
             {
+                Admin admin = new Admin(uid);
                 if (this.OpenConnection() == true)
                 {
                     //MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
                     //MySqlDataReader dataReader = cmd.ExecuteReader();
                     //int.TryParse(cmd.ExecuteScalar() + "", out i);
                     MySqlCommand cmd0 = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
-                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+                                                                    ", admin.uid, "password", "eshopinnodb", "localhost"), this.connection);
 
                     MySqlCommand cmd1 = new MySqlCommand(string.Format(@"grant all on {2}.* to '{0}'@'{3}';
-                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+                                                                    ", admin.uid, "password", "eshopinnodb", "localhost"), this.connection);
 
                     try
                     {
@@ -871,7 +891,7 @@ ALTER TABLE `orders`
                     }
                     catch (MySqlException)
                     {
-
+                        WriteLine("CreateAdmin exception");
                         throw;
                     }
                     finally
@@ -879,6 +899,7 @@ ALTER TABLE `orders`
                         this.CloseConnection();
                     }
                 }
+                return admin;
             }
 
             ////Insert statement
@@ -1111,18 +1132,48 @@ ALTER TABLE `orders`
             //    timer.Stop();
             //    Console.WriteLine("czas wykonywania: {0}", timer.Elapsed);
             //}
+            public void InsertCustomer(string name, string lastName, string city)
+            {
+                Random rng = new Random();
+                int phone = rng.Next(100000000, 1000000000);
+                try
+                {
+                    //b.Insert(String.Format(@"
+                    //                            insert into customers 
+                    //                            (first_name, last_name, city, email, phone, customer_id) 
+                    //                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}', customer_id.nextval)
+                    //                            ", name, lastName, city, inc.I, phone));
+                    this.Query(String.Format(@"
+                                            insert into customers 
+                                            (first_name, last_name, city, email, phone) 
+                                            values ('{0}', '{1}', '{2}', '{0}.{1}@gmail{3}.com', '{4}')
+                                            ", name, lastName, city, "", phone));
+                    Write(".");
+                }
+                catch (MySqlException e) when (e.Number == 1062)
+                {
+                    WriteLine("\nBŁĄD !! ||  " + e.Number + " ||  " + e.Message + "     \n");
+
+                }
+                catch (Exception e)
+                {
+                    WriteLine("\nBŁĄD !! ||  " + e.Message + "     \n");
+                    throw;
+                }
+                
+                    this.CloseConnection();
+
+            }
             public void InsertCustomers(int n, string imionaPath, string nazwiskaPath, string miastaPath)
             {
                 string[] imiona = File.ReadAllLines(imionaPath);
                 string[] nazwiska = File.ReadAllLines(nazwiskaPath);
                 string[] miasta = File.ReadAllLines(miastaPath);
 
-                Random rng = new Random();
-
                 string name, lastName, city;
                 int phone;
 
-
+                Random rng = new Random();
                 Stopwatch timer = new Stopwatch();
                 //Increment inc = new Increment();
                 timer.Start();
@@ -1540,7 +1591,7 @@ ALTER TABLE `orders`
                     return false;
                 }
             }
-            public void Task()
+            public void CustomerSim()
             {
                 UserOfDB.Customer user = this.CreateCustomer("user" + Thread.CurrentThread.Name);
                 for (int i = 0; i < 100; i++)
@@ -1549,11 +1600,52 @@ ALTER TABLE `orders`
                 }
 
             }
+            public void AdminSim()
+            {
+                while (true)
+                {
+                    Random rng = new Random();
+                    switch (rng.Next(0, 2))
+                    {
+                        case 0:
+                            WriteLine("Inserting customer from user: "+Thread.CurrentThread.Name);
+                            InsertCustomer("Krzysztof", "Karoń", "Kraków");
+                            break;
+
+                        case 1:
+                            WriteLine("deleting customer from user: " + Thread.CurrentThread.Name);
+                            DropCustomer("Krzysztof.Karoń@gmail.com");
+                            break;
+
+                            //case 3:
+                            //    admin.UpdateCustomer();
+                            //    break;
+
+                            //case 4:
+                            //    break;
+
+                    }
+                }
+
+
+
+
+            }
+
+            private void UpdateCustomer()
+            {
+
+            }
+
+            private void DropCustomer(string email)
+            {
+                this.Query(String.Format(@"delete from customers where customers.email = '{0}';", email));
+            }
         }
 
         public static string RandomDay(Random rng, int range, DateTime start)
         {
-            return start.AddDays(rng.Next(range)).ToString("yyyy-MM-dd H:mm:ss"); ;
+            return start.AddDays(rng.Next(range)).ToString("yyyy -MM-dd H:mm:ss"); ;
         }
         public void UserInsertIntoCustomers()
         {
