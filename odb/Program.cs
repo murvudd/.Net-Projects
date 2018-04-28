@@ -36,30 +36,25 @@ namespace odb
             //    }
             //}
             UserOfDB.Admin root = new UserOfDB.Admin();
+            //List<UserOfDB.Customer>  cstmrs = new List<UserOfDB.Customer>();
+
+
+            root.DropUsers();
             
-            root.TruncateUsers(100);
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
 
-                thread[i] = new Thread(Task)
+                thread[i] = new Thread(root.Task)
                 {
                     Name = i + ""
                 };
                 thread[i].Start();
-
+                
             }
-                        
+
         }
         static Thread[] thread = new Thread[100];
-        static void Task()
-        {
-            UserOfDB.Customer user = new UserOfDB.Customer("user" + Thread.CurrentThread.Name);
-            for (int i = 0; i < 100; i++)
-            {
-                user.InsertOrders();
-            }
-
-        }
+       
     }
 
     public class Increment

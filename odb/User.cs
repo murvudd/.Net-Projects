@@ -15,15 +15,13 @@ namespace odb
     class UserOfDB
     {
         public MySqlConnection connection;
-        private string server;
-        private string database;
-        private string uid;
-        private string password;
+        private string server = "localhost";
+        private string database = "eshopinnodb";
+        private string uid= "";
+        private string password = "password";
         //Constructor
 
-        public UserOfDB()
-        {
-        }
+        
 
         //Initialize values
         protected void Initialize()
@@ -110,7 +108,7 @@ namespace odb
 
         }
 
-        class Customer : UserOfDB, ICustomerPrivs
+        public class Customer : UserOfDB, ICustomerPrivs
         {
             /// <summary>
             /// str[0] userID
@@ -119,21 +117,19 @@ namespace odb
             /// str[3] server
             /// </summary>
             /// <param name="str"></param>
+            
             public Customer(params string[] str)
             {
                 if (str.Length == 1)
                 {
                     uid = str[0];
-                    password = "admin1";
-                    database = "eshopinnodb";
-                    server = "localhost";
+                    
                 }
                 if (str.Length == 2)
                 {
                     uid = str[0];
                     password = str[1];
-                    database = "eshopinnodb";
-                    server = "localhost";
+                    
                 }
                 if (str.Length == 4)
                 {
@@ -459,15 +455,13 @@ namespace odb
                 {
                     uid = str[0];
                     password = "admin1";
-                    database = "eshopinnodb";
-                    server = "localhost";
+                    
                 }
                 if (str.Length == 2)
                 {
                     uid = str[0];
                     password = str[1];
-                    database = "eshopinnodb";
-                    server = "localhost";
+                   
                 }
                 if (str.Length == 4)
                 {
@@ -478,6 +472,7 @@ namespace odb
                 }
                 Initialize();
             }
+
             public void Insert(string query)
             {
                 //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
@@ -642,7 +637,7 @@ ALTER TABLE `orders`
                          ";
                 this.Insert(sa);
             }
-            public void TruncateUsers(int n)
+            public void DropUsers()
             {
                 int k = 0;
                 if (this.OpenConnection() == true)
@@ -664,30 +659,29 @@ ALTER TABLE `orders`
                 //    this.Insert(string.Format("GRANT SELECT ON eshopinnodb.stock TO 'user{0}'@'localhost';", i));
                 //}
 
-                for (int i = 0; i < n; i++)
-                {
-                    while (true)
-                    {
-                        if (!this.CheckIfUserExists("user" + i))
-                        {
-                            this.CreateUser("user" + i);
-                            break;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
+                //for (int i = 0; i < n; i++)
+                //{
+                //    while (true)
+                //    {
+                //        if (!this.CheckIfUserExists("user" + i))
+                //        {
+                //            this.CreateUser("user" + i);
+                //            break;
+                //        }
+                //        else
+                //        {
+                //            continue;
+                //        }
+                //    }
 
-                }
+                //}
                 WriteLine("done");
             }
-            public void TruncateAdmins(int n)
+            public void DropAdmins()
             {
                 int k = 0;
                 if (this.OpenConnection() == true)
                 {
-
                     MySqlCommand cmd = new MySqlCommand("select count(user) from mysql.user where user like 'admin%';", this.connection);
                     int.TryParse(cmd.ExecuteScalar() + "", out k);
                     this.CloseConnection();
@@ -697,68 +691,85 @@ ALTER TABLE `orders`
                     this.Insert(string.Format("drop user if exists 'admin{0}'@'localhost';", i));
                 }
 
-
-                for (int i = 0; i < n; i++)
-                {
-                    while (true)
-                    {
-                        if (!this.CheckIfUserExists("user" + i))
-                        {
-                            this.CreateUser("user" + i);
-                            break;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-
-                }
+                //for (int i = 0; i < n; i++)
+                //{
+                //    while (true)
+                //    {
+                //        if (!this.CheckIfUserExists("user" + i))
+                //        {
+                //            this.CreateUser("user" + i);
+                //            break;
+                //        }
+                //        else
+                //        {
+                //            continue;
+                //        }
+                //    }
+                //}
                 WriteLine("done");
             }
 
             /// <summary>
             /// <para>Creates user of db from initialized MyConnect instance</para>
             /// </summary>
-            public void CreateUser()
+            //public Customer CreateCustomer(string uid)
+            //{
+            //    Customer user = new Customer() {
+            //        uid = uid
+            //    };
+            //    user.Initialize();
+            //    if (this.OpenConnection() == true)
+            //    {
+            //        //MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
+            //        //MySqlDataReader dataReader = cmd.ExecuteReader();
+            //        //int.TryParse(cmd.ExecuteScalar() + "", out i);
+
+            //        MySqlCommand cmd0 = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
+            //                                                            ", user.uid, user.password, user.database, user.server), this.connection);
+            //        MySqlCommand cmd1 = new MySqlCommand(string.Format(@"grant select, insert on {2}.orders to '{0}'@'{3}';
+            //                                                            ", user.uid, user.password, user.database, user.server), this.connection);
+            //        MySqlCommand cmd2 = new MySqlCommand(string.Format(@"grant select, insert, delete on {2}.customers to '{0}'@'{3}';
+            //                                                            ", user.uid, user.password, user.database, user.server), this.connection);
+            //        MySqlCommand cmd3 = new MySqlCommand(string.Format(@"grant select on {2}.stock to '{0}'@'{3}';
+            //                                                            ", user.uid, user.password, user.database, user.server), this.connection);
+
+            //        try
+            //        {
+            //            cmd0.ExecuteNonQuery();
+            //            cmd1.ExecuteNonQuery();
+            //            cmd2.ExecuteNonQuery();
+            //            cmd3.ExecuteNonQuery();
+
+            //        }
+            //        catch (MySqlException)
+            //        {
+
+            //            throw;
+            //        }
+            //    }
+            //    return user;
+            //}
+            public Customer CreateCustomer(string uid)
             {
-                if (this.OpenConnection() == true)
+                Customer user = new Customer()
                 {
-                    MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
-                    MySqlDataReader dataReader = cmd.ExecuteReader();
-                    //int.TryParse(cmd.ExecuteScalar() + "", out i);
-                    cmd = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
-                                            grant select, insert on {2}.orders to '{0}'@'{3}';
-                                            grant select, insert, delete on {2}.customers to '{0}'@'{3}';
-                                            grant select on {2}.stock to '{0}'@'{3}';
-                                            ", this.uid, this.password, this.database, this.server), this.connection);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-
-                    }
-                    catch (MySqlException)
-                    {
-
-                        throw;
-                    }
-                }
-            }
-            public void CreateUser(string uid)
-            {
+                    uid = uid
+                };
+                user.Initialize();
                 if (this.OpenConnection() == true)
                 {
                     //MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
                     //MySqlDataReader dataReader = cmd.ExecuteReader();
                     //int.TryParse(cmd.ExecuteScalar() + "", out i);
+
                     MySqlCommand cmd0 = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
-                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+                                                                        ", user.uid, user.password, user.database, user.server), this.connection);
                     MySqlCommand cmd1 = new MySqlCommand(string.Format(@"grant select, insert on {2}.orders to '{0}'@'{3}';
-                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+                                                                        ", user.uid, user.password, user.database, user.server), this.connection);
                     MySqlCommand cmd2 = new MySqlCommand(string.Format(@"grant select, insert, delete on {2}.customers to '{0}'@'{3}';
-                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+                                                                        ", user.uid, user.password, user.database, user.server), this.connection);
                     MySqlCommand cmd3 = new MySqlCommand(string.Format(@"grant select on {2}.stock to '{0}'@'{3}';
-                                                                    ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+                                                                        ", user.uid, user.password, user.database, user.server), this.connection);
 
                     try
                     {
@@ -773,39 +784,72 @@ ALTER TABLE `orders`
 
                         throw;
                     }
-                    finally
-                    {
-                        this.CloseConnection();
-                    }
                 }
+                CloseConnection();
+                return user;
             }
-            public void CreateUser(string uid, string password, string database, string server)
-            {
-                if (this.OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
-                    MySqlDataReader dataReader = cmd.ExecuteReader();
-                    //int.TryParse(cmd.ExecuteScalar() + "", out i);
-                    cmd = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
-                                            grant select, insert on {2}.orders to '{0}'@'{3}';
-                                            grant select, insert, delete on {2}.customers to '{0}'@'{3}';
-                                            ", uid, password, database, server), this.connection);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
+            //public void CreateUser(string uid)
+            //{
+            //    if (this.OpenConnection() == true)
+            //    {
+            //        //MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
+            //        //MySqlDataReader dataReader = cmd.ExecuteReader();
+            //        //int.TryParse(cmd.ExecuteScalar() + "", out i);
+            //        MySqlCommand cmd0 = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
+            //                                                        ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+            //        MySqlCommand cmd1 = new MySqlCommand(string.Format(@"grant select, insert on {2}.orders to '{0}'@'{3}';
+            //                                                        ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+            //        MySqlCommand cmd2 = new MySqlCommand(string.Format(@"grant select, insert, delete on {2}.customers to '{0}'@'{3}';
+            //                                                        ", uid, "password", "eshopinnodb", "localhost"), this.connection);
+            //        MySqlCommand cmd3 = new MySqlCommand(string.Format(@"grant select on {2}.stock to '{0}'@'{3}';
+            //                                                        ", uid, "password", "eshopinnodb", "localhost"), this.connection);
 
-                    }
-                    catch (MySqlException)
-                    {
+            //        try
+            //        {
+            //            cmd0.ExecuteNonQuery();
+            //            cmd1.ExecuteNonQuery();
+            //            cmd2.ExecuteNonQuery();
+            //            cmd3.ExecuteNonQuery();
 
-                        throw;
-                    }
-                    finally
-                    {
-                        this.CloseConnection();
-                    }
-                }
-            }
+            //        }
+            //        catch (MySqlException)
+            //        {
+
+            //            throw;
+            //        }
+            //        finally
+            //        {
+            //            this.CloseConnection();
+            //        }
+            //    }
+            //}
+            //public void CreateUser(string uid, string password, string database, string server)
+            //{
+            //    if (this.OpenConnection() == true)
+            //    {
+            //        MySqlCommand cmd = new MySqlCommand("select ;", this.connection);
+            //        MySqlDataReader dataReader = cmd.ExecuteReader();
+            //        //int.TryParse(cmd.ExecuteScalar() + "", out i);
+            //        cmd = new MySqlCommand(string.Format(@"create user if not exists '{0}'@'{3}' IDENTIFIED BY '{1}'; 
+            //                                grant select, insert on {2}.orders to '{0}'@'{3}';
+            //                                grant select, insert, delete on {2}.customers to '{0}'@'{3}';
+            //                                ", uid, password, database, server), this.connection);
+            //        try
+            //        {
+            //            cmd.ExecuteNonQuery();
+
+            //        }
+            //        catch (MySqlException)
+            //        {
+
+            //            throw;
+            //        }
+            //        finally
+            //        {
+            //            this.CloseConnection();
+            //        }
+            //    }
+            //}
             public void CreateAdmin(string uid)
             {
                 if (this.OpenConnection() == true)
@@ -1496,8 +1540,17 @@ ALTER TABLE `orders`
                     return false;
                 }
             }
+            public void Task()
+            {
+                UserOfDB.Customer user = this.CreateCustomer("user" + Thread.CurrentThread.Name);
+                for (int i = 0; i < 100; i++)
+                {
+                    user.InsertOrders();
+                }
+
+            }
         }
-        
+
         public static string RandomDay(Random rng, int range, DateTime start)
         {
             return start.AddDays(rng.Next(range)).ToString("yyyy-MM-dd H:mm:ss"); ;
