@@ -15,7 +15,7 @@ namespace odb
     class Program
     {
 
-        static Thread[] thread = new Thread[50];
+        static Thread[] thread = new Thread[100];
         static void Main(string[] args)
         {
             //public static void InitalizeDB(MyConnect a, int[] n)

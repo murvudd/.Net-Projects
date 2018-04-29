@@ -51,7 +51,6 @@ namespace odb
                     case 0:
                         //MessageBox.Show("Cannot connect to server.  Contact administrator");
                         Console.WriteLine("Cannot connect to server.  Message: " + ex.Message+ "Inner Exception" + ex.InnerException);
-                        throw;
                         break;
 
                     case 1045:
