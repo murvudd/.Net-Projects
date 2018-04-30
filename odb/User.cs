@@ -50,7 +50,7 @@ namespace odb
                 {
                     case 0:
                         //MessageBox.Show("Cannot connect to server.  Contact administrator");
-                        Console.WriteLine("Cannot connect to server.  Message: " + ex.Message+ "Inner Exception" + ex.InnerException);
+                        Console.WriteLine("Cannot connect to server.  Message: " + ex.Message + "Inner Exception" + ex.InnerException);
                         break;
 
                     case 1045:
@@ -82,6 +82,25 @@ namespace odb
         {
             void Select(string query);
         }
+        public void Query(string qry)
+        {
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(qry, this.connection);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+                CloseConnection();
+            }
+        }
+
         protected interface IInsert
         {
             void Insert(string query);
@@ -98,7 +117,6 @@ namespace odb
         {
             void Update(string query);
         }
-
         protected interface ICustomerPrivs : ISelect, ICount, IUpdate, IInsert
         {
 
@@ -117,29 +135,6 @@ namespace odb
             /// str[3] server
             /// </summary>
             /// <param name="str"></param>
-
-            public Customer(params string[] str)
-            {
-                if (str.Length == 1)
-                {
-                    uid = str[0];
-
-                }
-                if (str.Length == 2)
-                {
-                    uid = str[0];
-                    password = str[1];
-
-                }
-                if (str.Length == 4)
-                {
-                    uid = str[0];
-                    password = str[1];
-                    database = str[2];
-                    server = str[3];
-                }
-                Initialize();
-            }
             public void Insert(string query)
             {
                 //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
@@ -167,6 +162,55 @@ namespace odb
                     this.CloseConnection();
                 }
             }
+            public Customer(params string[] str)
+            {
+                if (str.Length == 1)
+                {
+                    uid = str[0];
+
+                }
+                if (str.Length == 2)
+                {
+                    uid = str[0];
+                    password = str[1];
+
+                }
+                if (str.Length == 4)
+                {
+                    uid = str[0];
+                    password = str[1];
+                    database = str[2];
+                    server = str[3];
+                }
+                Initialize();
+            }
+            //public void Insert(string query)
+            //{
+            //    //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
+
+            //    //open connection
+            //    if (this.OpenConnection() == true)
+            //    {
+            //        //create command and assign the query and connection from the constructor
+            //        MySqlCommand cmd = new MySqlCommand(query, connection);
+
+            //        try
+            //        {
+
+            //            //Execute command
+            //            cmd.ExecuteNonQuery();
+            //        }
+            //        catch (Exception)
+            //        {
+            //            this.CloseConnection();
+            //            throw;
+            //        }
+
+
+            //        //close connection
+            //        this.CloseConnection();
+            //    }
+            //}
 
             public int Count(string query)
             {
@@ -285,6 +329,88 @@ namespace odb
                 {
                     WriteLine("Can't insert orders max customer_id {0}, stock_id {1}", list[0], list[1]);
                 }
+            }
+            public void InsertCustomer(string name, string lastName, string city)
+            {
+                Random rng = new Random();
+                int phone = rng.Next(100000000, 1000000000);
+                try
+                {
+                    //b.Insert(String.Format(@"
+                    //                            insert into customers 
+                    //                            (first_name, last_name, city, email, phone, customer_id) 
+                    //                            values ('{0}', '{1}', '{2}', '{0}.{1}@mail{3}.com', '{4}', customer_id.nextval)
+                    //                            ", name, lastName, city, inc.I, phone));
+                    this.Query(String.Format(@"
+                                            insert into customers 
+                                            (first_name, last_name, city, email, phone) 
+                                            values ('{0}', '{1}', '{2}', '{0}.{1}@gmail{3}.com', '{4}')
+                                            ", name, lastName, city, "", phone));
+                    Write(".");
+                }
+                catch (MySqlException e) when (e.Number == 1062)
+                {
+                    WriteLine("\nBŁĄD !! ||  " + e.Number + " ||  " + e.Message + "     \n");
+
+                }
+                catch (Exception e)
+                {
+                    WriteLine("\nBŁĄD !! ||  " + e.Message + "     \n");
+                    throw;
+                }
+
+                this.CloseConnection();
+
+            }
+            private void DropCustomer(string email)
+            {
+                this.Query(String.Format(@"delete from customers where customers.email = '{0}';", email));
+            }
+            private void UpdateCustomer(string email)
+            {
+                Random rng = new Random();
+                int phone = rng.Next(100000000, 1000000000);
+                this.Query("update customers set customers.phone = " + phone + " where customers.email like '" + email + "';");
+
+            }
+            public void CustomerSim()
+            {
+                while (true)
+                {
+                    Random rng = new Random();
+                    int[] max = SelectMaxCustmIDItmID();
+                    switch (rng.Next(0, 3))
+                    {
+                        //case 0:
+                        //    WriteLine("Inserting order from user: " + Thread.CurrentThread.Name);
+                        //    InsertOrder(rng.Next(0,max[1]));
+                        //    break;
+
+                        //case 1:
+                        //    WriteLine("deleting order from user: " + Thread.CurrentThread.Name);
+                        //    DropOrder("Krzysztof.Karoń@gmail.com");
+                        //    break;
+                        case 0:
+                            WriteLine("Inserting customer from user: " + Thread.CurrentThread.Name);
+                            InsertCustomer("Krzysztof", "Karoń", "Kraków");
+                            break;
+
+                        case 1:
+                            WriteLine("deleting customer from user: " + Thread.CurrentThread.Name);
+                            DropCustomer("Krzysztof.Karoń@gmail.com");
+                            break;
+
+                        case 2:
+                            WriteLine("Updating order from user: " + Thread.CurrentThread.Name);
+                            UpdateCustomer("Krzysztof.Karoń@gmail.com");
+                            break;
+
+                            //case 4:
+                            //    break;
+
+                    }
+                }
+
             }
 
         }
@@ -473,24 +599,8 @@ namespace odb
                 Initialize();
             }
 
-            public void Query(string qry)
-            {
-                if (this.OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(qry, this.connection);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception)
-                    {
+            
 
-                        throw;
-                    }
-                    
-                        CloseConnection();
-                }
-            }
             public void Insert(string query)
             {
                 //string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
@@ -529,8 +639,17 @@ namespace odb
                     //Create Mysql Command
                     MySqlCommand cmd = new MySqlCommand(query, connection);
 
-                    //ExecuteScalar will return one value
-                    Count = int.Parse(cmd.ExecuteScalar() + "");
+                    try
+                    {
+                        //ExecuteScalar will return one value
+                        Count = int.Parse(cmd.ExecuteScalar() + "");
+
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
 
                     //close Connection
                     this.CloseConnection();
@@ -1159,8 +1278,8 @@ ALTER TABLE `orders`
                     WriteLine("\nBŁĄD !! ||  " + e.Message + "     \n");
                     throw;
                 }
-                
-                    this.CloseConnection();
+
+                this.CloseConnection();
 
             }
             public void InsertCustomers(int n, string imionaPath, string nazwiskaPath, string miastaPath)
@@ -1530,7 +1649,10 @@ ALTER TABLE `orders`
                 }
                 return mail;
             }
-
+            /// <summary>
+            /// first param max(customer_id), second param max(item_id)
+            /// </summary>
+            /// <returns></returns>
             public int[] SelectMaxCustmIDItmID()
             {
                 //Create a list to store the result
@@ -1592,22 +1714,23 @@ ALTER TABLE `orders`
             }
             public void CustomerSim()
             {
-                UserOfDB.Customer user = this.CreateCustomer("user" + Thread.CurrentThread.Name);
-                for (int i = 0; i < 100; i++)
-                {
-                    user.InsertOrders();
-                }
-
-            }
-            public void AdminSim()
-            {
                 while (true)
                 {
                     Random rng = new Random();
-                    switch (rng.Next(0, 2))
+                    int[] max = SelectMaxCustmIDItmID();
+                    switch (rng.Next(0, 3))
                     {
+                        //case 0:
+                        //    WriteLine("Inserting order from user: " + Thread.CurrentThread.Name);
+                        //    InsertOrder(rng.Next(0,max[1]));
+                        //    break;
+
+                        //case 1:
+                        //    WriteLine("deleting order from user: " + Thread.CurrentThread.Name);
+                        //    DropOrder("Krzysztof.Karoń@gmail.com");
+                        //    break;
                         case 0:
-                            WriteLine("Inserting customer from user: "+Thread.CurrentThread.Name);
+                            WriteLine("Inserting customer from user: " + Thread.CurrentThread.Name);
                             InsertCustomer("Krzysztof", "Karoń", "Kraków");
                             break;
 
@@ -1616,9 +1739,49 @@ ALTER TABLE `orders`
                             DropCustomer("Krzysztof.Karoń@gmail.com");
                             break;
 
-                            //case 3:
-                            //    admin.UpdateCustomer();
+                        case 2:
+                            WriteLine("Updating order from user: " + Thread.CurrentThread.Name);
+                            UpdateCustomer("Krzysztof.Karoń@gmail.com");
+                            break;
+
+                            //case 4:
                             //    break;
+
+                    }
+                }
+
+            }
+            public void AdminSim()
+            {
+                while (true)
+                {
+                    Random rng = new Random();
+                    int[] max = SelectMaxCustmIDItmID();
+                    switch (rng.Next(0, 3))
+                    {
+                        //case 0:
+                        //    WriteLine("Inserting order from user: " + Thread.CurrentThread.Name);
+                        //    InsertOrder(rng.Next(0,max[1]));
+                        //    break;
+
+                        //case 1:
+                        //    WriteLine("deleting order from user: " + Thread.CurrentThread.Name);
+                        //    DropOrder("Krzysztof.Karoń@gmail.com");
+                        //    break;
+                        case 0:
+                            WriteLine("Inserting customer from user: " + Thread.CurrentThread.Name);
+                            InsertCustomer("Krzysztof", "Karoń", "Kraków");
+                            break;
+
+                        case 1:
+                            WriteLine("deleting customer from user: " + Thread.CurrentThread.Name);
+                            DropCustomer("Krzysztof.Karoń@gmail.com");
+                            break;
+
+                        case 2:
+                            WriteLine("Updating order from user: " + Thread.CurrentThread.Name);
+                            UpdateCustomer("Krzysztof.Karoń@gmail.com");
+                            break;
 
                             //case 4:
                             //    break;
@@ -1631,9 +1794,27 @@ ALTER TABLE `orders`
 
             }
 
-            private void UpdateCustomer()
+            private void UpdateOrder()
             {
+                Query("update orders set ");
+            }
 
+            private void DropOrder()
+            {
+                throw new NotImplementedException();
+            }
+
+            private void InsertOrder(int item_id)
+            {
+                Query(string.Format("insert into orders (customer_id, item_id) values ({0}, 9006);",item_id));
+            }
+
+            private void UpdateCustomer(string email)
+            {
+                Random rng = new Random();
+                int phone = rng.Next(100000000, 1000000000);
+                this.Query("update customers set customers.phone = "+ phone +" where customers.email like '"+ email + "';");
+                
             }
 
             private void DropCustomer(string email)

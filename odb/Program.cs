@@ -15,7 +15,8 @@ namespace odb
     class Program
     {
 
-        static Thread[] thread = new Thread[100];
+        static Thread[] AdminThread = new Thread[5];
+        static Thread[] CustomerThread = new Thread[200 - AdminThread.Length];
         static void Main(string[] args)
         {
             //public static void InitalizeDB(MyConnect a, int[] n)
@@ -38,30 +39,28 @@ namespace odb
             //    }
             //}
             UserOfDB.Admin root = new UserOfDB.Admin();
-            //root.DropUsers();
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    thread[i] = new Thread(root.CustomerSim)
-            //    {
-            //        Name = i + ""
-            //    };
-            //    thread[i].Start();
-            //}
+            
 
             root.DropUsers();
             root.DropAdmins();
             
-            WriteLine("Number of threads created " + thread.Length);
-
-            ////for (int i = 0; i < int; i++)
-            for (int i = 0; i < thread.Length; i++)
+            for (int i = 0; i < AdminThread.Length; i++)
             {
-                thread[i] = new Thread(root.CreateAdmin("admin" + i).AdminSim)
+                AdminThread[i] = new Thread(root.CreateAdmin("admin" + i).AdminSim)
                 {
                     Name = i + ""
                 };
-                WriteLine("thread" + Thread.CurrentThread.Name + "  rozpoczyna pracę");
-                thread[i].Start();
+                WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
+                AdminThread[i].Start();
+            }
+            for (int i = 0; i < AdminThread.Length; i++)
+            {
+                AdminThread[i] = new Thread(root.CreateAdmin("Customer" + i).CustomerSim)
+                {
+                    Name = i + ""
+                };
+                WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
+                AdminThread[i].Start();
             }
             //WriteLine("za minute zamknięcie threadów");
             //Thread.Sleep(10 * 1000);
