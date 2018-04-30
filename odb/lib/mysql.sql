@@ -1,5 +1,5 @@
 use eshopinnodb;
-
+SHOW ENGINE INNODB STATUS;
 select count(customer_id) from customers where customer_id = 1984;
 select count(*) from customers where customer_id = 1984;
 select email from customers where customer_id = 1984;

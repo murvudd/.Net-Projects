@@ -16,7 +16,7 @@ namespace odb
     {
 
         static Thread[] AdminThread = new Thread[5];
-        static Thread[] CustomerThread = new Thread[200 - AdminThread.Length];
+        static Thread[] CustomerThread = new Thread[100 - AdminThread.Length];
         static void Main(string[] args)
         {
             //public static void InitalizeDB(MyConnect a, int[] n)

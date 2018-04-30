@@ -1717,7 +1717,7 @@ ALTER TABLE `orders`
                 while (true)
                 {
                     Random rng = new Random();
-                    int[] max = SelectMaxCustmIDItmID();
+                    //int[] max = SelectMaxCustmIDItmID();
                     switch (rng.Next(0, 3))
                     {
                         //case 0:
@@ -1756,7 +1756,7 @@ ALTER TABLE `orders`
                 while (true)
                 {
                     Random rng = new Random();
-                    int[] max = SelectMaxCustmIDItmID();
+                    //int[] max = SelectMaxCustmIDItmID();
                     switch (rng.Next(0, 3))
                     {
                         //case 0:
