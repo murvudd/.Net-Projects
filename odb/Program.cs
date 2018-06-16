@@ -9,51 +9,69 @@ using System.IO;
 using System.Diagnostics;
 using static System.Console;
 using MySql.Data.MySqlClient;
-using static odb.StaticMethods;
 
 namespace odb
 {
     class Program
     {
+
+        static Thread[] AdminThread = new Thread[5];
+        static Thread[] CustomerThread = new Thread[100 - AdminThread.Length];
         static void Main(string[] args)
         {
-            MyConnect a = new MyConnect();
-            MyConnect[] myConnect = new MyConnect[2];
-            //OracleConnect b = new OracleConnect();
-            //Random rng = new Random();
+            //public static void InitalizeDB(MyConnect a, int[] n)
+            //{
+            //    if (n.Length == 4)
+            //    {
 
-            //b.Check();
-            //
+            //        TruncateDB(a);
+            //        ApplyConstraints(a);
 
-            //{ #new stock, #insert customers, #insert orders,
-            // #insert orderstatus}
-            a.InitalizeDB(new int[] { 25, 10, 15, 20 }); 
+            //        InsertShop(a, "Data/miasta.txt");
+            //        CreateNewStock(n[0]);
+            //        InsertStock(a, "Data/stock.txt", "Data/miasta.txt");
+
+            //        InsertCustomers(n[1], a, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
 
 
+            //        InsertOrders(a, n[2]);
+            //        InsertOrderStatus(a, n[3]);
+            //    }
+            //}
+            UserOfDB.Admin root = new UserOfDB.Admin();
+            
 
-            //a.Insert("insert into order_status(status, status_changed, order_id) values('Order Created', '2018-04-17 10:47:51', 10002);");
+            root.DropUsers();
+            root.DropAdmins();
+            
+            for (int i = 0; i < AdminThread.Length; i++)
+            {
+                AdminThread[i] = new Thread(root.CreateAdmin("admin" + i).AdminSim)
+                {
+                    Name = i + ""
+                };
+                WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
+                AdminThread[i].Start();
+            }
+            for (int i = 0; i < AdminThread.Length; i++)
+            {
+                AdminThread[i] = new Thread(root.CreateAdmin("Customer" + i).CustomerSim)
+                {
+                    Name = i + ""
+                };
+                WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
+                AdminThread[i].Start();
+            }
+            //WriteLine("za minute zamknięcie threadów");
+            //Thread.Sleep(10 * 1000);
+            //WriteLine("zamykanie threadów");
+            //foreach (var thrd in thread)
+            //{
+            //    thrd.Abort();
+            //}
+            //WriteLine("thready zamkniete");
 
         }
-
-        //public static void InitalizeDB(MyConnect a, int[] n)
-        //{
-        //    if (n.Length == 4)
-        //    {
-
-        //        TruncateDB(a);
-        //        ApplyConstraints(a);
-
-        //        InsertShop(a, "Data/miasta.txt");
-        //        CreateNewStock(n[0]);
-        //        InsertStock(a, "Data/stock.txt", "Data/miasta.txt");
-
-        //        InsertCustomers(n[1], a, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
-
-
-        //        InsertOrders(a, n[2]);
-        //        InsertOrderStatus(a, n[3]);
-        //    }
-        //}
 
     }
 
