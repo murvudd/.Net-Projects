@@ -14,62 +14,99 @@ namespace odb
 {
     class Program
     {
+        static void DumpToSqlInsert(string InPath, string FileName)
+        {
+            List<string> LineList = new List<string>();
+            //string[] text = File.ReadAllLines(@"D:\Dokumenty\Dump20180608.sql");
+            string[] text = File.ReadAllLines(InPath);
+            foreach (string line in text)
+            {
+                if (line.Contains(@"INSERT INTO `stock`"))
+                {
+                    LineList.Add(line);
+                }
+            }
 
+            File.AppendAllLines(InPath.Replace() + FileName+ ".txt", LineList);
+            //File.AppendAllLines(@"D:\Source\Repos\.Net-Projects\.Net-Projects\odb\lib\OracleInsertStock.txt", LineList);
+
+        }
         static Thread[] AdminThread = new Thread[5];
         static Thread[] CustomerThread = new Thread[100 - AdminThread.Length];
+        // pierwotny main (drugie sprawko
+
+        //static void Main(string[] args)
+        //{
+        //    //public static void InitalizeDB(MyConnect a, int[] n)
+        //    //{
+        //    //    if (n.Length == 4)
+        //    //    {
+
+        //    //        TruncateDB(a);
+        //    //        ApplyConstraints(a);
+
+        //    //        InsertShop(a, "Data/miasta.txt");
+        //    //        CreateNewStock(n[0]);
+        //    //        InsertStock(a, "Data/stock.txt", "Data/miasta.txt");
+
+        //    //        InsertCustomers(n[1], a, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
+
+
+        //    //        InsertOrders(a, n[2]);
+        //    //        InsertOrderStatus(a, n[3]);
+        //    //    }
+        //    //}
+        //    UserOfDB.Admin root = new UserOfDB.Admin();
+
+
+        //    root.DropUsers();
+        //    root.DropAdmins();
+
+        //    for (int i = 0; i < AdminThread.Length; i++)
+        //    {
+        //        AdminThread[i] = new Thread(root.CreateAdmin("admin" + i).AdminSim)
+        //        {
+        //            Name = i + ""
+        //        };
+        //        WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
+        //        AdminThread[i].Start();
+        //    }
+        //    for (int i = 0; i < AdminThread.Length; i++)
+        //    {
+        //        AdminThread[i] = new Thread(root.CreateAdmin("Customer" + i).CustomerSim)
+        //        {
+        //            Name = i + ""
+        //        };
+        //        WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
+        //        AdminThread[i].Start();
+        //    }
+        //    //WriteLine("za minute zamknięcie threadów");
+        //    //Thread.Sleep(10 * 1000);
+        //    //WriteLine("zamykanie threadów");
+        //    //foreach (var thrd in thread)
+        //    //{
+        //    //    thrd.Abort();
+        //    //}
+        //    //WriteLine("thready zamkniete");
+
+        //}
         static void Main(string[] args)
         {
-            //public static void InitalizeDB(MyConnect a, int[] n)
-            //{
-            //    if (n.Length == 4)
-            //    {
+            OracleConnect root = new OracleConnect();
 
-            //        TruncateDB(a);
-            //        ApplyConstraints(a);
-
-            //        InsertShop(a, "Data/miasta.txt");
-            //        CreateNewStock(n[0]);
-            //        InsertStock(a, "Data/stock.txt", "Data/miasta.txt");
-
-            //        InsertCustomers(n[1], a, "Data/imiona.txt", "Data/nazwiska.txt", "Data/miasta_all.txt");
-
-
-            //        InsertOrders(a, n[2]);
-            //        InsertOrderStatus(a, n[3]);
-            //    }
-            //}
-            UserOfDB.Admin root = new UserOfDB.Admin();
-            
-
-            root.DropUsers();
-            root.DropAdmins();
-            
-            for (int i = 0; i < AdminThread.Length; i++)
+            string[] InsertStringSql = File.ReadAllLines(@"D:\Source\Repos\.Net-Projects\.Net-Projects\odb\lib\OracleInsertCustomers.txt");
+            foreach (string line in InsertStringSql)
             {
-                AdminThread[i] = new Thread(root.CreateAdmin("admin" + i).AdminSim)
-                {
-                    Name = i + ""
-                };
-                WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
-                AdminThread[i].Start();
+                root.Insert(line);
+                Console.Write(".");
             }
-            for (int i = 0; i < AdminThread.Length; i++)
-            {
-                AdminThread[i] = new Thread(root.CreateAdmin("Customer" + i).CustomerSim)
-                {
-                    Name = i + ""
-                };
-                WriteLine("AdminThread" + AdminThread[i].Name + "  rozpoczyna pracę");
-                AdminThread[i].Start();
-            }
-            //WriteLine("za minute zamknięcie threadów");
-            //Thread.Sleep(10 * 1000);
-            //WriteLine("zamykanie threadów");
-            //foreach (var thrd in thread)
+
+            //for (int i = 12707; i < 19999; i++)
             //{
-            //    thrd.Abort();
+            //    root.Insert(InsertStringSql[i]);
+            //    Console.Write(".");
             //}
-            //WriteLine("thready zamkniete");
+
 
         }
 
