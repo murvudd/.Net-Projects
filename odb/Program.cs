@@ -14,7 +14,7 @@ namespace odb
 {
     class Program
     {
-        static void DumpToSqlInsert(string InPath, string FileName)
+        static void DumpToSqlInsert(string InPath, string OutPath)
         {
             List<string> LineList = new List<string>();
             //string[] text = File.ReadAllLines(@"D:\Dokumenty\Dump20180608.sql");
@@ -27,7 +27,7 @@ namespace odb
                 }
             }
 
-            File.AppendAllLines(InPath.Replace() + FileName+ ".txt", LineList);
+            File.WriteAllLines(path: OutPath, contents: LineList);
             //File.AppendAllLines(@"D:\Source\Repos\.Net-Projects\.Net-Projects\odb\lib\OracleInsertStock.txt", LineList);
 
         }
@@ -92,13 +92,15 @@ namespace odb
         //}
         static void Main(string[] args)
         {
-            OracleConnect root = new OracleConnect();
+            LocalOracleConnect root = new LocalOracleConnect();
 
-            string[] InsertStringSql = File.ReadAllLines(@"D:\Source\Repos\.Net-Projects\.Net-Projects\odb\lib\OracleInsertCustomers.txt");
+            string[] InsertStringSql = File.ReadAllLines(@"D:\dokumenty\Source\Repos\.Net-Projects\odb\lib\OracleInsert\OrderStatusPt3.txt");
+            int i = 0;
             foreach (string line in InsertStringSql)
             {
                 root.Insert(line);
-                Console.Write(".");
+                
+                Console.WriteLine(i++);
             }
 
             //for (int i = 12707; i < 19999; i++)

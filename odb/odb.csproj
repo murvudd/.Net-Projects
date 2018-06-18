@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LocalOracleConnect.cs" />
     <Compile Include="MyConnect.cs" />
     <Compile Include="OracleConnect.cs" />
     <Compile Include="Program.cs" />
